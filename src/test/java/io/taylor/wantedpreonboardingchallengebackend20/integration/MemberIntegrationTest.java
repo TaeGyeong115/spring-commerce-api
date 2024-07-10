@@ -1,8 +1,8 @@
 package io.taylor.wantedpreonboardingchallengebackend20.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.taylor.wantedpreonboardingchallengebackend20.member.model.request.JoinRequestDto;
-import io.taylor.wantedpreonboardingchallengebackend20.member.model.request.LoginRequestDto;
+import io.taylor.wantedpreonboardingchallengebackend20.model.request.JoinRequestDto;
+import io.taylor.wantedpreonboardingchallengebackend20.model.request.LoginRequestDto;
 import org.json.JSONObject;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;

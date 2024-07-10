@@ -1,4 +1,4 @@
-package io.taylor.wantedpreonboardingchallengebackend20.product.model;
+package io.taylor.wantedpreonboardingchallengebackend20.model;
 
 public enum ProductStatus {
     Available(0),

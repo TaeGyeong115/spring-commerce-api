@@ -1,9 +1,9 @@
-package io.taylor.wantedpreonboardingchallengebackend20.product.controller;
+package io.taylor.wantedpreonboardingchallengebackend20.controller;
 
-import io.taylor.wantedpreonboardingchallengebackend20.product.entity.Product;
-import io.taylor.wantedpreonboardingchallengebackend20.product.model.request.ProductRequest;
-import io.taylor.wantedpreonboardingchallengebackend20.product.model.response.ProductResponse;
-import io.taylor.wantedpreonboardingchallengebackend20.product.service.ProductService;
+import io.taylor.wantedpreonboardingchallengebackend20.entity.Product;
+import io.taylor.wantedpreonboardingchallengebackend20.model.request.ProductRequest;
+import io.taylor.wantedpreonboardingchallengebackend20.model.response.ProductResponse;
+import io.taylor.wantedpreonboardingchallengebackend20.service.ProductService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

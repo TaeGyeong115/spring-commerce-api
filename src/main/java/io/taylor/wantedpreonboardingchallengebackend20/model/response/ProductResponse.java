@@ -1,4 +1,4 @@
-package io.taylor.wantedpreonboardingchallengebackend20.product.model.response;
+package io.taylor.wantedpreonboardingchallengebackend20.model.response;
 
 import java.sql.Timestamp;
 

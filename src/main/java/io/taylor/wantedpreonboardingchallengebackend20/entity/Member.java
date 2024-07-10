@@ -1,6 +1,6 @@
-package io.taylor.wantedpreonboardingchallengebackend20.member.entity;
+package io.taylor.wantedpreonboardingchallengebackend20.entity;
 
-import io.taylor.wantedpreonboardingchallengebackend20.member.model.request.JoinRequestDto;
+import io.taylor.wantedpreonboardingchallengebackend20.model.request.JoinRequestDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Data;

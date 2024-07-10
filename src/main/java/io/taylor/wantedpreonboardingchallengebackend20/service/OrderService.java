@@ -1,4 +1,4 @@
-package io.taylor.wantedpreonboardingchallengebackend20.order.service;
+package io.taylor.wantedpreonboardingchallengebackend20.service;
 
 import org.springframework.stereotype.Service;
 

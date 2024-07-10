@@ -1,4 +1,4 @@
-package io.taylor.wantedpreonboardingchallengebackend20.product.entity;
+package io.taylor.wantedpreonboardingchallengebackend20.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;

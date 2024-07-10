@@ -1,8 +1,8 @@
-package io.taylor.wantedpreonboardingchallengebackend20.member.model.response;
+package io.taylor.wantedpreonboardingchallengebackend20.model.response;
 
+import io.taylor.wantedpreonboardingchallengebackend20.entity.Member;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import io.taylor.wantedpreonboardingchallengebackend20.member.entity.Member;
 
 @Data
 @NoArgsConstructor

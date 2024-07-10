@@ -1,14 +1,14 @@
-package io.taylor.wantedpreonboardingchallengebackend20.member.service;
+package io.taylor.wantedpreonboardingchallengebackend20.service;
 
-import io.taylor.wantedpreonboardingchallengebackend20.member.model.request.JoinRequestDto;
-import io.taylor.wantedpreonboardingchallengebackend20.member.model.request.LoginRequestDto;
-import io.taylor.wantedpreonboardingchallengebackend20.member.model.response.JoinResponseDto;
-import io.taylor.wantedpreonboardingchallengebackend20.member.model.response.LoginResponseDto;
+import io.taylor.wantedpreonboardingchallengebackend20.entity.Member;
+import io.taylor.wantedpreonboardingchallengebackend20.model.request.JoinRequestDto;
+import io.taylor.wantedpreonboardingchallengebackend20.model.request.LoginRequestDto;
+import io.taylor.wantedpreonboardingchallengebackend20.model.response.JoinResponseDto;
+import io.taylor.wantedpreonboardingchallengebackend20.model.response.LoginResponseDto;
 import lombok.extern.slf4j.Slf4j;
 import io.taylor.wantedpreonboardingchallengebackend20.common.util.JwtTokenUtil;
 import io.taylor.wantedpreonboardingchallengebackend20.common.util.PasswordUtil;
-import io.taylor.wantedpreonboardingchallengebackend20.member.entity.Member;
-import io.taylor.wantedpreonboardingchallengebackend20.member.repository.MemberRepository;
+import io.taylor.wantedpreonboardingchallengebackend20.repository.MemberRepository;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

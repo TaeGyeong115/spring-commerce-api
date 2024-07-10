@@ -1,12 +1,11 @@
-package io.taylor.wantedpreonboardingchallengebackend20.product.service;
+package io.taylor.wantedpreonboardingchallengebackend20.service;
 
 import io.taylor.wantedpreonboardingchallengebackend20.common.util.JwtTokenUtil;
-import io.taylor.wantedpreonboardingchallengebackend20.product.model.request.ProductRequest;
-import io.taylor.wantedpreonboardingchallengebackend20.product.model.response.ProductResponse;
+import io.taylor.wantedpreonboardingchallengebackend20.model.request.ProductRequest;
+import io.taylor.wantedpreonboardingchallengebackend20.model.response.ProductResponse;
 import lombok.extern.slf4j.Slf4j;
-import io.taylor.wantedpreonboardingchallengebackend20.order.service.OrderService;
-import io.taylor.wantedpreonboardingchallengebackend20.product.entity.Product;
-import io.taylor.wantedpreonboardingchallengebackend20.product.repository.ProductRepository;
+import io.taylor.wantedpreonboardingchallengebackend20.entity.Product;
+import io.taylor.wantedpreonboardingchallengebackend20.repository.ProductRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;

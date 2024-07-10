@@ -1,10 +1,10 @@
-package io.taylor.wantedpreonboardingchallengebackend20.member.controller;
+package io.taylor.wantedpreonboardingchallengebackend20.controller;
 
-import io.taylor.wantedpreonboardingchallengebackend20.member.model.request.JoinRequestDto;
-import io.taylor.wantedpreonboardingchallengebackend20.member.model.request.LoginRequestDto;
-import io.taylor.wantedpreonboardingchallengebackend20.member.model.response.JoinResponseDto;
-import io.taylor.wantedpreonboardingchallengebackend20.member.model.response.LoginResponseDto;
-import io.taylor.wantedpreonboardingchallengebackend20.member.service.MemberService;
+import io.taylor.wantedpreonboardingchallengebackend20.model.request.JoinRequestDto;
+import io.taylor.wantedpreonboardingchallengebackend20.model.request.LoginRequestDto;
+import io.taylor.wantedpreonboardingchallengebackend20.model.response.JoinResponseDto;
+import io.taylor.wantedpreonboardingchallengebackend20.model.response.LoginResponseDto;
+import io.taylor.wantedpreonboardingchallengebackend20.service.MemberService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

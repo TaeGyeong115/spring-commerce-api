@@ -1,13 +1,11 @@
-package io.taylor.wantedpreonboardingchallengebackend20.product.entity;
+package io.taylor.wantedpreonboardingchallengebackend20.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import io.taylor.wantedpreonboardingchallengebackend20.product.model.ProductStatus;
+import io.taylor.wantedpreonboardingchallengebackend20.model.ProductStatus;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import java.sql.Timestamp;
 
