@@ -1,6 +1,15 @@
 ## [과제 풀이 링크](https://ivy-october-fe6.notion.site/Wanted-pre-onboarding-challenge-back-end-20-8c4abf19c63e41cfb0cd43d49306fb41?pvs=4)
 
 ---
+### Docker - MySQL
+```
+docker run -p 3306:3306 --name wanted_project -e MYSQL_ROOT_PASSWORD=1 -e MYSQL_DATABASE=wanted-preonboarding-challenge-backend-20 -e MYSQL_USER=taylor -e MYSQL_PASSWORD=pass -d mysql
+
+docker exec -i -t wanted_project bash
+mysql -u taylor -p
+use wanted-preonboarding-challenge-backend-20
+```
+---
 
 ## 원티드 프리온보딩 챌린지 백엔드 20 사전과제
 

@@ -16,8 +16,8 @@ server:
 spring:
     datasource:
         jdbc-url: jdbc:mysql://localhost:3306/wanted-preonboarding-challenge-backend-20
-        username: root
-        password: root
+        username: taylor
+        password: pass
         driver-class-name: com.mysql.cj.jdbc.Driver
 
     jpa:
