@@ -1,4 +1,4 @@
-package io.taylor.wantedpreonboardingchallengebackend20.common.handler;
+package io.taylor.wantedpreonboardingchallengebackend20.common;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

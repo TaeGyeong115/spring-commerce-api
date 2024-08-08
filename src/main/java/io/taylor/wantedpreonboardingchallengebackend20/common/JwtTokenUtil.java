@@ -1,4 +1,4 @@
-package io.taylor.wantedpreonboardingchallengebackend20.common.util;
+package io.taylor.wantedpreonboardingchallengebackend20.common;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

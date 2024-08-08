@@ -1,6 +1,6 @@
 package io.taylor.wantedpreonboardingchallengebackend20.service;
 
-import io.taylor.wantedpreonboardingchallengebackend20.common.util.JwtTokenUtil;
+import io.taylor.wantedpreonboardingchallengebackend20.common.JwtTokenUtil;
 import io.taylor.wantedpreonboardingchallengebackend20.model.request.ProductRequest;
 import io.taylor.wantedpreonboardingchallengebackend20.model.response.ProductResponse;
 import lombok.extern.slf4j.Slf4j;

@@ -1,4 +1,4 @@
-package io.taylor.wantedpreonboardingchallengebackend20.common.config;
+package io.taylor.wantedpreonboardingchallengebackend20.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

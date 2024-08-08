@@ -6,8 +6,8 @@ import io.taylor.wantedpreonboardingchallengebackend20.model.request.LoginReques
 import io.taylor.wantedpreonboardingchallengebackend20.model.response.JoinResponseDto;
 import io.taylor.wantedpreonboardingchallengebackend20.model.response.LoginResponseDto;
 import lombok.extern.slf4j.Slf4j;
-import io.taylor.wantedpreonboardingchallengebackend20.common.util.JwtTokenUtil;
-import io.taylor.wantedpreonboardingchallengebackend20.common.util.PasswordUtil;
+import io.taylor.wantedpreonboardingchallengebackend20.common.JwtTokenUtil;
+import io.taylor.wantedpreonboardingchallengebackend20.common.PasswordUtil;
 import io.taylor.wantedpreonboardingchallengebackend20.repository.MemberRepository;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

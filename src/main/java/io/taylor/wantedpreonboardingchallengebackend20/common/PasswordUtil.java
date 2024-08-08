@@ -1,4 +1,4 @@
-package io.taylor.wantedpreonboardingchallengebackend20.common.util;
+package io.taylor.wantedpreonboardingchallengebackend20.common;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
