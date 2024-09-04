@@ -36,7 +36,6 @@ public class ProductService {
         if (userId.isEmpty()) throw new ResponseStatusException(HttpStatus.FORBIDDEN, "존재하지 않는 회원입니다.");
 
         Product product = productRepository.save(new Product(request.name(), request.price()));
-        if (product == null) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "상품 등록에 실패했습니다.");
         return new ProductResponse(product.getId(), product.getName(), product.getPrice(), product.getStatus(), product.getUpdatedAt(), product.getCreatedAt());
     }
 
