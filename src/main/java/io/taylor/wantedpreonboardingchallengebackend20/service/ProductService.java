@@ -35,7 +35,7 @@ public class ProductService {
         String userId = jwtTokenUtil.getUserIdFromToken(authorization);
         if (userId.isEmpty()) throw new ResponseStatusException(HttpStatus.FORBIDDEN, "존재하지 않는 회원입니다.");
 
-        Product product = productRepository.save(new Product(request.name(), request.price()));
+        Product product = productRepository.save(new Product(request.name(), request.price(), request.inventory()));
         return new ProductResponse(product.getId(), product.getName(), product.getPrice(), product.getStatus(), product.getUpdatedAt(), product.getCreatedAt());
     }
 
