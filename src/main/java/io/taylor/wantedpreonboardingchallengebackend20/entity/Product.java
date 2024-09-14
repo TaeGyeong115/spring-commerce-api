@@ -16,9 +16,13 @@ import java.sql.Timestamp;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
     @Column
     private String name;
+    @Column
+    private long memberId;
+    @Column
+    private int inventory;
     @Column
     private long price;
     @Column
@@ -29,9 +33,10 @@ public class Product {
     @UpdateTimestamp
     private Timestamp updatedAt;
 
-    public Product(String name, long price) {
+    public Product(String name, long price,int inventory) {
         this.name = name;
         this.price = price;
+        this.inventory = inventory;
         this.status = ProductStatus.Available.getValue();
     }
 }

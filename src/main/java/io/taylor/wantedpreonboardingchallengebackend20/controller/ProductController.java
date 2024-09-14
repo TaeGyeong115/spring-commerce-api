@@ -31,12 +31,12 @@ public class ProductController {
     }
 
     @GetMapping("/{productId}")
-    public ResponseEntity<ProductResponse> getProduct(@PathVariable String productId) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(productService.getProductById(Long.parseLong(productId)));
+    public ResponseEntity<ProductResponse> getProduct(@PathVariable("productId") String productId) {
+        return ResponseEntity.status(HttpStatus.OK).body(productService.getProductById(Long.parseLong(productId)));
     }
 
     @PatchMapping("/{productId}/approve")
     public ResponseEntity<Object> approveProduct(@RequestHeader HttpHeaders header, String productId) {
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }
