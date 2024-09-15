@@ -1,8 +1,10 @@
 package io.taylor.wantedpreonboardingchallengebackend20.service;
 
-import io.taylor.wantedpreonboardingchallengebackend20.common.JwtTokenUtil;
+import io.taylor.wantedpreonboardingchallengebackend20.entity.Order;
+import io.taylor.wantedpreonboardingchallengebackend20.model.request.MemberData;
 import io.taylor.wantedpreonboardingchallengebackend20.model.request.ProductRequest;
 import io.taylor.wantedpreonboardingchallengebackend20.model.response.ProductResponse;
+import io.taylor.wantedpreonboardingchallengebackend20.repository.OrderRepository;
 import lombok.extern.slf4j.Slf4j;
 import io.taylor.wantedpreonboardingchallengebackend20.entity.Product;
 import io.taylor.wantedpreonboardingchallengebackend20.repository.ProductRepository;
@@ -15,14 +17,12 @@ import java.util.List;
 @Slf4j
 @Service
 public class ProductService {
-    private final JwtTokenUtil jwtTokenUtil;
     private final ProductRepository productRepository;
-    private final OrderService orderService;
+    private final OrderRepository orderRepository;
 
-    public ProductService(JwtTokenUtil jwtTokenUtil, ProductRepository productRepository, OrderService orderService) {
-        this.jwtTokenUtil = jwtTokenUtil;
+    public ProductService(ProductRepository productRepository, OrderRepository orderRepository) {
         this.productRepository = productRepository;
-        this.orderService = orderService;
+        this.orderRepository = orderRepository;
     }
 
     public List<Product> getProducts() {
@@ -31,10 +31,7 @@ public class ProductService {
         return productList;
     }
 
-    public ProductResponse postProduct(String authorization, ProductRequest request) {
-        String userId = jwtTokenUtil.getUserIdFromToken(authorization);
-        if (userId.isEmpty()) throw new ResponseStatusException(HttpStatus.FORBIDDEN, "존재하지 않는 회원입니다.");
-
+    public ProductResponse postProduct(MemberData memberData, ProductRequest request) {
         Product product = productRepository.save(new Product(request.name(), request.price(), request.inventory()));
         return new ProductResponse(product.getId(), product.getName(), product.getPrice(), product.getStatus(), product.getUpdatedAt(), product.getCreatedAt());
     }
@@ -43,5 +40,19 @@ public class ProductService {
         Product product = productRepository.findById(productId);
         if (product == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 상품이 존재하지 않습니다.");
         return new ProductResponse(product.getId(), product.getName(), product.getPrice(), product.getStatus(), product.getUpdatedAt(), product.getCreatedAt());
+    }
+
+    public boolean buyProduct(long memberId, long productId, long price) {
+        Product product = productRepository.findById(productId);
+        if (product == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 상품이 존재하지 않습니다.");
+
+        try {
+            Order order = new Order(productId, memberId, product.getMemberId(), price);
+            orderRepository.save(order);
+
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

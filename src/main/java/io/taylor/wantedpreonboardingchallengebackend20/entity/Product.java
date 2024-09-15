@@ -1,22 +1,22 @@
 package io.taylor.wantedpreonboardingchallengebackend20.entity;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import io.taylor.wantedpreonboardingchallengebackend20.model.ProductStatus;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.sql.Timestamp;
-
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
-@Table(name="products")
-@NoArgsConstructor
-public class Product {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+@Table(name="products",  indexes={
+        @Index(name="products_idx_id", columnList="id", unique=true)
+})
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EntityListeners(AuditingEntityListener.class)
+public class Product extends BaseEntity {
     @Column
     private String name;
     @Column
@@ -27,11 +27,6 @@ public class Product {
     private long price;
     @Column
     private int status;
-    @CreationTimestamp
-    @Column(updatable = false)
-    private Timestamp createdAt;
-    @UpdateTimestamp
-    private Timestamp updatedAt;
 
     public Product(String name, long price,int inventory) {
         this.name = name;

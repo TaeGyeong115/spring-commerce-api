@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import io.taylor.wantedpreonboardingchallengebackend20.model.request.MemberData;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -40,10 +41,10 @@ public class JwtTokenUtil {
                 .compact();
     }
 
-    public String getUserIdFromToken(String accessToken) {
+    public MemberData getUserIdFromToken(String accessToken) {
         Claims claims = getClaimsFromToken(accessToken);
         if (claims.getExpiration().before(new Date())) throw new ResponseStatusException(HttpStatus.FORBIDDEN, "유효하지 않은 토큰입니다.");
-        return claims.get("email", String.class);
+        return new MemberData(claims.get("memberId", Long.class), claims.get("email", String.class), claims.get("nickName", String.class));
     }
 
     public Claims getClaimsFromToken(String accessToken) {

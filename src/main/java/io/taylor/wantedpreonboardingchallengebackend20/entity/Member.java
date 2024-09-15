@@ -2,24 +2,18 @@ package io.taylor.wantedpreonboardingchallengebackend20.entity;
 
 import io.taylor.wantedpreonboardingchallengebackend20.model.request.JoinRequestDto;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.sql.Timestamp;
-
+@EqualsAndHashCode(callSuper = true)
 @Data
+@Table(name="members", indexes={
+        @Index(name="members_idx_id", columnList="id", unique=true)
+})
 @Entity
-@Table(name="members")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
-public class Member {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Member extends BaseEntity {
     @Column
     private String name;
     @Column
@@ -28,11 +22,6 @@ public class Member {
     private String email;
     @Column
     private String password;
-    @UpdateTimestamp
-    private Timestamp updatedAt;
-    @CreationTimestamp
-    @Column(updatable = false)
-    private Timestamp createdAt;
 
     public Member(String email, String password) {
         this.email = email;
