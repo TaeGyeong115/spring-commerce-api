@@ -43,7 +43,8 @@ public class JwtTokenUtil {
 
     public MemberData getUserIdFromToken(String accessToken) {
         Claims claims = getClaimsFromToken(accessToken);
-        if (claims.getExpiration().before(new Date())) throw new ResponseStatusException(HttpStatus.FORBIDDEN, "유효하지 않은 토큰입니다.");
+        if (claims.getExpiration().before(new Date()))
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "유효하지 않은 토큰입니다.");
         return new MemberData(claims.get("memberId", Long.class), claims.get("email", String.class), claims.get("nickName", String.class));
     }
 

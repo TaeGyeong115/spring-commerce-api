@@ -10,8 +10,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
-@Table(name="orders",  indexes={
-        @Index(name="orders_idx_id", columnList="id", unique=true)
+@Table(name = "orders", indexes = {
+        @Index(name = "orders_idx_id", columnList = "id", unique = true)
 })
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
