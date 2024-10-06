@@ -5,13 +5,13 @@ public enum ProductStatus {
     Reserved(1),
     Completed(2);
 
-    private final int value;
+    private final int number;
 
-    ProductStatus(int value) {
-        this.value = value;
+    ProductStatus(int number) {
+        this.number = number;
     }
 
-    public int getValue() {
-        return value;
+    public int getNumber() {
+        return number;
     }
 }

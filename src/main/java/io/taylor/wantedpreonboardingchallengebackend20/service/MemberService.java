@@ -1,14 +1,14 @@
 package io.taylor.wantedpreonboardingchallengebackend20.service;
 
+import io.taylor.wantedpreonboardingchallengebackend20.common.JwtTokenUtil;
+import io.taylor.wantedpreonboardingchallengebackend20.common.PasswordUtil;
 import io.taylor.wantedpreonboardingchallengebackend20.entity.Member;
 import io.taylor.wantedpreonboardingchallengebackend20.model.request.JoinRequestDto;
 import io.taylor.wantedpreonboardingchallengebackend20.model.request.LoginRequestDto;
 import io.taylor.wantedpreonboardingchallengebackend20.model.response.JoinResponseDto;
 import io.taylor.wantedpreonboardingchallengebackend20.model.response.LoginResponseDto;
-import lombok.extern.slf4j.Slf4j;
-import io.taylor.wantedpreonboardingchallengebackend20.common.JwtTokenUtil;
-import io.taylor.wantedpreonboardingchallengebackend20.common.PasswordUtil;
 import io.taylor.wantedpreonboardingchallengebackend20.repository.MemberRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -36,7 +36,8 @@ public class MemberService {
     public LoginResponseDto login(LoginRequestDto request) {
         Member member = memberRepository.findMemberByEmail(request.getEmail());
         if (member == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "회원 정보가 존재하지 않습니다.");
-        if (!passwordUtil.matchPassword(request.getPassword(), member.getPassword())) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "올바르지 않은 비밀번호 입니다.");
+        if (!passwordUtil.matchPassword(request.getPassword(), member.getPassword()))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "올바르지 않은 비밀번호 입니다.");
 
         return new LoginResponseDto(member, jwtTokenUtil.generateToken(request.getEmail()));
     }

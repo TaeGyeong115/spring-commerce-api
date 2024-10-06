@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-// to-be 응답 생성 service 로 옮기기 -> 버전닝 할 경우 controller 에서 응답값을 생성하는게 문제가 됨
 @RestController
 @RequestMapping("/api/products")
 public class ProductController {
@@ -36,27 +35,25 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(productService.getProductById(Long.parseLong(productId)));
     }
 
-   @PostMapping("/{productId}")
+    @PostMapping("/{productId}")
     public ResponseEntity<ProductResponse> purchaseProduct(MemberData memberData, @PathVariable("productId") String productId, @RequestBody long price) {
-        if (productService.buyProduct(memberData.memberId(), Long.parseLong(productId), price)) {
-            return ResponseEntity.status(HttpStatus.OK).build();
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+        productService.buyProduct(memberData.memberId(), Long.parseLong(productId), price);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-//    @PatchMapping("/{productId}/approve")
-//    public ResponseEntity<Object> approveProduct(@RequestHeader("Authorization") String authorization, @PathVariable("productId") String productId) {
-//        return ResponseEntity.status(HttpStatus.OK).build();
-//    }
+    @PatchMapping("/{productId}/approve")
+    public ResponseEntity<Object> approveProduct(MemberData memberData, @PathVariable("productId") String productId) {
+        productService.approveProduct(memberData.memberId(), Long.parseLong(productId));
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
 
 //    @GetMapping("/reserved")
-//    public ResponseEntity<Object> reservedProduct(@RequestHeader("Authorization") String authorization) {
+//    public ResponseEntity<Object> reservedProduct(MemberData memberData) {
 //        return ResponseEntity.status(HttpStatus.OK).build();
 //    }
 
 //    @GetMapping("/purchased")
-//    public ResponseEntity<Object> purchasedProduct(@RequestHeader("Authorization") String authorization) {
+//    public ResponseEntity<Object> purchasedProduct(MemberData memberData) {
 //        return ResponseEntity.status(HttpStatus.OK).build();
 //    }
 }

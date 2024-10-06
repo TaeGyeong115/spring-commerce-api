@@ -2,13 +2,16 @@ package io.taylor.wantedpreonboardingchallengebackend20.entity;
 
 import io.taylor.wantedpreonboardingchallengebackend20.model.request.JoinRequestDto;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-@Table(name="members", indexes={
-        @Index(name="members_idx_id", columnList="id", unique=true)
+@Table(name = "members", indexes = {
+        @Index(name = "members_idx_id", columnList = "id", unique = true)
 })
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

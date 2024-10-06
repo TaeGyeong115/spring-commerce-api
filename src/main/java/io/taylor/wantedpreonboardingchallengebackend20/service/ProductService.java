@@ -1,13 +1,13 @@
 package io.taylor.wantedpreonboardingchallengebackend20.service;
 
 import io.taylor.wantedpreonboardingchallengebackend20.entity.Order;
+import io.taylor.wantedpreonboardingchallengebackend20.entity.Product;
 import io.taylor.wantedpreonboardingchallengebackend20.model.request.MemberData;
 import io.taylor.wantedpreonboardingchallengebackend20.model.request.ProductRequest;
 import io.taylor.wantedpreonboardingchallengebackend20.model.response.ProductResponse;
 import io.taylor.wantedpreonboardingchallengebackend20.repository.OrderRepository;
-import lombok.extern.slf4j.Slf4j;
-import io.taylor.wantedpreonboardingchallengebackend20.entity.Product;
 import io.taylor.wantedpreonboardingchallengebackend20.repository.ProductRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -49,10 +49,13 @@ public class ProductService {
         try {
             Order order = new Order(productId, memberId, product.getMemberId(), price);
             orderRepository.save(order);
-
             return true;
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public boolean approveProduct(long memberId, long productId) {
+        return true;
     }
 }
