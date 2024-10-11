@@ -1,5 +1,6 @@
 package io.taylor.wantedpreonboardingchallengebackend20.controller;
 
+import io.taylor.wantedpreonboardingchallengebackend20.dto.request.AuthenticatedMember;
 import io.taylor.wantedpreonboardingchallengebackend20.dto.request.MemberJoinRequest;
 import io.taylor.wantedpreonboardingchallengebackend20.dto.request.MemberLoginRequest;
 import io.taylor.wantedpreonboardingchallengebackend20.dto.response.MemberJoinResponse;
@@ -34,8 +35,8 @@ public class MemberController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<Object> logout(@RequestHeader HttpHeaders header, @RequestBody String requestBody) {
-        MemberService.logout(header, requestBody);
+    public ResponseEntity<Object> logout(AuthenticatedMember authenticatedMember, @RequestBody String requestBody) {
+        MemberService.logout();
         return ResponseEntity.noContent().build();
     }
 }

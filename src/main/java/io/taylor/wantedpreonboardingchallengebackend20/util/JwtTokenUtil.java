@@ -30,22 +30,38 @@ public class JwtTokenUtil {
         key = Keys.hmacShaKeyFor(secretKey.getBytes());
     }
 
-    public String generateToken(String email) {
+    public String generateToken(long memberId, String email, String nickName) {
         Date now = new Date();
-        Date expiration = new Date(now.getTime() + this.expiration);
+        Date expirationDate = new Date(now.getTime() + this.expiration);
+
         return Jwts.builder()
+                .claim("memberId", memberId)
                 .claim("email", email)
+                .claim("nickName", nickName)
                 .issuedAt(now)
-                .expiration(expiration)
+                .setExpiration(expirationDate)
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
 
     public AuthenticatedMember getMemberIdFromToken(String accessToken) {
         Claims claims = getClaimsFromToken(accessToken);
+        validateTokenClaims(claims);
+
+        try {
+            Long memberId = claims.get("memberId", Long.class);
+            String email = claims.get("email", String.class);
+            String nickName = claims.get("nickName", String.class);
+
+            return new AuthenticatedMember(memberId, email, nickName);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("토큰에서 사용자 정보를 추출하는 데 실패했습니다.");
+        }
+    }
+
+    private static void validateTokenClaims(Claims claims) {
         if (claims.getExpiration().before(new Date()))
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "유효하지 않은 토큰입니다.");
-        return new AuthenticatedMember(claims.get("MemberId", Long.class), claims.get("email", String.class), claims.get("nickName", String.class));
     }
 
     public Claims getClaimsFromToken(String accessToken) {

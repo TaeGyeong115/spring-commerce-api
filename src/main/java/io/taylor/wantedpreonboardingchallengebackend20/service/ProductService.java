@@ -29,30 +29,34 @@ public class ProductService {
         return productList;
     }
 
-    public ProductResponse createProduct(AuthenticatedMember authenticatedMember, ProductRequest request) {
+    public ProductResponse createProduct(ProductRequest request) {
         Product product = productRepository.save(new Product(request.name(), request.price(), request.quantity()));
         return new ProductResponse(product.getId(), product.getName(), product.getPrice(), product.getStatus(), product.getUpdatedAt(), product.getCreatedAt());
     }
 
     public ProductResponse getProductById(long productId) {
-        Product product = productRepository.findById(productId);
-        if (product == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 상품이 존재하지 않습니다.");
-        return new ProductResponse(product.getId(), product.getName(), product.getPrice(), product.getStatus(), product.getUpdatedAt(), product.getCreatedAt());
+        try {
+            Product product = productRepository.findById(productId);
+            if (product == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 상품이 존재하지 않습니다.");
+            return new ProductResponse(product.getId(), product.getName(), product.getPrice(), product.getStatus(), product.getUpdatedAt(), product.getCreatedAt());
+        } catch (Exception e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "등록된 상품이 없습니다.");
+        }
     }
 
-    public ProductResponse createOrderForProduct(AuthenticatedMember authenticatedMember, long productId, ProductRequest product) {
+    public ProductResponse createOrderForProduct(long productId, ProductRequest product) {
         productRepository.findById(productId);
         if (product == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 상품이 존재하지 않습니다.");
 
         try {
-            Order order = new Order(productId, authenticatedMember.MemberId(), productId, product.price());
+            Order order = new Order(productId, 1, productId, product.price());
             orderRepository.save(order);
         } catch (Exception e) {
         }
         return null;
     }
 
-    public ProductResponse getOrderForProduct(AuthenticatedMember authenticatedMember, long productId) {
+    public ProductResponse getOrderForProduct(long productId) {
         return null;
     }
 }
