@@ -1,6 +1,6 @@
 package io.taylor.wantedpreonboardingchallengebackend20.service;
 
-import io.taylor.wantedpreonboardingchallengebackend20.dto.request.AuthenticatedUser;
+import io.taylor.wantedpreonboardingchallengebackend20.dto.request.AuthenticatedMember;
 import io.taylor.wantedpreonboardingchallengebackend20.dto.request.ProductRequest;
 import io.taylor.wantedpreonboardingchallengebackend20.dto.response.ProductResponse;
 import io.taylor.wantedpreonboardingchallengebackend20.entity.Order;
@@ -29,7 +29,7 @@ public class ProductService {
         return productList;
     }
 
-    public ProductResponse createProduct(AuthenticatedUser authenticatedUser, ProductRequest request) {
+    public ProductResponse createProduct(AuthenticatedMember authenticatedMember, ProductRequest request) {
         Product product = productRepository.save(new Product(request.name(), request.price(), request.quantity()));
         return new ProductResponse(product.getId(), product.getName(), product.getPrice(), product.getStatus(), product.getUpdatedAt(), product.getCreatedAt());
     }
@@ -40,19 +40,19 @@ public class ProductService {
         return new ProductResponse(product.getId(), product.getName(), product.getPrice(), product.getStatus(), product.getUpdatedAt(), product.getCreatedAt());
     }
 
-    public ProductResponse createOrderForProduct(AuthenticatedUser authenticatedUser, long productId, ProductRequest product) {
+    public ProductResponse createOrderForProduct(AuthenticatedMember authenticatedMember, long productId, ProductRequest product) {
         productRepository.findById(productId);
         if (product == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 상품이 존재하지 않습니다.");
 
         try {
-            Order order = new Order(productId, authenticatedUser.userId(), productId, product.price());
+            Order order = new Order(productId, authenticatedMember.MemberId(), productId, product.price());
             orderRepository.save(order);
         } catch (Exception e) {
         }
         return null;
     }
 
-    public ProductResponse getOrderForProduct(AuthenticatedUser authenticatedUser, long productId) {
+    public ProductResponse getOrderForProduct(AuthenticatedMember authenticatedMember, long productId) {
         return null;
     }
 }

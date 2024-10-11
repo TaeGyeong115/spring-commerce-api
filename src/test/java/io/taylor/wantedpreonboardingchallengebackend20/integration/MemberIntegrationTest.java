@@ -1,12 +1,15 @@
 package io.taylor.wantedpreonboardingchallengebackend20.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.taylor.wantedpreonboardingchallengebackend20.controller.UserController;
-import io.taylor.wantedpreonboardingchallengebackend20.dto.request.UserLoginRequest;
-import io.taylor.wantedpreonboardingchallengebackend20.dto.request.UserJoinRequest;
-import io.taylor.wantedpreonboardingchallengebackend20.service.UserService;
+import io.taylor.wantedpreonboardingchallengebackend20.controller.MemberController;
+import io.taylor.wantedpreonboardingchallengebackend20.dto.request.MemberLoginRequest;
+import io.taylor.wantedpreonboardingchallengebackend20.dto.request.MemberJoinRequest;
+import io.taylor.wantedpreonboardingchallengebackend20.service.MemberService;
 import org.json.JSONObject;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.runner.RunWith;
@@ -29,10 +32,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(UserController.class)
+@WebMvcTest(MemberController.class)
 @AutoConfigureMockMvc(addFilters = false)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class UserIntegrationTest {
+class MemberIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -41,13 +44,13 @@ class UserIntegrationTest {
     private ObjectMapper objectMapper;
 
     @MockBean
-    private UserService userService;
+    private MemberService MemberService;
 
-    private static final String BASE_URL = "/api/users";
+    private static final String BASE_URL = "/api/members";
 
-    private static Stream<UserLoginRequest> joinRequestStream() {
+    private static Stream<MemberJoinRequest> joinRequestStream() {
         return Stream.of(
-                new UserLoginRequest("태경", "taylor", "115taegyeong@gmail.com", "123456789")
+                new MemberJoinRequest("태경", "taylor", "115taegyeong@gmail.com", "123456789")
         );
     }
 
@@ -55,13 +58,13 @@ class UserIntegrationTest {
     @ParameterizedTest
     @DisplayName("[Success] 회원가입 테스트")
     @MethodSource("joinRequestStream")
-    void signupTest(UserLoginRequest request) throws Exception {
+    void signupTest(MemberJoinRequest request) throws Exception {
         performPostRequest(BASE_URL + "/join", request, status().isCreated());
     }
 
-    private static Stream<UserJoinRequest> loginRequestStream() {
+    private static Stream<MemberLoginRequest> loginRequestStream() {
         return Stream.of(
-                new UserJoinRequest("115taegyeong@gmail.com", "123456789")
+                new MemberLoginRequest("115taegyeong@gmail.com", "123456789")
         );
     }
 
@@ -69,7 +72,7 @@ class UserIntegrationTest {
     @ParameterizedTest
     @DisplayName("[Success] 로그인 테스트")
     @MethodSource("loginRequestStream")
-    void loginTest(UserJoinRequest request) throws Exception {
+    void loginTest(MemberLoginRequest request) throws Exception {
         MvcResult mvcResult = performPostRequest(BASE_URL + "/login", request, status().isOk())
                 .andReturn();
 

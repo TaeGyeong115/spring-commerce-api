@@ -1,6 +1,6 @@
 package io.taylor.wantedpreonboardingchallengebackend20.entity;
 
-import io.taylor.wantedpreonboardingchallengebackend20.dto.request.UserLoginRequest;
+import io.taylor.wantedpreonboardingchallengebackend20.dto.request.MemberJoinRequest;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -10,13 +10,13 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-@Table(name = "users", indexes = {
-        @Index(name = "users_idx_id", columnList = "id", unique = true)
+@Table(name = "members", indexes = {
+        @Index(name = "members_idx_id", columnList = "id", unique = true)
 })
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
-public class User extends BaseEntity {
+public class Member extends BaseEntity {
     @Column
     private String name;
     @Column
@@ -26,12 +26,12 @@ public class User extends BaseEntity {
     @Column
     private String password;
 
-    public User(String email, String password) {
+    public Member(String email, String password) {
         this.email = email;
         this.password = password;
     }
 
-    public User(UserLoginRequest request) {
+    public Member(MemberJoinRequest request) {
         this.name = request.getName();
         this.nickName = request.getNickName();
         this.email = request.getEmail();

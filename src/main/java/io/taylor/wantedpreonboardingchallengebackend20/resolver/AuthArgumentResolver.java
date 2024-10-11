@@ -1,6 +1,6 @@
 package io.taylor.wantedpreonboardingchallengebackend20.resolver;
 
-import io.taylor.wantedpreonboardingchallengebackend20.dto.request.AuthenticatedUser;
+import io.taylor.wantedpreonboardingchallengebackend20.dto.request.AuthenticatedMember;
 import io.taylor.wantedpreonboardingchallengebackend20.util.JwtTokenUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -21,11 +21,11 @@ public class AuthArgumentResolver implements HandlerMethodArgumentResolver {
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        return parameter.getParameterType().equals(AuthenticatedUser.class);
+        return parameter.getParameterType().equals(AuthenticatedMember.class);
     }
 
     @Override
-    public AuthenticatedUser resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
+    public AuthenticatedMember resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
                                              NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         HttpServletRequest request = ((ServletWebRequest) webRequest).getRequest();
         String token = request.getHeader("Authorization");
@@ -34,6 +34,6 @@ public class AuthArgumentResolver implements HandlerMethodArgumentResolver {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "UNAUTHORIZED");
         }
 
-        return jwtTokenUtil.getUserIdFromToken(token.replace("Bearer ", ""));
+        return jwtTokenUtil.getMemberIdFromToken(token.replace("Bearer ", ""));
     }
 }
