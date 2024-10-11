@@ -20,7 +20,7 @@ public class OrderService {
         return null;
     }
 
-    public ProductResponse updateOrder(AuthenticatedMember authenticatedMember, Long orderId, OrderRequest request) {
+    public ProductResponse updateOrder(Long orderId, OrderRequest request) {
         return null;
     }
 }

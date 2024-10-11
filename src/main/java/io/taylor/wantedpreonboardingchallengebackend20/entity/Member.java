@@ -31,10 +31,10 @@ public class Member extends BaseEntity {
         this.password = password;
     }
 
-    public Member(MemberJoinRequest request) {
-        this.name = request.getName();
-        this.nickName = request.getNickName();
-        this.email = request.getEmail();
-        this.password = request.getPassword();
+    public Member(String name, String nickName, String email, String password) {
+        this.name = name;
+        this.nickName = nickName;
+        this.email = email;
+        this.password = password;
     }
 }

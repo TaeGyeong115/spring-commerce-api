@@ -3,6 +3,7 @@ package io.taylor.wantedpreonboardingchallengebackend20.resolver;
 import io.taylor.wantedpreonboardingchallengebackend20.dto.request.AuthenticatedMember;
 import io.taylor.wantedpreonboardingchallengebackend20.util.JwtTokenUtil;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpStatus;
@@ -25,8 +26,8 @@ public class AuthArgumentResolver implements HandlerMethodArgumentResolver {
     }
 
     @Override
-    public AuthenticatedMember resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
-                                             NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+    public AuthenticatedMember resolveArgument(@NonNull MethodParameter parameter, ModelAndViewContainer mavContainer,
+                                               @NonNull NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
         HttpServletRequest request = ((ServletWebRequest) webRequest).getRequest();
         String token = request.getHeader("Authorization");
 

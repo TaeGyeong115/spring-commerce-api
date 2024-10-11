@@ -25,7 +25,7 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<ProductResponse> createProduct(AuthenticatedMember authenticatedMember, @RequestBody ProductRequest request) {
-        ProductResponse response = productService.createProduct(authenticatedMember, request);
+        ProductResponse response = productService.createProduct(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
@@ -36,20 +36,20 @@ public class ProductController {
     }
 
     @GetMapping("/{productId}")
-    public ResponseEntity<ProductResponse> getProduct(@PathVariable Long productId) {
+    public ResponseEntity<ProductResponse> getProduct(@PathVariable("productId") Long productId) {
         ProductResponse response = productService.getProductById(productId);
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/{productId}/orders")
-    public ResponseEntity<ProductResponse> createOrder(AuthenticatedMember authenticatedMember, @PathVariable Long productId, @RequestBody ProductRequest request) {
-        ProductResponse response = productService.createOrderForProduct(authenticatedMember, productId, request);
+    public ResponseEntity<ProductResponse> createOrder(AuthenticatedMember authenticatedMember, @PathVariable("productId") Long productId, @RequestBody ProductRequest request) {
+        ProductResponse response = productService.createOrderForProduct(productId, request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping("/{productId}/orders")
-    public ResponseEntity<ProductResponse> getOrder(AuthenticatedMember authenticatedMember, @PathVariable Long productId) {
-        ProductResponse response = productService.getOrderForProduct(authenticatedMember, productId);
+    public ResponseEntity<ProductResponse> getOrder(AuthenticatedMember authenticatedMember, @PathVariable("productId") Long productId) {
+        ProductResponse response = productService.getOrderForProduct(productId);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 

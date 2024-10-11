@@ -25,20 +25,20 @@ public class OrderController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Order>> getAllOrders() {
+    public ResponseEntity<List<Order>> getAllOrders(AuthenticatedMember authenticatedMember) {
         List<Order> orders = orderService.getOrders();
         return ResponseEntity.ok(orders);
     }
 
     @GetMapping("/{orderId}")
-    public ResponseEntity<OrderResponse> getOrder(@PathVariable Long orderId) {
+    public ResponseEntity<OrderResponse> getOrder(AuthenticatedMember authenticatedMember, @PathVariable("orderId") Long orderId) {
         OrderResponse response = orderService.getOrderById(orderId);
         return ResponseEntity.ok(response);
     }
 
     @PatchMapping("/{orderId}")
-    public ResponseEntity<ProductResponse> updateOrder(AuthenticatedMember authenticatedMember, @PathVariable Long orderId, @RequestBody OrderRequest request) {
-        ProductResponse response = orderService.updateOrder(authenticatedMember, orderId, request);
+    public ResponseEntity<ProductResponse> updateOrder(AuthenticatedMember authenticatedMember, @PathVariable("orderId") Long orderId, @RequestBody OrderRequest request) {
+        ProductResponse response = orderService.updateOrder(orderId, request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
