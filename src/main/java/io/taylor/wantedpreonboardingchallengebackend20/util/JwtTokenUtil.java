@@ -1,8 +1,6 @@
 package io.taylor.wantedpreonboardingchallengebackend20.util;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import io.taylor.wantedpreonboardingchallengebackend20.dto.request.AuthenticatedMember;
 import jakarta.annotation.PostConstruct;
@@ -44,7 +42,7 @@ public class JwtTokenUtil {
                 .compact();
     }
 
-    public AuthenticatedMember getMemberIdFromToken(String accessToken) {
+    public AuthenticatedMember getMemberFromToken(String accessToken) {
         Claims claims = getClaimsFromToken(accessToken);
         validateTokenClaims(claims);
 
@@ -54,20 +52,32 @@ public class JwtTokenUtil {
             String nickName = claims.get("nickName", String.class);
 
             return new AuthenticatedMember(memberId, email, nickName);
-        } catch (Exception e) {
+        } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException("토큰에서 사용자 정보를 추출하는 데 실패했습니다.");
         }
     }
 
     private static void validateTokenClaims(Claims claims) {
         if (claims.getExpiration().before(new Date()))
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "유효하지 않은 토큰입니다.");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다.");
     }
 
     public Claims getClaimsFromToken(String accessToken) {
-        return Jwts.parser()
-                .verifyWith((SecretKey) key)
-                .build().parseSignedClaims(accessToken)
-                .getPayload();
+        try {
+            return Jwts.parser()
+                    .verifyWith((SecretKey) key)
+                    .build().parseSignedClaims(accessToken)
+                    .getPayload();
+        } catch (ExpiredJwtException e) {
+            throw new IllegalArgumentException("만료된 토큰입니다.", e);
+        } catch (UnsupportedJwtException e) {
+            throw new IllegalArgumentException("지원하지 않는 토큰 형식입니다.", e);
+        } catch (MalformedJwtException e) {
+            throw new IllegalArgumentException("잘못된 토큰 형식입니다.", e);
+        } catch (SignatureException e) {
+            throw new IllegalArgumentException("서명이 잘못된 토큰입니다.", e);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("유효하지 않은 토큰입니다", e);
+        }
     }
 }

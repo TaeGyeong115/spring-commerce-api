@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -47,6 +48,19 @@ public class GlobalExceptionHandler {
         body.put("resultMsg", e.getReason());
         body.put("timestamp", System.currentTimeMillis());
         body.put("error", e.getReason());
+        body.put("path", ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest().getRequestURI());
+
+        return ResponseEntity.badRequest().body(body);
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ResponseEntity<Map<String, Object>> handleIllegalArgumentException(IllegalArgumentException e) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("resultCode", HttpStatus.UNAUTHORIZED.value());
+        body.put("resultMsg", e.getMessage());
+        body.put("timestamp", System.currentTimeMillis());
+        body.put("error", HttpStatus.UNAUTHORIZED.getReasonPhrase());
         body.put("path", ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest().getRequestURI());
 
         return ResponseEntity.badRequest().body(body);

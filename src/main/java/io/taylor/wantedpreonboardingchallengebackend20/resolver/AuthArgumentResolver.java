@@ -31,10 +31,14 @@ public class AuthArgumentResolver implements HandlerMethodArgumentResolver {
         HttpServletRequest request = ((ServletWebRequest) webRequest).getRequest();
         String token = request.getHeader("Authorization");
 
-        if (token == null || !token.startsWith("Bearer ")) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "UNAUTHORIZED");
+        if (token == null || token.isBlank()) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "권한이 없습니다.");
         }
 
-        return jwtTokenUtil.getMemberIdFromToken(token.replace("Bearer ", ""));
+        if (!token.startsWith("Bearer ")) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다.");
+        }
+
+        return jwtTokenUtil.getMemberFromToken(token.replace("Bearer ", ""));
     }
 }
