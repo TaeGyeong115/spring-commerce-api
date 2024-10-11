@@ -1,10 +1,10 @@
 package io.taylor.wantedpreonboardingchallengebackend20.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.taylor.wantedpreonboardingchallengebackend20.controller.MemberController;
-import io.taylor.wantedpreonboardingchallengebackend20.model.request.JoinRequestDto;
-import io.taylor.wantedpreonboardingchallengebackend20.model.request.LoginRequestDto;
-import io.taylor.wantedpreonboardingchallengebackend20.service.MemberService;
+import io.taylor.wantedpreonboardingchallengebackend20.controller.UserController;
+import io.taylor.wantedpreonboardingchallengebackend20.dto.request.JoinRequestDto;
+import io.taylor.wantedpreonboardingchallengebackend20.dto.request.LoginRequestDto;
+import io.taylor.wantedpreonboardingchallengebackend20.service.UserService;
 import org.json.JSONObject;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -29,10 +29,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(MemberController.class)
+@WebMvcTest(UserController.class)
 @AutoConfigureMockMvc(addFilters = false)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class MemberIntegrationTest {
+class UserIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -41,9 +41,9 @@ class MemberIntegrationTest {
     private ObjectMapper objectMapper;
 
     @MockBean
-    private MemberService memberService;
+    private UserService userService;
 
-    private static final String BASE_URL = "/api/members";
+    private static final String BASE_URL = "/api/users";
 
     private static Stream<JoinRequestDto> joinRequestStream() {
         return Stream.of(

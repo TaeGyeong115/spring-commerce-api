@@ -1,6 +1,6 @@
 package io.taylor.wantedpreonboardingchallengebackend20.entity;
 
-import io.taylor.wantedpreonboardingchallengebackend20.model.ProductStatus;
+import io.taylor.wantedpreonboardingchallengebackend20.dto.ProductStatus;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -20,7 +20,7 @@ public class Product extends BaseEntity {
     @Column
     private String name;
     @Column
-    private long memberId;
+    private long userId;
     @Column
     private int inventory;
     @Column

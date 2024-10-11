@@ -2,9 +2,9 @@ package io.taylor.wantedpreonboardingchallengebackend20.service;
 
 import io.taylor.wantedpreonboardingchallengebackend20.entity.Order;
 import io.taylor.wantedpreonboardingchallengebackend20.entity.Product;
-import io.taylor.wantedpreonboardingchallengebackend20.model.request.MemberData;
-import io.taylor.wantedpreonboardingchallengebackend20.model.request.ProductRequest;
-import io.taylor.wantedpreonboardingchallengebackend20.model.response.ProductResponse;
+import io.taylor.wantedpreonboardingchallengebackend20.dto.request.UserData;
+import io.taylor.wantedpreonboardingchallengebackend20.dto.request.ProductRequest;
+import io.taylor.wantedpreonboardingchallengebackend20.dto.response.ProductResponse;
 import io.taylor.wantedpreonboardingchallengebackend20.repository.OrderRepository;
 import io.taylor.wantedpreonboardingchallengebackend20.repository.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +31,7 @@ public class ProductService {
         return productList;
     }
 
-    public ProductResponse postProduct(MemberData memberData, ProductRequest request) {
+    public ProductResponse postProduct(UserData userData, ProductRequest request) {
         Product product = productRepository.save(new Product(request.name(), request.price(), request.inventory()));
         return new ProductResponse(product.getId(), product.getName(), product.getPrice(), product.getStatus(), product.getUpdatedAt(), product.getCreatedAt());
     }
@@ -42,12 +42,12 @@ public class ProductService {
         return new ProductResponse(product.getId(), product.getName(), product.getPrice(), product.getStatus(), product.getUpdatedAt(), product.getCreatedAt());
     }
 
-    public boolean buyProduct(long memberId, long productId, long price) {
+    public boolean buyProduct(long userId, long productId, long price) {
         Product product = productRepository.findById(productId);
         if (product == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 상품이 존재하지 않습니다.");
 
         try {
-            Order order = new Order(productId, memberId, product.getMemberId(), price);
+            Order order = new Order(productId, userId, product.getUserId(), price);
             orderRepository.save(order);
             return true;
         } catch (Exception e) {
@@ -55,7 +55,7 @@ public class ProductService {
         }
     }
 
-    public boolean approveProduct(long memberId, long productId) {
+    public boolean approveProduct(long userId, long productId) {
         return true;
     }
 }

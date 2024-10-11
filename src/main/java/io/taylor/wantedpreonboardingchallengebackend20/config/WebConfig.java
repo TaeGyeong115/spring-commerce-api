@@ -1,6 +1,6 @@
 package io.taylor.wantedpreonboardingchallengebackend20.config;
 
-import io.taylor.wantedpreonboardingchallengebackend20.common.AuthArgumentResolver;
+import io.taylor.wantedpreonboardingchallengebackend20.resolver.AuthArgumentResolver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
