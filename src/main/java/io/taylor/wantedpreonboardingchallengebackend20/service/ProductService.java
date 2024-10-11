@@ -1,6 +1,5 @@
 package io.taylor.wantedpreonboardingchallengebackend20.service;
 
-import io.taylor.wantedpreonboardingchallengebackend20.dto.request.AuthenticatedMember;
 import io.taylor.wantedpreonboardingchallengebackend20.dto.request.ProductRequest;
 import io.taylor.wantedpreonboardingchallengebackend20.dto.response.ProductResponse;
 import io.taylor.wantedpreonboardingchallengebackend20.entity.Order;
@@ -25,13 +24,20 @@ public class ProductService {
 
     public List<Product> getProducts() {
         List<Product> productList = productRepository.findAll();
+
         if (productList.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "등록된 상품이 없습니다.");
+
         return productList;
     }
 
     public ProductResponse createProduct(ProductRequest request) {
-        Product product = productRepository.save(new Product(request.name(), request.price(), request.quantity()));
-        return new ProductResponse(product.getId(), product.getName(), product.getPrice(), product.getStatus(), product.getUpdatedAt(), product.getCreatedAt());
+        try {
+            Product product = productRepository.save(new Product(request.name(), request.price(), request.quantity()));
+
+            return new ProductResponse(product.getId(), product.getName(), product.getPrice(), product.getStatus(), product.getUpdatedAt(), product.getCreatedAt());
+        } catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "상품 등록 실패");
+        }
     }
 
     public ProductResponse getProductById(long productId) {
@@ -39,7 +45,7 @@ public class ProductService {
             Product product = productRepository.findById(productId);
             if (product == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 상품이 존재하지 않습니다.");
             return new ProductResponse(product.getId(), product.getName(), product.getPrice(), product.getStatus(), product.getUpdatedAt(), product.getCreatedAt());
-        } catch (Exception e){
+        } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "등록된 상품이 없습니다.");
         }
     }
@@ -51,7 +57,7 @@ public class ProductService {
         try {
             Order order = new Order(productId, 1, productId, product.price());
             orderRepository.save(order);
-        } catch (Exception e) {
+        } catch (IllegalArgumentException e) {
         }
         return null;
     }
