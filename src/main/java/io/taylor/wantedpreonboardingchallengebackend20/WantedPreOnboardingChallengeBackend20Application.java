@@ -5,10 +5,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 
 @SpringBootApplication(exclude = SecurityAutoConfiguration.class)
-public class WantedPreonboardingChallengeBackend20Application {
+public class WantedPreOnboardingChallengeBackend20Application {
 
     public static void main(String[] args) {
-        SpringApplication.run(WantedPreonboardingChallengeBackend20Application.class, args);
+        SpringApplication.run(WantedPreOnboardingChallengeBackend20Application.class, args);
     }
-
 }

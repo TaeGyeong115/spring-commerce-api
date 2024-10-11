@@ -1,4 +1,4 @@
-package io.taylor.wantedpreonboardingchallengebackend20.model.request;
+package io.taylor.wantedpreonboardingchallengebackend20.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

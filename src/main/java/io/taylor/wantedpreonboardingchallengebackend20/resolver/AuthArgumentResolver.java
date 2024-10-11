@@ -1,6 +1,7 @@
-package io.taylor.wantedpreonboardingchallengebackend20.common;
+package io.taylor.wantedpreonboardingchallengebackend20.resolver;
 
-import io.taylor.wantedpreonboardingchallengebackend20.model.request.MemberData;
+import io.taylor.wantedpreonboardingchallengebackend20.dto.request.UserData;
+import io.taylor.wantedpreonboardingchallengebackend20.util.JwtTokenUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
@@ -20,12 +21,12 @@ public class AuthArgumentResolver implements HandlerMethodArgumentResolver {
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        return parameter.getParameterType().equals(MemberData.class);
+        return parameter.getParameterType().equals(UserData.class);
     }
 
     @Override
-    public MemberData resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
-                                      NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+    public UserData resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
+                                    NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         HttpServletRequest request = ((ServletWebRequest) webRequest).getRequest();
         String token = request.getHeader("Authorization");
 

@@ -1,9 +1,9 @@
 package io.taylor.wantedpreonboardingchallengebackend20.controller;
 
 import io.taylor.wantedpreonboardingchallengebackend20.entity.Product;
-import io.taylor.wantedpreonboardingchallengebackend20.model.request.MemberData;
-import io.taylor.wantedpreonboardingchallengebackend20.model.request.ProductRequest;
-import io.taylor.wantedpreonboardingchallengebackend20.model.response.ProductResponse;
+import io.taylor.wantedpreonboardingchallengebackend20.dto.request.UserData;
+import io.taylor.wantedpreonboardingchallengebackend20.dto.request.ProductRequest;
+import io.taylor.wantedpreonboardingchallengebackend20.dto.response.ProductResponse;
 import io.taylor.wantedpreonboardingchallengebackend20.service.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,8 +26,8 @@ public class ProductController {
     }
 
     @PostMapping("")
-    public ResponseEntity<ProductResponse> postProduct(MemberData memberData, @RequestBody ProductRequest request) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(productService.postProduct(memberData, request));
+    public ResponseEntity<ProductResponse> postProduct(UserData userData, @RequestBody ProductRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(productService.postProduct(userData, request));
     }
 
     @GetMapping("/{productId}")
@@ -36,24 +36,24 @@ public class ProductController {
     }
 
     @PostMapping("/{productId}")
-    public ResponseEntity<ProductResponse> purchaseProduct(MemberData memberData, @PathVariable("productId") String productId, @RequestBody long price) {
-        productService.buyProduct(memberData.memberId(), Long.parseLong(productId), price);
+    public ResponseEntity<ProductResponse> purchaseProduct(UserData userData, @PathVariable("productId") String productId, @RequestBody long price) {
+        productService.buyProduct(userData.userId(), Long.parseLong(productId), price);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @PatchMapping("/{productId}/approve")
-    public ResponseEntity<Object> approveProduct(MemberData memberData, @PathVariable("productId") String productId) {
-        productService.approveProduct(memberData.memberId(), Long.parseLong(productId));
+    public ResponseEntity<Object> approveProduct(UserData userData, @PathVariable("productId") String productId) {
+        productService.approveProduct(userData.userId(), Long.parseLong(productId));
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
 //    @GetMapping("/reserved")
-//    public ResponseEntity<Object> reservedProduct(MemberData memberData) {
+//    public ResponseEntity<Object> reservedProduct(UserData userData) {
 //        return ResponseEntity.status(HttpStatus.OK).build();
 //    }
 
 //    @GetMapping("/purchased")
-//    public ResponseEntity<Object> purchasedProduct(MemberData memberData) {
+//    public ResponseEntity<Object> purchasedProduct(UserData userData) {
 //        return ResponseEntity.status(HttpStatus.OK).build();
 //    }
 }
