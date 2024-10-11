@@ -20,7 +20,7 @@ public class Product extends BaseEntity {
     @Column
     private String name;
     @Column
-    private long userId;
+    private long MemberId;
     @Column
     private int quantity;
     @Column

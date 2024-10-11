@@ -1,6 +1,6 @@
 package io.taylor.wantedpreonboardingchallengebackend20.controller;
 
-import io.taylor.wantedpreonboardingchallengebackend20.dto.request.AuthenticatedUser;
+import io.taylor.wantedpreonboardingchallengebackend20.dto.request.AuthenticatedMember;
 import io.taylor.wantedpreonboardingchallengebackend20.dto.request.OrderRequest;
 import io.taylor.wantedpreonboardingchallengebackend20.dto.response.OrderResponse;
 import io.taylor.wantedpreonboardingchallengebackend20.dto.response.ProductResponse;
@@ -37,8 +37,8 @@ public class OrderController {
     }
 
     @PatchMapping("/{orderId}")
-    public ResponseEntity<ProductResponse> updateOrder(AuthenticatedUser authenticatedUser, @PathVariable Long orderId, @RequestBody OrderRequest request) {
-        ProductResponse response = orderService.updateOrder(authenticatedUser, orderId, request);
+    public ResponseEntity<ProductResponse> updateOrder(AuthenticatedMember authenticatedMember, @PathVariable Long orderId, @RequestBody OrderRequest request) {
+        ProductResponse response = orderService.updateOrder(authenticatedMember, orderId, request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
