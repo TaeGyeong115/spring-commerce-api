@@ -1,6 +1,6 @@
 package io.taylor.wantedpreonboardingchallengebackend20.resolver;
 
-import io.taylor.wantedpreonboardingchallengebackend20.dto.request.UserData;
+import io.taylor.wantedpreonboardingchallengebackend20.dto.request.AuthenticatedUser;
 import io.taylor.wantedpreonboardingchallengebackend20.util.JwtTokenUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -21,12 +21,12 @@ public class AuthArgumentResolver implements HandlerMethodArgumentResolver {
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        return parameter.getParameterType().equals(UserData.class);
+        return parameter.getParameterType().equals(AuthenticatedUser.class);
     }
 
     @Override
-    public UserData resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
-                                    NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+    public AuthenticatedUser resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
+                                             NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         HttpServletRequest request = ((ServletWebRequest) webRequest).getRequest();
         String token = request.getHeader("Authorization");
 

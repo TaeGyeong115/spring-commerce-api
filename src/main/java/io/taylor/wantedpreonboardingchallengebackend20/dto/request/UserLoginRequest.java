@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class JoinRequestDto {
+public class UserLoginRequest {
     private String name;
     private String nickName;
     private String email;

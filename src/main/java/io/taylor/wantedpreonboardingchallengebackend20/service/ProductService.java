@@ -1,20 +1,18 @@
 package io.taylor.wantedpreonboardingchallengebackend20.service;
 
-import io.taylor.wantedpreonboardingchallengebackend20.entity.Order;
-import io.taylor.wantedpreonboardingchallengebackend20.entity.Product;
-import io.taylor.wantedpreonboardingchallengebackend20.dto.request.UserData;
+import io.taylor.wantedpreonboardingchallengebackend20.dto.request.AuthenticatedUser;
 import io.taylor.wantedpreonboardingchallengebackend20.dto.request.ProductRequest;
 import io.taylor.wantedpreonboardingchallengebackend20.dto.response.ProductResponse;
+import io.taylor.wantedpreonboardingchallengebackend20.entity.Order;
+import io.taylor.wantedpreonboardingchallengebackend20.entity.Product;
 import io.taylor.wantedpreonboardingchallengebackend20.repository.OrderRepository;
 import io.taylor.wantedpreonboardingchallengebackend20.repository.ProductRepository;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
-@Slf4j
 @Service
 public class ProductService {
     private final ProductRepository productRepository;
@@ -31,8 +29,8 @@ public class ProductService {
         return productList;
     }
 
-    public ProductResponse postProduct(UserData userData, ProductRequest request) {
-        Product product = productRepository.save(new Product(request.name(), request.price(), request.inventory()));
+    public ProductResponse createProduct(AuthenticatedUser authenticatedUser, ProductRequest request) {
+        Product product = productRepository.save(new Product(request.name(), request.price(), request.quantity()));
         return new ProductResponse(product.getId(), product.getName(), product.getPrice(), product.getStatus(), product.getUpdatedAt(), product.getCreatedAt());
     }
 
@@ -42,20 +40,19 @@ public class ProductService {
         return new ProductResponse(product.getId(), product.getName(), product.getPrice(), product.getStatus(), product.getUpdatedAt(), product.getCreatedAt());
     }
 
-    public boolean buyProduct(long userId, long productId, long price) {
-        Product product = productRepository.findById(productId);
+    public ProductResponse createOrderForProduct(AuthenticatedUser authenticatedUser, long productId, ProductRequest product) {
+        productRepository.findById(productId);
         if (product == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 상품이 존재하지 않습니다.");
 
         try {
-            Order order = new Order(productId, userId, product.getUserId(), price);
+            Order order = new Order(productId, authenticatedUser.userId(), productId, product.price());
             orderRepository.save(order);
-            return true;
         } catch (Exception e) {
-            return false;
         }
+        return null;
     }
 
-    public boolean approveProduct(long userId, long productId) {
-        return true;
+    public ProductResponse getOrderForProduct(AuthenticatedUser authenticatedUser, long productId) {
+        return null;
     }
 }

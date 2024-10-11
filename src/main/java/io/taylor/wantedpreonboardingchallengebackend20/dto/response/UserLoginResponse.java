@@ -6,12 +6,12 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class LoginResponseDto {
+public class UserLoginResponse {
     private String name;
     private String nickName;
     private String accessToken;
 
-    public LoginResponseDto(User user, String accessToken) {
+    public UserLoginResponse(User user, String accessToken) {
         this.name = user.getName();
         this.nickName = user.getNickName();
         this.accessToken = accessToken;
