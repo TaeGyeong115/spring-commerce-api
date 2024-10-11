@@ -22,16 +22,16 @@ public class Product extends BaseEntity {
     @Column
     private long userId;
     @Column
-    private int inventory;
+    private int quantity;
     @Column
     private long price;
     @Column
     private int status;
 
-    public Product(String name, long price, int inventory) {
+    public Product(String name, long price, int quantity) {
         this.name = name;
         this.price = price;
-        this.inventory = inventory;
+        this.quantity = quantity;
         this.status = ProductStatus.Available.getNumber();
     }
 }

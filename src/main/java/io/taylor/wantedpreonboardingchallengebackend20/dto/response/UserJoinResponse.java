@@ -6,12 +6,12 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class JoinResponseDto {
+public class UserJoinResponse {
     private String name;
     private String nickName;
     private String email;
 
-    public JoinResponseDto(User user) {
+    public UserJoinResponse(User user) {
         this.name = user.getName();
         this.nickName = user.getNickName();
         this.email = user.getEmail();

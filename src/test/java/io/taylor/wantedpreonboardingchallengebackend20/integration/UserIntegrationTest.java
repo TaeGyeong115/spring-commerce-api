@@ -2,8 +2,8 @@ package io.taylor.wantedpreonboardingchallengebackend20.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.taylor.wantedpreonboardingchallengebackend20.controller.UserController;
-import io.taylor.wantedpreonboardingchallengebackend20.dto.request.JoinRequestDto;
-import io.taylor.wantedpreonboardingchallengebackend20.dto.request.LoginRequestDto;
+import io.taylor.wantedpreonboardingchallengebackend20.dto.request.UserLoginRequest;
+import io.taylor.wantedpreonboardingchallengebackend20.dto.request.UserJoinRequest;
 import io.taylor.wantedpreonboardingchallengebackend20.service.UserService;
 import org.json.JSONObject;
 import org.junit.jupiter.api.*;
@@ -45,9 +45,9 @@ class UserIntegrationTest {
 
     private static final String BASE_URL = "/api/users";
 
-    private static Stream<JoinRequestDto> joinRequestStream() {
+    private static Stream<UserLoginRequest> joinRequestStream() {
         return Stream.of(
-                new JoinRequestDto("태경", "taylor", "115taegyeong@gmail.com", "123456789")
+                new UserLoginRequest("태경", "taylor", "115taegyeong@gmail.com", "123456789")
         );
     }
 
@@ -55,13 +55,13 @@ class UserIntegrationTest {
     @ParameterizedTest
     @DisplayName("[Success] 회원가입 테스트")
     @MethodSource("joinRequestStream")
-    void signupTest(JoinRequestDto request) throws Exception {
+    void signupTest(UserLoginRequest request) throws Exception {
         performPostRequest(BASE_URL + "/join", request, status().isCreated());
     }
 
-    private static Stream<LoginRequestDto> loginRequestStream() {
+    private static Stream<UserJoinRequest> loginRequestStream() {
         return Stream.of(
-                new LoginRequestDto("115taegyeong@gmail.com", "123456789")
+                new UserJoinRequest("115taegyeong@gmail.com", "123456789")
         );
     }
 
@@ -69,7 +69,7 @@ class UserIntegrationTest {
     @ParameterizedTest
     @DisplayName("[Success] 로그인 테스트")
     @MethodSource("loginRequestStream")
-    void loginTest(LoginRequestDto request) throws Exception {
+    void loginTest(UserJoinRequest request) throws Exception {
         MvcResult mvcResult = performPostRequest(BASE_URL + "/login", request, status().isOk())
                 .andReturn();
 

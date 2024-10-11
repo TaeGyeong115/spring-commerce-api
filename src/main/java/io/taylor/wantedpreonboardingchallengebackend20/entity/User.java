@@ -1,6 +1,6 @@
 package io.taylor.wantedpreonboardingchallengebackend20.entity;
 
-import io.taylor.wantedpreonboardingchallengebackend20.dto.request.JoinRequestDto;
+import io.taylor.wantedpreonboardingchallengebackend20.dto.request.UserLoginRequest;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -31,7 +31,7 @@ public class User extends BaseEntity {
         this.password = password;
     }
 
-    public User(JoinRequestDto request) {
+    public User(UserLoginRequest request) {
         this.name = request.getName();
         this.nickName = request.getNickName();
         this.email = request.getEmail();
