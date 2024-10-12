@@ -1,19 +1,18 @@
 package io.taylor.wantedpreonboardingchallengebackend20.entity;
 
-import io.taylor.wantedpreonboardingchallengebackend20.dto.request.MemberJoinRequest;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+@Entity
+@Getter
 @EqualsAndHashCode(callSuper = true)
-@Data
 @Table(name = "members", indexes = {
         @Index(name = "members_idx_id", columnList = "id", unique = true)
 })
-@Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
 public class Member extends BaseEntity {

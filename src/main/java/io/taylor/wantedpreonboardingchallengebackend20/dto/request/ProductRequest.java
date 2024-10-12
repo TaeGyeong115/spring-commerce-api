@@ -1,6 +1,6 @@
 package io.taylor.wantedpreonboardingchallengebackend20.dto.request;
 
-public record ProductRequest(String name, long price, int quantity) {
+public record ProductRequest(String name, long price, long quantity) {
 
     public ProductRequest {
         if (name == null || name.trim().isEmpty()) {
