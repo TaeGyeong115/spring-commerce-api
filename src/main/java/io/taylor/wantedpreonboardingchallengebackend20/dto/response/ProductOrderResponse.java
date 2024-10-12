@@ -1,4 +1,4 @@
 package io.taylor.wantedpreonboardingchallengebackend20.dto.response;
 
-public class OrderResponse {
+public record ProductOrderResponse(long price, long quantity) {
 }

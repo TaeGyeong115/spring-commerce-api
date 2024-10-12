@@ -2,7 +2,7 @@ package io.taylor.wantedpreonboardingchallengebackend20.controller;
 
 import io.taylor.wantedpreonboardingchallengebackend20.dto.request.AuthenticatedMember;
 import io.taylor.wantedpreonboardingchallengebackend20.dto.request.ProductOrderRequest;
-import io.taylor.wantedpreonboardingchallengebackend20.dto.response.OrderResponse;
+import io.taylor.wantedpreonboardingchallengebackend20.dto.response.ProductOrderResponse;
 import io.taylor.wantedpreonboardingchallengebackend20.dto.response.ProductResponse;
 import io.taylor.wantedpreonboardingchallengebackend20.entity.Order;
 import io.taylor.wantedpreonboardingchallengebackend20.service.OrderService;
@@ -31,13 +31,14 @@ public class OrderController {
     }
 
     @GetMapping("/{orderId}")
-    public ResponseEntity<OrderResponse> getOrder(AuthenticatedMember authenticatedMember, @PathVariable("orderId") Long orderId) {
-        OrderResponse response = orderService.getOrderById(orderId);
+    public ResponseEntity<ProductOrderResponse> getOrder(AuthenticatedMember authenticatedMember, @PathVariable("orderId") Long orderId) {
+        ProductOrderResponse response = orderService.getOrderById(orderId);
         return ResponseEntity.ok(response);
     }
 
     @PatchMapping("/{orderId}")
-    public ResponseEntity<ProductResponse> updateOrder(AuthenticatedMember authenticatedMember, @PathVariable("orderId") Long orderId, @RequestBody ProductOrderRequest request) {
+    public ResponseEntity<ProductResponse> updateOrder(AuthenticatedMember authenticatedMember, @PathVariable("orderId") Long orderId,
+                                                       @RequestBody ProductOrderRequest request) {
         ProductResponse response = orderService.updateOrder(orderId, request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }

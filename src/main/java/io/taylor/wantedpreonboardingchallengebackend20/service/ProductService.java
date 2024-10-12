@@ -3,6 +3,7 @@ package io.taylor.wantedpreonboardingchallengebackend20.service;
 import io.taylor.wantedpreonboardingchallengebackend20.dto.request.AuthenticatedMember;
 import io.taylor.wantedpreonboardingchallengebackend20.dto.request.ProductOrderRequest;
 import io.taylor.wantedpreonboardingchallengebackend20.dto.request.ProductRequest;
+import io.taylor.wantedpreonboardingchallengebackend20.dto.response.ProductOrderResponse;
 import io.taylor.wantedpreonboardingchallengebackend20.dto.response.ProductResponse;
 import io.taylor.wantedpreonboardingchallengebackend20.entity.Order;
 import io.taylor.wantedpreonboardingchallengebackend20.entity.Product;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -24,18 +26,28 @@ public class ProductService {
         this.orderRepository = orderRepository;
     }
 
-    public List<Product> findAllProducts() {
+    public List<ProductResponse> findAllProducts() {
         List<Product> productList = productRepository.findAll();
-        if (productList.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "등록된 상품이 없습니다.");
+        List<ProductResponse> responsesList = new ArrayList<>();
 
-        return productList;
+        if (productList.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "등록된 상품이 없습니다.");
+        }
+
+        for (Product entity: productList) {
+            ProductResponse product = new ProductResponse(entity.getId(), entity.getName(), entity.getQuantity(), entity.getPrice(), entity.getStatus(), entity.getUpdatedAt(), entity.getCreatedAt());
+            responsesList.add(product);
+        }
+
+        return responsesList;
     }
 
     public ProductResponse createProduct(AuthenticatedMember member, ProductRequest request) {
         try {
-            Product product = productRepository.save(new Product(member.MemberId(), request.name(), request.price(), request.quantity()));
+            Product product = productRepository.save(new Product(member.memberId(), request.name(), request.price(), request.quantity()));
+            ProductResponse response = new ProductResponse(product.getId(), product.getName(), product.getQuantity(), product.getPrice(), product.getStatus(), product.getUpdatedAt(), product.getCreatedAt());
 
-            return new ProductResponse(product.getId(), product.getName(), product.getQuantity(), product.getPrice(), product.getStatus(), product.getUpdatedAt(), product.getCreatedAt());
+            return response;
         } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "상품 등록 실패");
         }
@@ -44,25 +56,43 @@ public class ProductService {
     public ProductResponse findProductById(long productId) {
         try {
             Product product = productRepository.findById(productId);
-            if (product == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 상품이 존재하지 않습니다.");
+            if (product == null) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 상품이 존재하지 않습니다.");
+            }
 
-            return new ProductResponse(product.getId(), product.getName(), product.getQuantity(), product.getPrice(), product.getStatus(), product.getUpdatedAt(), product.getCreatedAt());
+            ProductResponse response = new ProductResponse(product.getId(), product.getName(), product.getQuantity(), product.getPrice(), product.getStatus(), product.getUpdatedAt(), product.getCreatedAt());
+
+            return response;
         } catch (IllegalArgumentException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "등록된 상품이 없습니다.");
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "상품 조회 실패");
         }
     }
 
-    public ProductResponse createOrderForProduct(AuthenticatedMember member, long productId, ProductOrderRequest productOrder) {
-
+    public ProductOrderResponse createOrderForProduct(AuthenticatedMember member, long productId, ProductOrderRequest productOrder) {
         Product product = productRepository.findById(productId);
-        if (product == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 상품이 존재하지 않습니다.");
+
+        if (product == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 상품이 존재하지 않습니다.");
+        }
+        if (product.getProviderId() == member.memberId()) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "판매자는 본인의 상품을 구매할 수 없습니다.");
+        }
+        if (product.getQuantity() < productOrder.quantity()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "재고가 부족합니다.");
+        }
+        if (product.getPrice() < productOrder.price()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "재고가 부족합니다.");
+        }
 
         try {
-            Order order = new Order(productId, member.MemberId(), productOrder.price(), productOrder.quantity());
+            Order order = new Order(productId, member.memberId(), productOrder.price(), productOrder.quantity());
             orderRepository.save(order);
+
+            ProductOrderResponse response = new ProductOrderResponse(order.getPrice(), order.getQuantity());
+            return response;
         } catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "상품 주문 실패");
         }
-        return null;
     }
 
     public ProductResponse findOrderForProduct(long productId) {
