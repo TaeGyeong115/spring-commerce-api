@@ -8,7 +8,6 @@ import io.taylor.wantedpreonboardingchallengebackend20.entity.Member;
 import io.taylor.wantedpreonboardingchallengebackend20.repository.MemberRepository;
 import io.taylor.wantedpreonboardingchallengebackend20.util.JwtTokenUtil;
 import io.taylor.wantedpreonboardingchallengebackend20.util.PasswordUtil;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -39,7 +38,8 @@ public class MemberService {
         if (!passwordUtil.matchPassword(request.password(), member.getPassword()))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "올바르지 않은 비밀번호 입니다.");
 
-        return new MemberLoginResponse(member, jwtTokenUtil.generateToken(member.getId(), member.getEmail(), member.getNickName()));
+        String accessToken = jwtTokenUtil.generateToken(member.getId(), member.getEmail(), member.getNickName());
+        return new MemberLoginResponse(member.getName(), member.getNickName(), accessToken);
     }
 
     public Member getMemberByEmail(String email) {

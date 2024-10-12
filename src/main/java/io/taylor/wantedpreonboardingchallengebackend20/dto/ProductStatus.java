@@ -1,5 +1,8 @@
 package io.taylor.wantedpreonboardingchallengebackend20.dto;
 
+import lombok.Getter;
+
+@Getter
 public enum ProductStatus {
     Available(0),
     Reserved(1),
@@ -9,9 +12,5 @@ public enum ProductStatus {
 
     ProductStatus(int number) {
         this.number = number;
-    }
-
-    public int getNumber() {
-        return number;
     }
 }

@@ -1,7 +1,6 @@
 package io.taylor.wantedpreonboardingchallengebackend20.service;
 
-import io.taylor.wantedpreonboardingchallengebackend20.dto.request.AuthenticatedMember;
-import io.taylor.wantedpreonboardingchallengebackend20.dto.request.OrderRequest;
+import io.taylor.wantedpreonboardingchallengebackend20.dto.request.ProductOrderRequest;
 import io.taylor.wantedpreonboardingchallengebackend20.dto.response.OrderResponse;
 import io.taylor.wantedpreonboardingchallengebackend20.dto.response.ProductResponse;
 import io.taylor.wantedpreonboardingchallengebackend20.entity.Order;
@@ -20,7 +19,7 @@ public class OrderService {
         return null;
     }
 
-    public ProductResponse updateOrder(Long orderId, OrderRequest request) {
+    public ProductResponse updateOrder(Long orderId, ProductOrderRequest request) {
         return null;
     }
 }
