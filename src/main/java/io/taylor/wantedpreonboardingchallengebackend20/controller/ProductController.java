@@ -3,6 +3,7 @@ package io.taylor.wantedpreonboardingchallengebackend20.controller;
 import io.taylor.wantedpreonboardingchallengebackend20.dto.request.AuthenticatedMember;
 import io.taylor.wantedpreonboardingchallengebackend20.dto.request.ProductOrderRequest;
 import io.taylor.wantedpreonboardingchallengebackend20.dto.request.ProductRequest;
+import io.taylor.wantedpreonboardingchallengebackend20.dto.response.ProductOrderResponse;
 import io.taylor.wantedpreonboardingchallengebackend20.dto.response.ProductResponse;
 import io.taylor.wantedpreonboardingchallengebackend20.entity.Product;
 import io.taylor.wantedpreonboardingchallengebackend20.service.ProductService;
@@ -25,14 +26,15 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductResponse> createProduct(AuthenticatedMember authenticatedMember, @RequestBody ProductRequest request) {
+    public ResponseEntity<ProductResponse> createProduct(AuthenticatedMember authenticatedMember,
+                                                         @RequestBody ProductRequest request) {
         ProductResponse response = productService.createProduct(authenticatedMember, request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping
-    public ResponseEntity<List<Product>> findAllProducts() {
-        List<Product> products = productService.findAllProducts();
+    public ResponseEntity<List<ProductResponse>> findAllProducts() {
+        List<ProductResponse> products = productService.findAllProducts();
         return ResponseEntity.ok(products);
     }
 
@@ -43,15 +45,18 @@ public class ProductController {
     }
 
     @PostMapping("/{productId}/orders")
-    public ResponseEntity<ProductResponse> createOrderForProduct(AuthenticatedMember authenticatedMember, @PathVariable("productId") Long productId, @RequestBody ProductOrderRequest request) {
-        ProductResponse response = productService.createOrderForProduct(authenticatedMember, productId, request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    public ResponseEntity<ProductOrderResponse> createOrderForProduct(AuthenticatedMember authenticatedMember,
+                                                                      @PathVariable("productId") Long productId,
+                                                                      @RequestBody ProductOrderRequest request) {
+        ProductOrderResponse response = productService.createOrderForProduct(authenticatedMember, productId, request);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{productId}/orders")
-    public ResponseEntity<ProductResponse> findOrderForProduct(AuthenticatedMember authenticatedMember, @PathVariable("productId") Long productId) {
+    public ResponseEntity<ProductResponse> findOrderForProduct(AuthenticatedMember authenticatedMember,
+                                                               @PathVariable("productId") Long productId) {
         ProductResponse response = productService.findOrderForProduct(productId);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        return ResponseEntity.ok(response);
     }
 
 }
