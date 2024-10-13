@@ -34,7 +34,7 @@ public class ProductService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "등록된 상품이 없습니다.");
         }
 
-        for (Product entity: productList) {
+        for (Product entity : productList) {
             ProductResponse product = new ProductResponse(entity.getId(), entity.getName(), entity.getQuantity(), entity.getPrice(), entity.getStatus(), entity.getUpdatedAt(), entity.getCreatedAt());
             responsesList.add(product);
         }
@@ -95,7 +95,4 @@ public class ProductService {
         }
     }
 
-    public ProductResponse findOrderForProduct(long productId) {
-        return null;
-    }
 }

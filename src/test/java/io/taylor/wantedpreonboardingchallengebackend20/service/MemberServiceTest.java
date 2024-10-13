@@ -45,7 +45,7 @@ class MemberServiceTest {
     }
 
     @Test
-    @DisplayName("[Success] 회원가입 테스트")
+    @DisplayName("회원 가입을 한다.")
     void joinTest() {
         // given
         MemberJoinRequest request = new MemberJoinRequest(NAME, NICK_NAME, EMAIL, PASSWORD);
@@ -66,7 +66,7 @@ class MemberServiceTest {
     }
 
     @Test
-    @DisplayName("[Success] 로그인 테스트")
+    @DisplayName("로그인을 하면 토큰이 발급된다.")
     void loginTest() {
         // given
         MemberLoginRequest request = new MemberLoginRequest(EMAIL, PASSWORD);
