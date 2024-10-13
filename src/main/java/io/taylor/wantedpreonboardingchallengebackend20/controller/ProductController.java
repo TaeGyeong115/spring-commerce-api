@@ -52,11 +52,4 @@ public class ProductController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/{productId}/orders")
-    public ResponseEntity<ProductResponse> findOrderForProduct(AuthenticatedMember authenticatedMember,
-                                                               @PathVariable("productId") Long productId) {
-        ProductResponse response = productService.findOrderForProduct(productId);
-        return ResponseEntity.ok(response);
-    }
-
 }

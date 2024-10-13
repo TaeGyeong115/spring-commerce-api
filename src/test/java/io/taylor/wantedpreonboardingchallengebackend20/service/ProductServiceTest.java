@@ -49,8 +49,8 @@ class ProductServiceTest {
     }
 
     @Test
-    @DisplayName("[Success] 제품 등록 테스트")
-    void createProductTest() {
+    @DisplayName("새로운 제품을 추가한다.")
+    void createProduct() {
         // given
         final String PRODUCT_NAME = "냉장고";
         final long PRODUCT_PRICE = 20000000L;
@@ -74,8 +74,8 @@ class ProductServiceTest {
     }
 
     @Test
-    @DisplayName("[Success] 제품 리스트 조회")
-    void getAllProductsTest() {
+    @DisplayName("전체 제품 리스트를 조회한다.")
+    void getAllProducts() {
         // given
         List<Product> products = Arrays.asList(new Product(1L, "냉장고", 2000000L, 10), new Product(2L, "세탁기", 1500000L, 5), new Product(3L, "에어컨", 3000000L, 7));
 
@@ -93,8 +93,8 @@ class ProductServiceTest {
     }
 
     @Test
-    @DisplayName("[Success] 특정 제품 조회")
-    void getProductTest() {
+    @DisplayName("특정 제품 정보를 조회한다.")
+    void getProduct() {
         // given
         Product product = new Product(1L, "냉장고", 2000000L, 10);
 
@@ -112,8 +112,8 @@ class ProductServiceTest {
     }
 
     @Test
-    @DisplayName("[Success] 제품 구매 신청")
-    void createOrderTest() {
+    @DisplayName("특정 제품 구매를 요청하면 주문 목록에 추가된다.")
+    void createOrder() {
         // given
         Product product = new Product(2L, "냉장고", 2000000L, 10);
         ProductOrderRequest request = new ProductOrderRequest(product.getPrice(), product.getQuantity());
@@ -132,8 +132,8 @@ class ProductServiceTest {
     }
 
     @Test
-    @DisplayName("[NOT_FOUND] 존재하지 않는 제품")
-    void createOrderTest_WhenNotFound() {
+    @DisplayName("존재하지 않는 제품은 주문할 수 없다.")
+    void createOrder_WhenNotFound() {
         // given
         ProductOrderRequest request = new ProductOrderRequest(2000000L, 2);
 
@@ -145,8 +145,8 @@ class ProductServiceTest {
     }
 
     @Test
-    @DisplayName("[FORBIDDEN] 본인 제품 구매")
-    void createOrderTest_WhenForbidden() {
+    @DisplayName("본인이 등록한 제품은 주문할 수 없다.")
+    void createOrder_WhenForbidden() {
         // given
         Product product = new Product(member.memberId(), "냉장고", 2000000L, 10);
         ProductOrderRequest request = new ProductOrderRequest(2000000L, 2);
@@ -161,8 +161,8 @@ class ProductServiceTest {
     }
 
     @Test
-    @DisplayName("[NOT_FOUND] 재고 부족")
-    void createOrderTest_WhenStockIsNotEnough() {
+    @DisplayName("제고가 부족한 제품은 주문할 수 없다.")
+    void createOrder_WhenStockIsNotEnough() {
         // given
         Product product = new Product(1L, "냉장고", 2000000L, 1);
         ProductOrderRequest request = new ProductOrderRequest(2000000L, 5);
@@ -178,8 +178,8 @@ class ProductServiceTest {
     }
 
     @Test
-    @DisplayName("[NOT_FOUND] 금액 변동")
-    void createOrderTest_WhenPriceChanges() {
+    @DisplayName("주문하려던 시점의 금액과 현재 판매 금액이 달라 주문할 수 없다.")
+    void createOrder_WhenPriceChanges() {
         // given
         Product product = new Product(1L, "냉장고", 2000000L, 1);
         ProductOrderRequest request = new ProductOrderRequest(1000000L, 5);
