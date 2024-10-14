@@ -43,7 +43,7 @@ class OrderServiceTest {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         List<OrderResponse> orders = new ArrayList<>();
         orders.add(new OrderResponse(1L, "product1", 1, 10000L, 10000L, 0, timestamp, timestamp));
-        orders.add(new OrderResponse(1L, "product1", 1, 10000L, 10000L, 0, timestamp, timestamp));
+        orders.add(new OrderResponse(2L, "product2", 2, 20000L, 40000L, 0, timestamp, timestamp));
 
         given(orderRepository.findAllByCustomerId(member.memberId())).willReturn(orders);
 
@@ -65,11 +65,17 @@ class OrderServiceTest {
     @DisplayName("특정 주문을 조회한다.")
     void getOrderById() {
         // given
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        OrderResponse order = new OrderResponse(1L, "product1", 1, 10000L, 10000L, 0, timestamp, timestamp);
+
+        given(orderRepository.findById(member.memberId(), order.id())).willReturn(order);
 
         // when
+        OrderResponse response = orderService.getOrderById(member.memberId(), order.id());
 
         //then
-
+        assertThat(response).isNotNull();
+        assertThat(response).isEqualTo(order);
     }
 
     @Test
