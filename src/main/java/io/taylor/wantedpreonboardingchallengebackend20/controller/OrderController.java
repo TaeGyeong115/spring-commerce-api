@@ -29,7 +29,7 @@ public class OrderController {
 
     @GetMapping("/{orderId}")
     public ResponseEntity<OrderResponse> getOrder(AuthenticatedMember authenticatedMember, @PathVariable("orderId") Long orderId) {
-        OrderResponse response = orderService.getOrderById(authenticatedMember.memberId());
+        OrderResponse response = orderService.getOrderById(authenticatedMember.memberId(), orderId);
         return ResponseEntity.ok(response);
     }
 

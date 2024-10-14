@@ -2,7 +2,6 @@ package io.taylor.wantedpreonboardingchallengebackend20.service;
 
 import io.taylor.wantedpreonboardingchallengebackend20.dto.request.AuthenticatedMember;
 import io.taylor.wantedpreonboardingchallengebackend20.dto.response.OrderResponse;
-import io.taylor.wantedpreonboardingchallengebackend20.entity.Order;
 import io.taylor.wantedpreonboardingchallengebackend20.repository.OrderRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -11,6 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,11 +40,10 @@ class OrderServiceTest {
     @DisplayName("회원의 주문 목록을 조회한다.")
     void getAllOrderByMemberId() {
         // given
-        Order order1 = new Order(1L, member.memberId(), 10000L, 1);
-        Order order2 = new Order(2L, member.memberId(), 20000L, 1);
-        List<Order> orders = new ArrayList<>();
-        orders.add(order1);
-        orders.add(order2);
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        List<OrderResponse> orders = new ArrayList<>();
+        orders.add(new OrderResponse(1L, "product1", 1, 10000L, 10000L, 0, timestamp, timestamp));
+        orders.add(new OrderResponse(1L, "product1", 1, 10000L, 10000L, 0, timestamp, timestamp));
 
         given(orderRepository.findAllByCustomerId(member.memberId())).willReturn(orders);
 
@@ -54,12 +53,12 @@ class OrderServiceTest {
         // then
         assertThat(response).isNotNull();
         assertThat(response).hasSize(2);
-        assertThat(response.get(0).price()).isEqualTo(orders.get(0).getPrice());
-        assertThat(response.get(1).price()).isEqualTo(orders.get(1).getPrice());
+        assertThat(response.get(0).price()).isEqualTo(orders.get(0).price());
+        assertThat(response.get(1).price()).isEqualTo(orders.get(1).price());
         long totalPrice1 = response.get(0).price() * response.get(0).quantity();
-        assertThat(totalPrice1).isEqualTo(orders.get(0).getTotalPrice());
+        assertThat(totalPrice1).isEqualTo(orders.get(0).totalPrice());
         long totalPrice2 = response.get(1).price() * response.get(1).quantity();
-        assertThat(totalPrice2).isEqualTo(orders.get(1).getTotalPrice());
+        assertThat(totalPrice2).isEqualTo(orders.get(1).totalPrice());
     }
 
     @Test
