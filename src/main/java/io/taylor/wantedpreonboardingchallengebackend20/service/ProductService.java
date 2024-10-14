@@ -68,7 +68,7 @@ public class ProductService {
         }
     }
 
-    public ProductOrderResponse createOrderForProduct(AuthenticatedMember member, long productId, ProductOrderRequest productOrder) {
+    public void createOrderForProduct(AuthenticatedMember member, long productId, ProductOrderRequest productOrder) {
         Product product = productRepository.findById(productId);
 
         if (product == null) {
@@ -87,9 +87,6 @@ public class ProductService {
         try {
             Order order = new Order(productId, member.memberId(), productOrder.price(), productOrder.quantity());
             orderRepository.save(order);
-
-            ProductOrderResponse response = new ProductOrderResponse(order.getPrice(), order.getQuantity());
-            return response;
         } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "상품 주문 실패");
         }
