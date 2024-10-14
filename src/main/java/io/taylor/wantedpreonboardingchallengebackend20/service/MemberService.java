@@ -15,24 +15,24 @@ import org.springframework.web.server.ResponseStatusException;
 @Service
 public class MemberService {
 
-    private final MemberRepository MemberRepository;
+    private final MemberRepository memberRepository;
     private final PasswordUtil passwordUtil;
     private final JwtTokenUtil jwtTokenUtil;
 
-    public MemberService(MemberRepository MemberRepository, PasswordUtil passwordUtil, JwtTokenUtil jwtTokenUtil) {
-        this.MemberRepository = MemberRepository;
+    public MemberService(MemberRepository memberRepository, PasswordUtil passwordUtil, JwtTokenUtil jwtTokenUtil) {
+        this.memberRepository = memberRepository;
         this.passwordUtil = passwordUtil;
         this.jwtTokenUtil = jwtTokenUtil;
     }
 
     public MemberJoinResponse join(MemberJoinRequest request) {
         String password = passwordUtil.encodePassword(request.password());
-        Member Member = MemberRepository.save(new Member(request.name(), request.nickName(), request.email(), password));
+        Member Member = memberRepository.save(new Member(request.name(), request.nickName(), request.email(), password));
         return new MemberJoinResponse(Member);
     }
 
     public MemberLoginResponse login(MemberLoginRequest request) {
-        Member member = MemberRepository.findMemberByEmail(request.email());
+        Member member = memberRepository.findMemberByEmail(request.email());
         if (member == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "회원 정보가 존재하지 않습니다.");
 
         if (!passwordUtil.matchPassword(request.password(), member.getPassword()))
@@ -43,7 +43,7 @@ public class MemberService {
     }
 
     public Member getMemberByEmail(String email) {
-        return MemberRepository.findMemberByEmail(email);
+        return memberRepository.findMemberByEmail(email);
     }
 
     public void logout() {

@@ -24,12 +24,18 @@ public class Order extends BaseEntity {
     private long price;
     @Column
     private long quantity;
+    @Column
+    private long totalPrice;
+    @Column
+    private int status;
 
     public Order(long productId, long customerId, long price, long quantity) {
         this.productId = productId;
         this.customerId = customerId;
         this.price = price;
         this.quantity = quantity;
+        this.totalPrice = price * quantity;
+        this.status = 0;
     }
 }
 

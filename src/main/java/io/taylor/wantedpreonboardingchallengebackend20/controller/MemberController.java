@@ -18,27 +18,27 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/members")
 public class MemberController {
-    private final MemberService MemberService;
+    private final MemberService memberService;
 
-    public MemberController(MemberService MemberService) {
-        this.MemberService = MemberService;
+    public MemberController(MemberService memberService) {
+        this.memberService = memberService;
     }
 
     @PostMapping("/join")
     public ResponseEntity<MemberJoinResponse> join(@RequestBody MemberJoinRequest request) {
-        MemberJoinResponse response = MemberService.join(request);
+        MemberJoinResponse response = memberService.join(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PostMapping("/login")
     public ResponseEntity<Object> login(@RequestBody MemberLoginRequest request) {
-        MemberLoginResponse response = MemberService.login(request);
+        MemberLoginResponse response = memberService.login(request);
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/logout")
     public ResponseEntity<Object> logout(AuthenticatedMember authenticatedMember, @RequestBody String requestBody) {
-        MemberService.logout();
+        memberService.logout();
         return ResponseEntity.noContent().build();
     }
 }

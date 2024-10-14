@@ -3,9 +3,7 @@ package io.taylor.wantedpreonboardingchallengebackend20.controller;
 import io.taylor.wantedpreonboardingchallengebackend20.dto.request.AuthenticatedMember;
 import io.taylor.wantedpreonboardingchallengebackend20.dto.request.ProductOrderRequest;
 import io.taylor.wantedpreonboardingchallengebackend20.dto.request.ProductRequest;
-import io.taylor.wantedpreonboardingchallengebackend20.dto.response.ProductOrderResponse;
 import io.taylor.wantedpreonboardingchallengebackend20.dto.response.ProductResponse;
-import io.taylor.wantedpreonboardingchallengebackend20.entity.Product;
 import io.taylor.wantedpreonboardingchallengebackend20.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -46,8 +44,8 @@ public class ProductController {
 
     @PostMapping("/{productId}/orders")
     public ResponseEntity<Object> createOrderForProduct(AuthenticatedMember authenticatedMember,
-                                                                      @PathVariable("productId") Long productId,
-                                                                      @RequestBody ProductOrderRequest request) {
+                                                        @PathVariable("productId") Long productId,
+                                                        @RequestBody ProductOrderRequest request) {
         productService.createOrderForProduct(authenticatedMember, productId, request);
         return ResponseEntity.noContent().build();
     }
