@@ -3,7 +3,6 @@ package io.taylor.wantedpreonboardingchallengebackend20.service;
 import io.taylor.wantedpreonboardingchallengebackend20.dto.request.AuthenticatedMember;
 import io.taylor.wantedpreonboardingchallengebackend20.dto.request.ProductOrderRequest;
 import io.taylor.wantedpreonboardingchallengebackend20.dto.request.ProductRequest;
-import io.taylor.wantedpreonboardingchallengebackend20.dto.response.ProductOrderResponse;
 import io.taylor.wantedpreonboardingchallengebackend20.dto.response.ProductResponse;
 import io.taylor.wantedpreonboardingchallengebackend20.entity.Order;
 import io.taylor.wantedpreonboardingchallengebackend20.entity.Product;
@@ -123,7 +122,8 @@ class ProductServiceTest {
         given(orderRepository.save(order)).willReturn(order);
 
         // when
-        ProductOrderResponse response = productService.createOrderForProduct(member, product.getId(), request);
+        productService.createOrderForProduct(member, product.getId(), request);
+        ProductResponse response = productService.findProductById(product.getId());
 
         // then
         assertThat(response).isNotNull();

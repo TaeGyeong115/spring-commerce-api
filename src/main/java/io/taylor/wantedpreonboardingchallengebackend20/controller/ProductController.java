@@ -45,11 +45,11 @@ public class ProductController {
     }
 
     @PostMapping("/{productId}/orders")
-    public ResponseEntity<ProductOrderResponse> createOrderForProduct(AuthenticatedMember authenticatedMember,
+    public ResponseEntity<Object> createOrderForProduct(AuthenticatedMember authenticatedMember,
                                                                       @PathVariable("productId") Long productId,
                                                                       @RequestBody ProductOrderRequest request) {
-        ProductOrderResponse response = productService.createOrderForProduct(authenticatedMember, productId, request);
-        return ResponseEntity.ok(response);
+        productService.createOrderForProduct(authenticatedMember, productId, request);
+        return ResponseEntity.noContent().build();
     }
 
 }
