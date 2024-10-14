@@ -46,7 +46,7 @@ class MemberServiceTest {
 
     @Test
     @DisplayName("회원 가입을 한다.")
-    void joinTest() {
+    void join() {
         // given
         MemberJoinRequest request = new MemberJoinRequest(NAME, NICK_NAME, EMAIL, PASSWORD);
         Member member = new Member(request.name(), request.nickName(), request.email(), request.password());
@@ -67,7 +67,7 @@ class MemberServiceTest {
 
     @Test
     @DisplayName("로그인을 하면 토큰이 발급된다.")
-    void loginTest() {
+    void login() {
         // given
         MemberLoginRequest request = new MemberLoginRequest(EMAIL, PASSWORD);
         Member member = new Member(NAME, NICK_NAME, request.email(), ENCODED_PASSWORD);

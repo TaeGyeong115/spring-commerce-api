@@ -37,8 +37,8 @@ class OrderServiceTest {
     }
 
     @Test
-    @DisplayName("회원의 주문 리스트를 조회한다.")
-    void getOrderById() {
+    @DisplayName("회원의 주문 목록을 조회한다.")
+    void getAllOrderByMemberId() {
         // given
         Order order1 = new Order(1L, member.memberId(), 10000L, 1);
         Order order2 = new Order(2L, member.memberId(), 20000L, 1);
@@ -54,13 +54,28 @@ class OrderServiceTest {
         // then
         assertThat(response).isNotNull();
         assertThat(response).hasSize(2);
-//        assertThat(response.get(0)).isEqualTo(orders.get(0).getPrice());
-//        assertThat(response.get(1)).isEqualTo(orders.get(1).getPrice());
+        assertThat(response.get(0).price()).isEqualTo(orders.get(0).getPrice());
+        assertThat(response.get(1).price()).isEqualTo(orders.get(1).getPrice());
+        long totalPrice1 = response.get(0).price() * response.get(0).quantity();
+        assertThat(totalPrice1).isEqualTo(orders.get(0).getTotalPrice());
+        long totalPrice2 = response.get(1).price() * response.get(1).quantity();
+        assertThat(totalPrice2).isEqualTo(orders.get(1).getTotalPrice());
     }
 
     @Test
-    @DisplayName("")
-    void test() {
+    @DisplayName("특정 주문을 조회한다.")
+    void getOrderById() {
+        // given
+
+        // when
+
+        //then
+
+    }
+
+    @Test
+    @DisplayName("주문 상태를 변경한다.")
+    void updateOrderStatus() {
         // given
 
         // when
