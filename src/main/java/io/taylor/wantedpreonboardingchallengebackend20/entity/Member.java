@@ -18,11 +18,11 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 public class Member extends BaseEntity {
     @Column
     private String name;
-    @Column
+
     private String nickName;
-    @Column(unique = true)
+
     private String email;
-    @Column
+
     private String password;
 
     public Member(String email, String password) {

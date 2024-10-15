@@ -16,17 +16,17 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
 public class Order extends BaseEntity {
-    @Column
+
     private long productId;
-    @Column
+
     private long customerId;
-    @Column
+
     private long price;
-    @Column
+
     private long quantity;
-    @Column
+
     private long totalPrice;
-    @Column
+
     private int status;
 
     public Order(long productId, long customerId, long price, long quantity) {

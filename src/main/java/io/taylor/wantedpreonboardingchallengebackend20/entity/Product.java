@@ -17,15 +17,15 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
 public class Product extends BaseEntity {
-    @Column
+
     private String name;
-    @Column
+
     private long providerId;
-    @Column
+
     private long quantity;
-    @Column
+
     private long price;
-    @Column
+
     private int status;
 
     public Product(long providerId, String name, long price, long quantity) {
