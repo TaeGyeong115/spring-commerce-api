@@ -1,11 +1,15 @@
 package io.taylor.wantedpreonboardingchallengebackend20.entity;
 
+import io.taylor.wantedpreonboardingchallengebackend20.dto.OrderStatus;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.math.BigDecimal;
 
 @Entity
 @Getter
@@ -25,21 +29,22 @@ public class Order extends BaseEntity {
 
     private long customerId;
 
-    private long price;
+    private BigDecimal price;
 
-    private long quantity;
+    private int quantity;
 
-    private long totalPrice;
+    private BigDecimal totalPrice;
 
-    private int status;
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status;
 
-    public Order(long productId, long customerId, long price, long quantity) {
+    public Order(long productId, long customerId, BigDecimal price, int quantity) {
         this.productId = productId;
         this.customerId = customerId;
         this.price = price;
         this.quantity = quantity;
-        this.totalPrice = price * quantity;
-        this.status = 0;
+        this.totalPrice = price.multiply(BigDecimal.valueOf(quantity));
+        this.status = OrderStatus.ORDER_IN_PROGRESS;
     }
 }
 

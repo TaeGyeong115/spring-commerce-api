@@ -1,4 +1,6 @@
 package io.taylor.wantedpreonboardingchallengebackend20.dto.request;
 
-public record ProductOrderRequest(long price, long quantity) {
+import java.math.BigDecimal;
+
+public record ProductOrderRequest(BigDecimal price, int quantity) {
 }
