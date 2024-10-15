@@ -108,7 +108,7 @@ class ProductServiceTest {
         assertThat(response.id()).isEqualTo(product.getId());
         assertThat(response.name()).isEqualTo(product.getName());
         assertThat(response.price()).isEqualTo(product.getPrice());
-        assertThat(response.quantity()).isEqualTo(product.getQuantity());
+        assertThat(response.quantity()).isEqualTo(product.getTotalQuantity());
     }
 
     @Test
@@ -116,11 +116,9 @@ class ProductServiceTest {
     void createOrder() {
         // given
         Product product = new Product(2L, "냉장고", 2000000, 10);
-        ProductOrderRequest request = new ProductOrderRequest(product.getPrice(), product.getQuantity());
-        Order order = new Order(product.getId(), member.memberId(), product.getPrice(), product.getQuantity());
+        ProductOrderRequest request = new ProductOrderRequest(product.getPrice(), 2);
 
         given(productRepository.findById(product.getId())).willReturn(product);
-        given(orderRepository.save(order)).willReturn(order);
 
         // when
         productService.createOrderForProduct(member, product.getId(), request);
@@ -129,7 +127,7 @@ class ProductServiceTest {
         // then
         assertThat(response).isNotNull();
         assertThat(response.price()).isEqualTo(request.price());
-        assertThat(response.quantity()).isEqualTo(request.quantity());
+        assertThat(response.quantity()).isEqualTo(product.getTotalQuantity() - request.quantity());
     }
 
     @Test
