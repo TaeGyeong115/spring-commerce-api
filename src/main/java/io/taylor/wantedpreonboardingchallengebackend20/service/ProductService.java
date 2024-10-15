@@ -34,7 +34,7 @@ public class ProductService {
         }
 
         for (Product entity : productList) {
-            ProductResponse product = new ProductResponse(entity.getId(), entity.getName(), entity.getQuantity(), entity.getPrice(), entity.getStatus(), entity.getModifiedDate(), entity.getCreatedDate());
+            ProductResponse product = new ProductResponse(entity.getId(), entity.getName(), entity.remainingQuantity(), entity.getPrice(), entity.getStatus(), entity.getModifiedDate(), entity.getCreatedDate());
             responsesList.add(product);
         }
 
@@ -44,7 +44,7 @@ public class ProductService {
     public ProductResponse createProduct(AuthenticatedMember member, ProductRequest request) {
         try {
             Product product = productRepository.save(new Product(member.memberId(), request.name(), request.price(), request.quantity()));
-            ProductResponse response = new ProductResponse(product.getId(), product.getName(), product.getQuantity(), product.getPrice(), product.getStatus(), product.getModifiedDate(), product.getCreatedDate());
+            ProductResponse response = new ProductResponse(product.getId(), product.getName(), product.getTotalQuantity(), product.getPrice(), product.getStatus(), product.getModifiedDate(), product.getCreatedDate());
 
             return response;
         } catch (IllegalArgumentException e) {
@@ -59,9 +59,7 @@ public class ProductService {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 상품이 존재하지 않습니다.");
             }
 
-            ProductResponse response = new ProductResponse(product.getId(), product.getName(), product.getQuantity(), product.getPrice(), product.getStatus(), product.getModifiedDate(), product.getCreatedDate());
-
-            return response;
+            return new ProductResponse(product.getId(), product.getName(), product.remainingQuantity(), product.getPrice(), product.getStatus(), product.getModifiedDate(), product.getCreatedDate());
         } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "상품 조회 실패");
         }
@@ -76,7 +74,7 @@ public class ProductService {
         if (product.getProviderId() == member.memberId()) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "판매자는 본인의 상품을 구매할 수 없습니다.");
         }
-        if (product.getQuantity() < productOrder.quantity()) {
+        if (product.remainingQuantity() < productOrder.quantity()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "재고가 부족합니다.");
         }
         if (!product.getPrice().equals(productOrder.price())) {
@@ -84,6 +82,7 @@ public class ProductService {
         }
 
         try {
+            product.processSale(productOrder.quantity());
             Order order = new Order(productId, member.memberId(), productOrder.price(), productOrder.quantity());
             orderRepository.save(order);
         } catch (IllegalArgumentException e) {

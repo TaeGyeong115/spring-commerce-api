@@ -28,18 +28,37 @@ public class Product extends BaseEntity {
 
     private long providerId;
 
-    private int quantity;
+    private int totalQuantity;
+
+    private int soldQuantity;
 
     private BigDecimal price;
 
     @Enumerated(EnumType.STRING)
     private ProductStatus status;
 
-    public Product(long providerId, String name, int price, int quantity) {
+    public Product(long providerId, String name, int price, int totalQuantity) {
         this.providerId = providerId;
         this.name = name;
         this.price = BigDecimal.valueOf(price);
-        this.quantity = quantity;
+        this.totalQuantity = totalQuantity;
+        this.soldQuantity = 0;
         this.status = ProductStatus.FOR_SALE;
+    }
+
+    public int remainingQuantity() {
+        return this.totalQuantity - this.soldQuantity;
+    }
+
+    public void increaseSoldQuantity(int quantity) {
+        this.soldQuantity += quantity;
+    }
+
+    public void processSale(int quantity) {
+        increaseSoldQuantity(quantity);
+
+        if (this.totalQuantity == this.soldQuantity) {
+           this.status = ProductStatus.SOLD_OUT;
+        }
     }
 }
