@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,10 +41,10 @@ class OrderServiceTest {
     @DisplayName("회원의 주문 목록을 조회한다.")
     void getAllOrderByMemberId() {
         // given
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        LocalDateTime now = LocalDateTime.now();
         List<OrderResponse> orders = new ArrayList<>();
-        orders.add(new OrderResponse(1L, "product1", 1, 10000L, 10000L, 0, timestamp, timestamp));
-        orders.add(new OrderResponse(2L, "product2", 2, 20000L, 40000L, 0, timestamp, timestamp));
+        orders.add(new OrderResponse(1L, "product1", 1, 10000L, 10000L, 0, now, now));
+        orders.add(new OrderResponse(2L, "product2", 2, 20000L, 40000L, 0, now, now));
 
         given(orderRepository.findAllByCustomerId(member.memberId())).willReturn(orders);
 
@@ -65,8 +66,8 @@ class OrderServiceTest {
     @DisplayName("특정 주문을 조회한다.")
     void getOrderById() {
         // given
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        OrderResponse order = new OrderResponse(1L, "product1", 1, 10000L, 10000L, 0, timestamp, timestamp);
+        LocalDateTime now = LocalDateTime.now();
+        OrderResponse order = new OrderResponse(1L, "product1", 1, 10000L, 10000L, 0, now, now);
 
         given(orderRepository.findById(member.memberId(), order.id())).willReturn(order);
 

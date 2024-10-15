@@ -6,19 +6,16 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Getter
-@EntityListeners(AuditingEntityListener.class)
 @MappedSuperclass
-public class BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+@EntityListeners(AuditingEntityListener.class)
+public abstract class BaseEntity {
 
     @CreationTimestamp
-    private Timestamp createdAt;
+    private LocalDateTime createdDate;
 
     @UpdateTimestamp
-    private Timestamp updatedAt;
+    private LocalDateTime modifiedDate;
 }
