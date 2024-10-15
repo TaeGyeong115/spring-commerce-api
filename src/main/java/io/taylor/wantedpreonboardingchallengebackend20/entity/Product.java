@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.math.BigDecimal;
+
 @Entity
 @Getter
 @EqualsAndHashCode(callSuper = true)
@@ -26,17 +28,18 @@ public class Product extends BaseEntity {
 
     private long providerId;
 
-    private long quantity;
+    private int quantity;
 
-    private long price;
+    private BigDecimal price;
 
-    private int status;
+    @Enumerated(EnumType.STRING)
+    private ProductStatus status;
 
-    public Product(long providerId, String name, long price, long quantity) {
+    public Product(long providerId, String name, int price, int quantity) {
         this.providerId = providerId;
         this.name = name;
-        this.price = price;
+        this.price = BigDecimal.valueOf(price);
         this.quantity = quantity;
-        this.status = ProductStatus.Available.getNumber();
+        this.status = ProductStatus.FOR_SALE;
     }
 }

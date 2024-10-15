@@ -79,7 +79,7 @@ public class ProductService {
         if (product.getQuantity() < productOrder.quantity()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "재고가 부족합니다.");
         }
-        if (product.getPrice() != productOrder.price()) {
+        if (!product.getPrice().equals(productOrder.price())) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "판매 금액 변동이 발생했습니다.");
         }
 

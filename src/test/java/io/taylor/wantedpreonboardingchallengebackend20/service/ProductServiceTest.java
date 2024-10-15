@@ -18,6 +18,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
@@ -52,8 +53,8 @@ class ProductServiceTest {
     void createProduct() {
         // given
         final String PRODUCT_NAME = "냉장고";
-        final long PRODUCT_PRICE = 20000000L;
-        final long PRODUCT_QUANTITY = 2L;
+        final int PRODUCT_PRICE = 20000000;
+        final int PRODUCT_QUANTITY = 2;
 
         ProductRequest request = new ProductRequest(PRODUCT_NAME, PRODUCT_PRICE, PRODUCT_QUANTITY);
         Product product = new Product(1L, PRODUCT_NAME, PRODUCT_PRICE, PRODUCT_QUANTITY);
@@ -68,7 +69,7 @@ class ProductServiceTest {
         // then
         assertThat(response).isNotNull();
         assertThat(response.name()).isEqualTo(request.name());
-        assertThat(response.price()).isEqualTo(request.price());
+        assertThat(response.price().compareTo(new BigDecimal("20000000"))).isEqualTo(0);
         assertThat(response.quantity()).isEqualTo(request.quantity());
     }
 
@@ -76,7 +77,7 @@ class ProductServiceTest {
     @DisplayName("전체 제품 리스트를 조회한다.")
     void getAllProducts() {
         // given
-        List<Product> products = Arrays.asList(new Product(1L, "냉장고", 2000000L, 10), new Product(2L, "세탁기", 1500000L, 5), new Product(3L, "에어컨", 3000000L, 7));
+        List<Product> products = Arrays.asList(new Product(1L, "냉장고", 2000000, 10), new Product(2L, "세탁기", 1500000, 5), new Product(3L, "에어컨", 3000000, 7));
 
         given(productRepository.findAll()).willReturn(products);
 
@@ -95,7 +96,7 @@ class ProductServiceTest {
     @DisplayName("특정 제품 정보를 조회한다.")
     void getProduct() {
         // given
-        Product product = new Product(1L, "냉장고", 2000000L, 10);
+        Product product = new Product(1L, "냉장고", 2000000, 10);
 
         given(productRepository.findById(product.getId())).willReturn(product);
 
@@ -114,7 +115,7 @@ class ProductServiceTest {
     @DisplayName("특정 제품 구매를 요청하면 주문 목록에 추가된다.")
     void createOrder() {
         // given
-        Product product = new Product(2L, "냉장고", 2000000L, 10);
+        Product product = new Product(2L, "냉장고", 2000000, 10);
         ProductOrderRequest request = new ProductOrderRequest(product.getPrice(), product.getQuantity());
         Order order = new Order(product.getId(), member.memberId(), product.getPrice(), product.getQuantity());
 
@@ -135,7 +136,7 @@ class ProductServiceTest {
     @DisplayName("존재하지 않는 제품은 주문할 수 없다.")
     void createOrder_WhenNotFound() {
         // given
-        ProductOrderRequest request = new ProductOrderRequest(2000000L, 2);
+        ProductOrderRequest request = new ProductOrderRequest(BigDecimal.valueOf(2000000), 2);
 
         // when & then
         ResponseStatusException exception = Assertions.assertThrows(ResponseStatusException.class, () -> {
@@ -148,8 +149,8 @@ class ProductServiceTest {
     @DisplayName("본인이 등록한 제품은 주문할 수 없다.")
     void createOrder_WhenForbidden() {
         // given
-        Product product = new Product(member.memberId(), "냉장고", 2000000L, 10);
-        ProductOrderRequest request = new ProductOrderRequest(2000000L, 2);
+        Product product = new Product(member.memberId(), "냉장고", 2000000, 10);
+        ProductOrderRequest request = new ProductOrderRequest(BigDecimal.valueOf(2000000), 2);
 
         given(productRepository.findById(product.getId())).willReturn(product);
 
@@ -164,8 +165,8 @@ class ProductServiceTest {
     @DisplayName("제고가 부족한 제품은 주문할 수 없다.")
     void createOrder_WhenStockIsNotEnough() {
         // given
-        Product product = new Product(1L, "냉장고", 2000000L, 1);
-        ProductOrderRequest request = new ProductOrderRequest(2000000L, 5);
+        Product product = new Product(1L, "냉장고", 2000000, 1);
+        ProductOrderRequest request = new ProductOrderRequest(BigDecimal.valueOf(2000000), 5);
 
         given(productRepository.findById(product.getId())).willReturn(product);
 
@@ -181,8 +182,8 @@ class ProductServiceTest {
     @DisplayName("주문하려던 시점의 금액과 현재 판매 금액이 달라 주문할 수 없다.")
     void createOrder_WhenPriceChanges() {
         // given
-        Product product = new Product(1L, "냉장고", 2000000L, 1);
-        ProductOrderRequest request = new ProductOrderRequest(1000000L, 5);
+        Product product = new Product(1L, "냉장고", 2000000, 1);
+        ProductOrderRequest request = new ProductOrderRequest(BigDecimal.valueOf(1000000), 5);
 
         given(productRepository.findById(product.getId())).willReturn(product);
 

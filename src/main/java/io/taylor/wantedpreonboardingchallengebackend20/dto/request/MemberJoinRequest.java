@@ -1,6 +1,7 @@
 package io.taylor.wantedpreonboardingchallengebackend20.dto.request;
 
-public record MemberJoinRequest(String name, String nickName, String email, String password) {
+public record MemberJoinRequest(String name, String nickName, String email,
+                                String password) {
 
     public MemberJoinRequest {
         if (name == null || name.trim().isEmpty()) {

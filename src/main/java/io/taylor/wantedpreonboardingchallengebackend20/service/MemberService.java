@@ -33,7 +33,8 @@ public class MemberService {
 
     public MemberLoginResponse login(MemberLoginRequest request) {
         Member member = memberRepository.findMemberByEmail(request.email());
-        if (member == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "회원 정보가 존재하지 않습니다.");
+        if (member == null)
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "회원 정보가 존재하지 않습니다.");
 
         if (!passwordUtil.matchPassword(request.password(), member.getPassword()))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "올바르지 않은 비밀번호 입니다.");

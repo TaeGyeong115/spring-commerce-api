@@ -1,5 +1,6 @@
 package io.taylor.wantedpreonboardingchallengebackend20.service;
 
+import io.taylor.wantedpreonboardingchallengebackend20.dto.OrderStatus;
 import io.taylor.wantedpreonboardingchallengebackend20.dto.request.AuthenticatedMember;
 import io.taylor.wantedpreonboardingchallengebackend20.dto.response.OrderResponse;
 import io.taylor.wantedpreonboardingchallengebackend20.repository.OrderRepository;
@@ -10,7 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.sql.Timestamp;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,8 +44,8 @@ class OrderServiceTest {
         // given
         LocalDateTime now = LocalDateTime.now();
         List<OrderResponse> orders = new ArrayList<>();
-        orders.add(new OrderResponse(1L, "product1", 1, 10000L, 10000L, 0, now, now));
-        orders.add(new OrderResponse(2L, "product2", 2, 20000L, 40000L, 0, now, now));
+        orders.add(new OrderResponse(1L, "product1", 1, BigDecimal.valueOf(10000), BigDecimal.valueOf(10000), OrderStatus.ORDER_IN_PROGRESS, now, now));
+        orders.add(new OrderResponse(2L, "product2", 2, BigDecimal.valueOf(20000), BigDecimal.valueOf(40000), OrderStatus.ORDER_IN_PROGRESS, now, now));
 
         given(orderRepository.findAllByCustomerId(member.memberId())).willReturn(orders);
 
@@ -56,9 +57,9 @@ class OrderServiceTest {
         assertThat(response).hasSize(2);
         assertThat(response.get(0).price()).isEqualTo(orders.get(0).price());
         assertThat(response.get(1).price()).isEqualTo(orders.get(1).price());
-        long totalPrice1 = response.get(0).price() * response.get(0).quantity();
+        BigDecimal totalPrice1 = response.get(0).price().multiply(BigDecimal.valueOf(response.get(0).quantity()));
         assertThat(totalPrice1).isEqualTo(orders.get(0).totalPrice());
-        long totalPrice2 = response.get(1).price() * response.get(1).quantity();
+        BigDecimal totalPrice2 = response.get(1).price().multiply(BigDecimal.valueOf(response.get(1).quantity()));
         assertThat(totalPrice2).isEqualTo(orders.get(1).totalPrice());
     }
 
@@ -67,7 +68,7 @@ class OrderServiceTest {
     void getOrderById() {
         // given
         LocalDateTime now = LocalDateTime.now();
-        OrderResponse order = new OrderResponse(1L, "product1", 1, 10000L, 10000L, 0, now, now);
+        OrderResponse order = new OrderResponse(1L, "product1", 1, BigDecimal.valueOf(10000), BigDecimal.valueOf(10000), OrderStatus.ORDER_IN_PROGRESS, now, now);
 
         given(orderRepository.findById(member.memberId(), order.id())).willReturn(order);
 
@@ -86,7 +87,7 @@ class OrderServiceTest {
 
         // when
 
-        
+
         //then
 
     }
