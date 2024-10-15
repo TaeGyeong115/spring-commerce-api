@@ -84,7 +84,7 @@ public class ProductService {
         try {
             product.processSale(productOrder.quantity());
             Order order = new Order(productId, member.memberId(), productOrder.price(), productOrder.quantity());
-//            orderRepository.save(order);
+            orderRepository.save(order);
         } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "상품 주문 실패");
         }

@@ -47,7 +47,7 @@ public class Product extends BaseEntity {
     }
 
     public int remainingQuantity() {
-        return totalQuantity - soldQuantity;
+        return this.totalQuantity - this.soldQuantity;
     }
 
     public void increaseSoldQuantity(int quantity) {
@@ -57,8 +57,8 @@ public class Product extends BaseEntity {
     public void processSale(int quantity) {
         increaseSoldQuantity(quantity);
 
-        if (totalQuantity == soldQuantity) {
-           status = ProductStatus.SOLD_OUT;
+        if (this.totalQuantity == this.soldQuantity) {
+           this.status = ProductStatus.SOLD_OUT;
         }
     }
 }
