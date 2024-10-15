@@ -34,7 +34,7 @@ public class ProductService {
         }
 
         for (Product entity : productList) {
-            ProductResponse product = new ProductResponse(entity.getId(), entity.getName(), entity.getQuantity(), entity.getPrice(), entity.getStatus(), entity.getUpdatedAt(), entity.getCreatedAt());
+            ProductResponse product = new ProductResponse(entity.getId(), entity.getName(), entity.getQuantity(), entity.getPrice(), entity.getStatus(), entity.getModifiedDate(), entity.getCreatedDate());
             responsesList.add(product);
         }
 
@@ -44,7 +44,7 @@ public class ProductService {
     public ProductResponse createProduct(AuthenticatedMember member, ProductRequest request) {
         try {
             Product product = productRepository.save(new Product(member.memberId(), request.name(), request.price(), request.quantity()));
-            ProductResponse response = new ProductResponse(product.getId(), product.getName(), product.getQuantity(), product.getPrice(), product.getStatus(), product.getUpdatedAt(), product.getCreatedAt());
+            ProductResponse response = new ProductResponse(product.getId(), product.getName(), product.getQuantity(), product.getPrice(), product.getStatus(), product.getModifiedDate(), product.getCreatedDate());
 
             return response;
         } catch (IllegalArgumentException e) {
@@ -59,7 +59,7 @@ public class ProductService {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 상품이 존재하지 않습니다.");
             }
 
-            ProductResponse response = new ProductResponse(product.getId(), product.getName(), product.getQuantity(), product.getPrice(), product.getStatus(), product.getUpdatedAt(), product.getCreatedAt());
+            ProductResponse response = new ProductResponse(product.getId(), product.getName(), product.getQuantity(), product.getPrice(), product.getStatus(), product.getModifiedDate(), product.getCreatedDate());
 
             return response;
         } catch (IllegalArgumentException e) {

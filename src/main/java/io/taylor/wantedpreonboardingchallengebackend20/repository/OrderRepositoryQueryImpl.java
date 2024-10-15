@@ -16,7 +16,7 @@ public class OrderRepositoryQueryImpl implements OrderRepositoryQuery {
 
     @Override
     public List<OrderResponse> findAllByCustomerId(long customerId) {
-        return jpaQueryFactory.select(Projections.constructor(OrderResponse.class, order.id, product.name, order.quantity, order.price, order.totalPrice, order.status, order.updatedAt, order.createdAt))
+        return jpaQueryFactory.select(Projections.constructor(OrderResponse.class, order.id, product.name, order.quantity, order.price, order.totalPrice, order.status, order.modifiedDate, order.createdDate))
                 .from(order)
                 .join(product).on(order.productId.eq(product.id))
                 .where(order.customerId.eq(customerId))
@@ -25,7 +25,7 @@ public class OrderRepositoryQueryImpl implements OrderRepositoryQuery {
 
     @Override
     public OrderResponse findById(long memberId, long orderId) {
-        return jpaQueryFactory.select(Projections.constructor(OrderResponse.class, order.id, product.name, order.quantity, order.price, order.totalPrice, order.status, order.updatedAt, order.createdAt))
+        return jpaQueryFactory.select(Projections.constructor(OrderResponse.class, order.id, product.name, order.quantity, order.price, order.totalPrice, order.status, order.modifiedDate, order.createdDate))
                 .from(order)
                 .join(product).on(order.productId.eq(product.id))
                 .where(order.id.eq(orderId).and(order.customerId.eq(memberId)))
