@@ -4,7 +4,6 @@ import io.taylor.wantedpreonboardingchallengebackend20.dto.request.Authenticated
 import io.taylor.wantedpreonboardingchallengebackend20.dto.request.ProductOrderRequest;
 import io.taylor.wantedpreonboardingchallengebackend20.dto.request.ProductRequest;
 import io.taylor.wantedpreonboardingchallengebackend20.dto.response.ProductResponse;
-import io.taylor.wantedpreonboardingchallengebackend20.entity.Order;
 import io.taylor.wantedpreonboardingchallengebackend20.entity.Product;
 import io.taylor.wantedpreonboardingchallengebackend20.repository.OrderRepository;
 import io.taylor.wantedpreonboardingchallengebackend20.repository.ProductRepository;
@@ -108,7 +107,7 @@ class ProductServiceTest {
         assertThat(response.id()).isEqualTo(product.getId());
         assertThat(response.name()).isEqualTo(product.getName());
         assertThat(response.price()).isEqualTo(product.getPrice());
-        assertThat(response.quantity()).isEqualTo(product.getTotalQuantity());
+        assertThat(response.quantity()).isEqualTo(product.remainingQuantity());
     }
 
     @Test
