@@ -2,8 +2,8 @@ package io.taylor.wantedpreonboardingchallengebackend20.controller.product;
 
 import io.taylor.wantedpreonboardingchallengebackend20.controller.member.request.AuthenticatedMember;
 import io.taylor.wantedpreonboardingchallengebackend20.controller.product.request.ProductOrderRequest;
-import io.taylor.wantedpreonboardingchallengebackend20.controller.product.request.ProductRequest;
 import io.taylor.wantedpreonboardingchallengebackend20.controller.product.response.ProductResponse;
+import io.taylor.wantedpreonboardingchallengebackend20.controller.product.request.ProductRequest;
 import io.taylor.wantedpreonboardingchallengebackend20.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -25,7 +25,7 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<Object> createProduct(AuthenticatedMember authenticatedMember,
-                                                         @RequestBody ProductRequest request) {
+                                                @RequestBody ProductRequest request) {
         productService.createProduct(authenticatedMember, request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

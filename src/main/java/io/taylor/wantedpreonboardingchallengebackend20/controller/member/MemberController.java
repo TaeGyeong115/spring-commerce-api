@@ -1,9 +1,9 @@
 package io.taylor.wantedpreonboardingchallengebackend20.controller.member;
 
-import io.taylor.wantedpreonboardingchallengebackend20.controller.member.request.AuthenticatedMember;
-import io.taylor.wantedpreonboardingchallengebackend20.controller.member.request.MemberJoinRequest;
 import io.taylor.wantedpreonboardingchallengebackend20.controller.member.request.MemberLoginRequest;
 import io.taylor.wantedpreonboardingchallengebackend20.controller.member.response.MemberLoginResponse;
+import io.taylor.wantedpreonboardingchallengebackend20.controller.member.request.AuthenticatedMember;
+import io.taylor.wantedpreonboardingchallengebackend20.controller.member.request.MemberJoinRequest;
 import io.taylor.wantedpreonboardingchallengebackend20.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
