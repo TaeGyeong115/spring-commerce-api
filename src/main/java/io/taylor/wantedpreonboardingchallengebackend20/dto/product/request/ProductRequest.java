@@ -1,4 +1,4 @@
-package io.taylor.wantedpreonboardingchallengebackend20.controller.product.request;
+package io.taylor.wantedpreonboardingchallengebackend20.dto.product.request;
 
 public record ProductRequest(String name, int price, int quantity) {
 

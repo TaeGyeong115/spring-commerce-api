@@ -1,6 +1,6 @@
 package io.taylor.wantedpreonboardingchallengebackend20.domain.order;
 
-import io.taylor.wantedpreonboardingchallengebackend20.controller.order.response.OrderResponse;
+import io.taylor.wantedpreonboardingchallengebackend20.dto.order.response.OrderResponse;
 
 import java.util.List;
 

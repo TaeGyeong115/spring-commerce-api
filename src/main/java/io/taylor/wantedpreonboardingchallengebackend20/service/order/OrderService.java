@@ -1,9 +1,9 @@
-package io.taylor.wantedpreonboardingchallengebackend20.service;
+package io.taylor.wantedpreonboardingchallengebackend20.service.order;
 
-import io.taylor.wantedpreonboardingchallengebackend20.controller.member.request.AuthenticatedMember;
+import io.taylor.wantedpreonboardingchallengebackend20.dto.member.request.AuthenticatedMember;
 import io.taylor.wantedpreonboardingchallengebackend20.domain.order.OrderRepository;
-import io.taylor.wantedpreonboardingchallengebackend20.controller.product.request.ProductOrderRequest;
-import io.taylor.wantedpreonboardingchallengebackend20.controller.order.response.OrderResponse;
+import io.taylor.wantedpreonboardingchallengebackend20.dto.product.request.ProductOrderRequest;
+import io.taylor.wantedpreonboardingchallengebackend20.dto.order.response.OrderResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
