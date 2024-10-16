@@ -1,6 +1,6 @@
-package io.taylor.wantedpreonboardingchallengebackend20.dto.response;
+package io.taylor.wantedpreonboardingchallengebackend20.controller.order.response;
 
-import io.taylor.wantedpreonboardingchallengebackend20.dto.OrderStatus;
+import io.taylor.wantedpreonboardingchallengebackend20.domain.order.OrderStatus;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

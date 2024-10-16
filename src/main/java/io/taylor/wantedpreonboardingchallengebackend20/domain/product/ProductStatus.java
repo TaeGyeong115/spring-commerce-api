@@ -1,4 +1,4 @@
-package io.taylor.wantedpreonboardingchallengebackend20.dto;
+package io.taylor.wantedpreonboardingchallengebackend20.domain.product;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

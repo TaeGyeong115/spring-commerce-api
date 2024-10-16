@@ -1,16 +1,17 @@
-package io.taylor.wantedpreonboardingchallengebackend20.domain.product;
+package io.taylor.wantedpreonboardingchallengebackend20.service;
 
 import io.taylor.wantedpreonboardingchallengebackend20.domain.order.Order;
 import io.taylor.wantedpreonboardingchallengebackend20.domain.order.OrderRepository;
-import io.taylor.wantedpreonboardingchallengebackend20.dto.request.AuthenticatedMember;
-import io.taylor.wantedpreonboardingchallengebackend20.dto.request.ProductOrderRequest;
-import io.taylor.wantedpreonboardingchallengebackend20.dto.request.ProductRequest;
-import io.taylor.wantedpreonboardingchallengebackend20.dto.response.ProductResponse;
+import io.taylor.wantedpreonboardingchallengebackend20.controller.member.request.AuthenticatedMember;
+import io.taylor.wantedpreonboardingchallengebackend20.domain.product.Product;
+import io.taylor.wantedpreonboardingchallengebackend20.domain.product.ProductRepository;
+import io.taylor.wantedpreonboardingchallengebackend20.controller.product.request.ProductOrderRequest;
+import io.taylor.wantedpreonboardingchallengebackend20.controller.product.request.ProductRequest;
+import io.taylor.wantedpreonboardingchallengebackend20.controller.product.response.ProductResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 

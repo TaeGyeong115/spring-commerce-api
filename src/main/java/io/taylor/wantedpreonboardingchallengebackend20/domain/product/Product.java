@@ -1,6 +1,5 @@
 package io.taylor.wantedpreonboardingchallengebackend20.domain.product;
 
-import io.taylor.wantedpreonboardingchallengebackend20.dto.ProductStatus;
 import io.taylor.wantedpreonboardingchallengebackend20.domain.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;

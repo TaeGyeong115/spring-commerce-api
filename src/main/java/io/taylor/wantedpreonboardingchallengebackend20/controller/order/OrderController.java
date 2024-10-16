@@ -1,9 +1,9 @@
-package io.taylor.wantedpreonboardingchallengebackend20.controller;
+package io.taylor.wantedpreonboardingchallengebackend20.controller.order;
 
-import io.taylor.wantedpreonboardingchallengebackend20.dto.request.AuthenticatedMember;
-import io.taylor.wantedpreonboardingchallengebackend20.dto.request.ProductOrderRequest;
-import io.taylor.wantedpreonboardingchallengebackend20.dto.response.OrderResponse;
-import io.taylor.wantedpreonboardingchallengebackend20.domain.order.OrderService;
+import io.taylor.wantedpreonboardingchallengebackend20.controller.member.request.AuthenticatedMember;
+import io.taylor.wantedpreonboardingchallengebackend20.controller.product.request.ProductOrderRequest;
+import io.taylor.wantedpreonboardingchallengebackend20.controller.order.response.OrderResponse;
+import io.taylor.wantedpreonboardingchallengebackend20.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -1,4 +1,4 @@
-package io.taylor.wantedpreonboardingchallengebackend20.dto.request;
+package io.taylor.wantedpreonboardingchallengebackend20.controller.member.request;
 
 public record AuthenticatedMember(Long memberId, String email,
                                   String nickName) {

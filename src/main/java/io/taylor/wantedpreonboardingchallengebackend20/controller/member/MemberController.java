@@ -1,10 +1,10 @@
-package io.taylor.wantedpreonboardingchallengebackend20.controller;
+package io.taylor.wantedpreonboardingchallengebackend20.controller.member;
 
-import io.taylor.wantedpreonboardingchallengebackend20.dto.request.AuthenticatedMember;
-import io.taylor.wantedpreonboardingchallengebackend20.dto.request.MemberJoinRequest;
-import io.taylor.wantedpreonboardingchallengebackend20.dto.request.MemberLoginRequest;
-import io.taylor.wantedpreonboardingchallengebackend20.dto.response.MemberLoginResponse;
-import io.taylor.wantedpreonboardingchallengebackend20.domain.member.MemberService;
+import io.taylor.wantedpreonboardingchallengebackend20.controller.member.request.AuthenticatedMember;
+import io.taylor.wantedpreonboardingchallengebackend20.controller.member.request.MemberJoinRequest;
+import io.taylor.wantedpreonboardingchallengebackend20.controller.member.request.MemberLoginRequest;
+import io.taylor.wantedpreonboardingchallengebackend20.controller.member.response.MemberLoginResponse;
+import io.taylor.wantedpreonboardingchallengebackend20.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
