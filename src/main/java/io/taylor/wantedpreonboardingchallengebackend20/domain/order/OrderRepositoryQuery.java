@@ -1,4 +1,4 @@
-package io.taylor.wantedpreonboardingchallengebackend20.repository;
+package io.taylor.wantedpreonboardingchallengebackend20.domain.order;
 
 import io.taylor.wantedpreonboardingchallengebackend20.dto.response.OrderResponse;
 
@@ -8,5 +8,5 @@ public interface OrderRepositoryQuery {
 
     List<OrderResponse> findAllByCustomerId(long customerId);
 
-    OrderResponse findById(long member, long orderId);
+    OrderResponse findById(Long orderId, long member);
 }

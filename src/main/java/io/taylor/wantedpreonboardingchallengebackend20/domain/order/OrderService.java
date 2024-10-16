@@ -1,9 +1,8 @@
-package io.taylor.wantedpreonboardingchallengebackend20.service;
+package io.taylor.wantedpreonboardingchallengebackend20.domain.order;
 
 import io.taylor.wantedpreonboardingchallengebackend20.dto.request.AuthenticatedMember;
 import io.taylor.wantedpreonboardingchallengebackend20.dto.request.ProductOrderRequest;
 import io.taylor.wantedpreonboardingchallengebackend20.dto.response.OrderResponse;
-import io.taylor.wantedpreonboardingchallengebackend20.repository.OrderRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,7 +21,7 @@ public class OrderService {
     }
 
     public OrderResponse getOrderById(long memberId, long orderId) {
-        return orderRepository.findById(memberId, orderId);
+        return orderRepository.findById(orderId, memberId);
     }
 
     public void updateOrder(AuthenticatedMember member, long orderId, ProductOrderRequest request) {

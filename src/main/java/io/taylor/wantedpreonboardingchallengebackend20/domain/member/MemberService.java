@@ -1,10 +1,8 @@
-package io.taylor.wantedpreonboardingchallengebackend20.service;
+package io.taylor.wantedpreonboardingchallengebackend20.domain.member;
 
 import io.taylor.wantedpreonboardingchallengebackend20.dto.request.MemberJoinRequest;
 import io.taylor.wantedpreonboardingchallengebackend20.dto.request.MemberLoginRequest;
-import io.taylor.wantedpreonboardingchallengebackend20.dto.response.MemberJoinResponse;
 import io.taylor.wantedpreonboardingchallengebackend20.dto.response.MemberLoginResponse;
-import io.taylor.wantedpreonboardingchallengebackend20.entity.Member;
 import io.taylor.wantedpreonboardingchallengebackend20.repository.MemberRepository;
 import io.taylor.wantedpreonboardingchallengebackend20.util.JwtTokenUtil;
 import io.taylor.wantedpreonboardingchallengebackend20.util.PasswordUtil;
@@ -25,10 +23,9 @@ public class MemberService {
         this.jwtTokenUtil = jwtTokenUtil;
     }
 
-    public MemberJoinResponse join(MemberJoinRequest request) {
+    public void join(MemberJoinRequest request) {
         String password = passwordUtil.encodePassword(request.password());
-        Member Member = memberRepository.save(new Member(request.name(), request.nickName(), request.email(), password));
-        return new MemberJoinResponse(Member);
+        memberRepository.save(Member.builder().email(request.email()).password(password).build());
     }
 
     public MemberLoginResponse login(MemberLoginRequest request) {

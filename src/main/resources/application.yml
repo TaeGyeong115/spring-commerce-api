@@ -1,3 +1,13 @@
+spring:
+    profiles:
+        default: local
+
+    datasource:
+        jdbc-url: jdbc:mysql://localhost:3306/wanted-preonboarding-challenge-backend-20
+        username: taylor
+        password: pass
+        driver-class-name: com.mysql.cj.jdbc.Driver
+
 server:
     port: 8080
     servlet:
@@ -12,13 +22,10 @@ server:
             force: true
 
 ---
-
 spring:
-    datasource:
-        jdbc-url: jdbc:mysql://localhost:3306/wanted-preonboarding-challenge-backend-20
-        username: taylor
-        password: pass
-        driver-class-name: com.mysql.cj.jdbc.Driver
+    config:
+        activate:
+            on-profile: local
 
     jpa:
         hibernate:

@@ -3,7 +3,7 @@ package io.taylor.wantedpreonboardingchallengebackend20.controller;
 import io.taylor.wantedpreonboardingchallengebackend20.dto.request.AuthenticatedMember;
 import io.taylor.wantedpreonboardingchallengebackend20.dto.request.ProductOrderRequest;
 import io.taylor.wantedpreonboardingchallengebackend20.dto.response.OrderResponse;
-import io.taylor.wantedpreonboardingchallengebackend20.service.OrderService;
+import io.taylor.wantedpreonboardingchallengebackend20.domain.order.OrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

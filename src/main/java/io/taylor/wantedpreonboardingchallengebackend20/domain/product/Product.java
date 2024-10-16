@@ -1,11 +1,9 @@
-package io.taylor.wantedpreonboardingchallengebackend20.entity;
+package io.taylor.wantedpreonboardingchallengebackend20.domain.product;
 
 import io.taylor.wantedpreonboardingchallengebackend20.dto.ProductStatus;
+import io.taylor.wantedpreonboardingchallengebackend20.domain.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.math.BigDecimal;
@@ -20,9 +18,11 @@ import java.math.BigDecimal;
 @EntityListeners(AuditingEntityListener.class)
 public class Product extends BaseEntity {
 
+    private static final int INITIAL_SOLD_QUANTITY = 0;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     private String name;
 
@@ -37,12 +37,17 @@ public class Product extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private ProductStatus status;
 
-    public Product(long providerId, String name, int price, int totalQuantity) {
+    @Builder
+    private Product(Long id, long providerId, String name, int price, int totalQuantity) {
+        validatePrice(price);
+        validateQuantity(totalQuantity);
+
+        this.id = id;
         this.providerId = providerId;
         this.name = name;
         this.price = BigDecimal.valueOf(price);
         this.totalQuantity = totalQuantity;
-        this.soldQuantity = 0;
+        this.soldQuantity = INITIAL_SOLD_QUANTITY;
         this.status = ProductStatus.FOR_SALE;
     }
 
@@ -50,7 +55,7 @@ public class Product extends BaseEntity {
         return this.totalQuantity - this.soldQuantity;
     }
 
-    public void increaseSoldQuantity(int quantity) {
+    private void increaseSoldQuantity(int quantity) {
         this.soldQuantity += quantity;
     }
 
@@ -58,7 +63,19 @@ public class Product extends BaseEntity {
         increaseSoldQuantity(quantity);
 
         if (this.totalQuantity == this.soldQuantity) {
-           this.status = ProductStatus.SOLD_OUT;
+            this.status = ProductStatus.SOLD_OUT;
+        }
+    }
+
+    private void validatePrice(int price) {
+        if (price <= 0) {
+            throw new IllegalArgumentException("Price must be greater than zero.");
+        }
+    }
+
+    private void validateQuantity(int quantity) {
+        if (quantity < 0) {
+            throw new IllegalArgumentException("Quantity cannot be negative");
         }
     }
 }

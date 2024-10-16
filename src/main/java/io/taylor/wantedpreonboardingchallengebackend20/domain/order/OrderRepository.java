@@ -1,6 +1,5 @@
-package io.taylor.wantedpreonboardingchallengebackend20.repository;
+package io.taylor.wantedpreonboardingchallengebackend20.domain.order;
 
-import io.taylor.wantedpreonboardingchallengebackend20.entity.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface OrderRepository extends JpaRepository<Order, Long>, OrderRepositoryQuery {
