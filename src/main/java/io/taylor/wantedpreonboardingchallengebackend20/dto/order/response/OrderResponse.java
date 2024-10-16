@@ -1,4 +1,4 @@
-package io.taylor.wantedpreonboardingchallengebackend20.controller.order.response;
+package io.taylor.wantedpreonboardingchallengebackend20.dto.order.response;
 
 import io.taylor.wantedpreonboardingchallengebackend20.domain.order.OrderStatus;
 

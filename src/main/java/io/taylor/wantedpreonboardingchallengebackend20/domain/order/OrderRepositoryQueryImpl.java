@@ -3,7 +3,7 @@ package io.taylor.wantedpreonboardingchallengebackend20.domain.order;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import io.taylor.wantedpreonboardingchallengebackend20.controller.order.response.OrderResponse;
+import io.taylor.wantedpreonboardingchallengebackend20.dto.order.response.OrderResponse;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
