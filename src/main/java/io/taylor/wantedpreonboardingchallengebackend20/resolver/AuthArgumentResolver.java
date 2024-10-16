@@ -1,6 +1,6 @@
 package io.taylor.wantedpreonboardingchallengebackend20.resolver;
 
-import io.taylor.wantedpreonboardingchallengebackend20.dto.request.AuthenticatedMember;
+import io.taylor.wantedpreonboardingchallengebackend20.controller.member.request.AuthenticatedMember;
 import io.taylor.wantedpreonboardingchallengebackend20.util.JwtTokenUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.NonNull;

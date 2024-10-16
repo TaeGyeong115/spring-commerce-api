@@ -1,4 +1,4 @@
-package io.taylor.wantedpreonboardingchallengebackend20.dto.request;
+package io.taylor.wantedpreonboardingchallengebackend20.controller.product.request;
 
 import java.math.BigDecimal;
 

@@ -2,9 +2,8 @@ package io.taylor.wantedpreonboardingchallengebackend20.service;
 
 import io.taylor.wantedpreonboardingchallengebackend20.domain.member.Member;
 import io.taylor.wantedpreonboardingchallengebackend20.domain.order.OrderRepository;
-import io.taylor.wantedpreonboardingchallengebackend20.domain.order.OrderService;
-import io.taylor.wantedpreonboardingchallengebackend20.dto.OrderStatus;
-import io.taylor.wantedpreonboardingchallengebackend20.dto.response.OrderResponse;
+import io.taylor.wantedpreonboardingchallengebackend20.domain.order.OrderStatus;
+import io.taylor.wantedpreonboardingchallengebackend20.controller.order.response.OrderResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,7 +15,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static io.taylor.wantedpreonboardingchallengebackend20.dto.OrderStatus.ORDER_IN_PROGRESS;
+import static io.taylor.wantedpreonboardingchallengebackend20.domain.order.OrderStatus.ORDER_IN_PROGRESS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.tuple;
 import static org.mockito.BDDMockito.given;
