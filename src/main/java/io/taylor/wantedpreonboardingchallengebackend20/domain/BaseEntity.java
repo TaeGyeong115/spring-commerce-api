@@ -1,4 +1,4 @@
-package io.taylor.wantedpreonboardingchallengebackend20.entity;
+package io.taylor.wantedpreonboardingchallengebackend20.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;

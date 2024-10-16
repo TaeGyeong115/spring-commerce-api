@@ -1,4 +1,4 @@
-package io.taylor.wantedpreonboardingchallengebackend20.repository;
+package io.taylor.wantedpreonboardingchallengebackend20.domain.order;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -8,8 +8,8 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
-import static io.taylor.wantedpreonboardingchallengebackend20.entity.QOrder.order;
-import static io.taylor.wantedpreonboardingchallengebackend20.entity.QProduct.product;
+import static io.taylor.wantedpreonboardingchallengebackend20.domain.order.QOrder.order;
+import static io.taylor.wantedpreonboardingchallengebackend20.domain.product.QProduct.product;
 
 @RequiredArgsConstructor
 public class OrderRepositoryQueryImpl implements OrderRepositoryQuery {
@@ -23,13 +23,12 @@ public class OrderRepositoryQueryImpl implements OrderRepositoryQuery {
     }
 
     @Override
-    public OrderResponse findById(long memberId, long orderId) {
+    public OrderResponse findById(Long orderId, long memberId) {
         return baseOrderQuery()
                 .where(order.id.eq(orderId).and(order.customerId.eq(memberId)))
                 .fetchOne();
     }
 
-    // 공통 쿼리 부분을 메서드로 분리
     private JPAQuery<OrderResponse> baseOrderQuery() {
         return jpaQueryFactory
                 .select(Projections.constructor(

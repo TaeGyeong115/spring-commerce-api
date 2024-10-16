@@ -1,10 +1,8 @@
-package io.taylor.wantedpreonboardingchallengebackend20.entity;
+package io.taylor.wantedpreonboardingchallengebackend20.domain.member;
 
+import io.taylor.wantedpreonboardingchallengebackend20.domain.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
@@ -19,7 +17,7 @@ public class Member extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     private String name;
 
@@ -29,15 +27,20 @@ public class Member extends BaseEntity {
 
     private String password;
 
-    public Member(String email, String password) {
-        this.email = email;
-        this.password = password;
-    }
+    @Builder
+    public Member(Long id, String name, String nickName, String email, String password) {
+        validateEmail(email);
 
-    public Member(String name, String nickName, String email, String password) {
+        this.id = id;
         this.name = name;
         this.nickName = nickName;
         this.email = email;
         this.password = password;
+    }
+
+    private static void validateEmail(String email) {
+        if (email == null || !email.contains("@")) {
+            throw new IllegalArgumentException("유효하지 않은 이메일 주소입니다.");
+        }
     }
 }

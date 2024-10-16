@@ -1,30 +1,28 @@
 package io.taylor.wantedpreonboardingchallengebackend20.service;
 
+import io.taylor.wantedpreonboardingchallengebackend20.domain.member.Member;
+import io.taylor.wantedpreonboardingchallengebackend20.domain.order.OrderRepository;
+import io.taylor.wantedpreonboardingchallengebackend20.domain.order.OrderService;
 import io.taylor.wantedpreonboardingchallengebackend20.dto.OrderStatus;
-import io.taylor.wantedpreonboardingchallengebackend20.dto.request.AuthenticatedMember;
 import io.taylor.wantedpreonboardingchallengebackend20.dto.response.OrderResponse;
-import io.taylor.wantedpreonboardingchallengebackend20.repository.OrderRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
+import static io.taylor.wantedpreonboardingchallengebackend20.dto.OrderStatus.ORDER_IN_PROGRESS;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.tuple;
 import static org.mockito.BDDMockito.given;
 
+@ExtendWith(MockitoExtension.class)
 class OrderServiceTest {
-
-    private static AuthenticatedMember member;
-    private static final long MEMBER_ID = 1L;
-    private static final String EMAIL = "test@test.com";
-    private static final String NICK_NAME = "test";
 
     @Mock
     private OrderRepository orderRepository;
@@ -32,35 +30,30 @@ class OrderServiceTest {
     @InjectMocks
     private OrderService orderService;
 
-    @BeforeEach
-    public void setUp() {
-        MockitoAnnotations.openMocks(this);
-        member = new AuthenticatedMember(MEMBER_ID, EMAIL, NICK_NAME);
-    }
-
     @Test
     @DisplayName("회원의 주문 목록을 조회한다.")
     void getAllOrderByMemberId() {
         // given
         LocalDateTime now = LocalDateTime.now();
-        List<OrderResponse> orders = new ArrayList<>();
-        orders.add(new OrderResponse(1L, "product1", 1, BigDecimal.valueOf(10000), BigDecimal.valueOf(10000), OrderStatus.ORDER_IN_PROGRESS, now, now));
-        orders.add(new OrderResponse(2L, "product2", 2, BigDecimal.valueOf(20000), BigDecimal.valueOf(40000), OrderStatus.ORDER_IN_PROGRESS, now, now));
+        Member member = createMember(1L, "test@test.com", "password", "member1", "member1");
+        List<OrderResponse> response = List.of(
+                createOrderResponse(1L, "TV", 1, 10000, 10000, ORDER_IN_PROGRESS, now),
+                createOrderResponse(2L, "Video", 2, 20000, 40000, ORDER_IN_PROGRESS, now)
+        );
 
-        given(orderRepository.findAllByCustomerId(member.memberId())).willReturn(orders);
+        given(orderRepository.findAllByCustomerId(member.getId())).willReturn(response);
 
         // when
-        List<OrderResponse> response = orderService.getOrderByMemberId(member.memberId());
+        List<OrderResponse> orders = orderService.getOrderByMemberId(member.getId());
 
         // then
-        assertThat(response).isNotNull();
-        assertThat(response).hasSize(2);
-        assertThat(response.get(0).price()).isEqualTo(orders.get(0).price());
-        assertThat(response.get(1).price()).isEqualTo(orders.get(1).price());
-        BigDecimal totalPrice1 = response.get(0).price().multiply(BigDecimal.valueOf(response.get(0).quantity()));
-        assertThat(totalPrice1).isEqualTo(orders.get(0).totalPrice());
-        BigDecimal totalPrice2 = response.get(1).price().multiply(BigDecimal.valueOf(response.get(1).quantity()));
-        assertThat(totalPrice2).isEqualTo(orders.get(1).totalPrice());
+        assertThat(orders).isNotNull();
+        assertThat(orders).hasSize(2)
+                .extracting("id", "name", "quantity", "price", "totalPrice", "status", "modifiedDate", "createdDate")
+                .containsExactlyInAnyOrder(
+                        tuple(1L, "TV", 1, BigDecimal.valueOf(10000), BigDecimal.valueOf(10000), ORDER_IN_PROGRESS, now, now),
+                        tuple(2L, "Video", 2, BigDecimal.valueOf(20000), BigDecimal.valueOf(40000), ORDER_IN_PROGRESS, now, now)
+                );
     }
 
     @Test
@@ -68,16 +61,18 @@ class OrderServiceTest {
     void getOrderById() {
         // given
         LocalDateTime now = LocalDateTime.now();
-        OrderResponse order = new OrderResponse(1L, "product1", 1, BigDecimal.valueOf(10000), BigDecimal.valueOf(10000), OrderStatus.ORDER_IN_PROGRESS, now, now);
+        Member member = createMember(1L, "test@test.com", "password", "member1", "member1");
+        OrderResponse orderResponse = createOrderResponse(1L, "Video", 1, 10000, 10000, ORDER_IN_PROGRESS, now);
 
-        given(orderRepository.findById(member.memberId(), order.id())).willReturn(order);
+        given(orderRepository.findById(1L, 1L)).willReturn(orderResponse);
 
         // when
-        OrderResponse response = orderService.getOrderById(member.memberId(), order.id());
+        OrderResponse response = orderService.getOrderById(member.getId(), 1L);
 
         //then
         assertThat(response).isNotNull();
-        assertThat(response).isEqualTo(order);
+        assertThat(response).extracting("id", "name", "quantity", "price", "totalPrice", "status", "modifiedDate", "createdDate")
+                .contains(1L, "Video", 1, BigDecimal.valueOf(10000), BigDecimal.valueOf(10000), ORDER_IN_PROGRESS, now, now);
     }
 
     @Test
@@ -91,5 +86,19 @@ class OrderServiceTest {
 
         //then
 
+    }
+
+    private Member createMember(Long id, String email, String password, String name, String nickName) {
+        return Member.builder()
+                .id(id)
+                .email(email)
+                .password(password)
+                .name(name)
+                .nickName(nickName)
+                .build();
+    }
+
+    private OrderResponse createOrderResponse(Long id, String name, int quantity, int price, int totalPrice, OrderStatus status, LocalDateTime now) {
+        return OrderResponse.of(id, name, quantity, BigDecimal.valueOf(price), BigDecimal.valueOf(totalPrice), status, now, now);
     }
 }

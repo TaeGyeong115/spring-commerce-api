@@ -3,9 +3,8 @@ package io.taylor.wantedpreonboardingchallengebackend20.controller;
 import io.taylor.wantedpreonboardingchallengebackend20.dto.request.AuthenticatedMember;
 import io.taylor.wantedpreonboardingchallengebackend20.dto.request.MemberJoinRequest;
 import io.taylor.wantedpreonboardingchallengebackend20.dto.request.MemberLoginRequest;
-import io.taylor.wantedpreonboardingchallengebackend20.dto.response.MemberJoinResponse;
 import io.taylor.wantedpreonboardingchallengebackend20.dto.response.MemberLoginResponse;
-import io.taylor.wantedpreonboardingchallengebackend20.service.MemberService;
+import io.taylor.wantedpreonboardingchallengebackend20.domain.member.MemberService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,9 +24,9 @@ public class MemberController {
     }
 
     @PostMapping("/join")
-    public ResponseEntity<MemberJoinResponse> join(@RequestBody MemberJoinRequest request) {
-        MemberJoinResponse response = memberService.join(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    public ResponseEntity<Object> join(@RequestBody MemberJoinRequest request) {
+        memberService.join(request);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PostMapping("/login")
