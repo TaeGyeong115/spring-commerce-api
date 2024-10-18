@@ -1,6 +1,6 @@
 package io.taylor.wantedpreonboardingchallengebackend20.resolver;
 
-import io.taylor.wantedpreonboardingchallengebackend20.dto.member.request.AuthenticatedMember;
+import io.taylor.wantedpreonboardingchallengebackend20.api.controller.member.request.AuthenticatedMember;
 import io.taylor.wantedpreonboardingchallengebackend20.util.JwtTokenUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.NonNull;
@@ -18,6 +18,7 @@ import org.springframework.web.server.ResponseStatusException;
 @Component
 @RequiredArgsConstructor
 public class AuthArgumentResolver implements HandlerMethodArgumentResolver {
+
     private final JwtTokenUtil jwtTokenUtil;
 
     @Override
