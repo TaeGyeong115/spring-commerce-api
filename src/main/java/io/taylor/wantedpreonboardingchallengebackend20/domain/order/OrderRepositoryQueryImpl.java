@@ -3,7 +3,7 @@ package io.taylor.wantedpreonboardingchallengebackend20.domain.order;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import io.taylor.wantedpreonboardingchallengebackend20.dto.order.response.OrderResponse;
+import io.taylor.wantedpreonboardingchallengebackend20.api.controller.order.response.OrderResponse;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -13,6 +13,7 @@ import static io.taylor.wantedpreonboardingchallengebackend20.domain.product.QPr
 
 @RequiredArgsConstructor
 public class OrderRepositoryQueryImpl implements OrderRepositoryQuery {
+
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
@@ -39,8 +40,8 @@ public class OrderRepositoryQueryImpl implements OrderRepositoryQuery {
                         order.price,
                         order.totalPrice,
                         order.status,
-                        order.modifiedDate,
-                        order.createdDate
+                        order.modifiedDateTime,
+                        order.createdDateTime
                 ))
                 .from(order)
                 .join(product).on(order.productId.eq(product.id));

@@ -20,27 +20,15 @@ public class Member extends BaseEntity {
     private Long id;
 
     private String name;
-
     private String nickName;
-
     private String email;
-
     private String password;
 
     @Builder
-    public Member(Long id, String name, String nickName, String email, String password) {
-        validateEmail(email);
-
-        this.id = id;
+    private Member(String name, String nickName, String email, String password) {
         this.name = name;
         this.nickName = nickName;
         this.email = email;
         this.password = password;
-    }
-
-    private static void validateEmail(String email) {
-        if (email == null || !email.contains("@")) {
-            throw new IllegalArgumentException("유효하지 않은 이메일 주소입니다.");
-        }
     }
 }
