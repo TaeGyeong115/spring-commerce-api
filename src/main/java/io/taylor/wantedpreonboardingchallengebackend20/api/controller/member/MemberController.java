@@ -28,8 +28,8 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Object> login(@RequestBody MemberLoginRequest request) {
-        MemberLoginResponse response = memberService.login(request);
+    public ResponseEntity<Object> login(@Validated @RequestBody MemberLoginRequest request) {
+        MemberLoginResponse response = memberService.login(request.toServiceRequest());
         return ResponseEntity.ok(response);
     }
 

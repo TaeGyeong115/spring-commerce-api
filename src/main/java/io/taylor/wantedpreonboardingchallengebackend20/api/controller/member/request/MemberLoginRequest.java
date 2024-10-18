@@ -1,14 +1,18 @@
 package io.taylor.wantedpreonboardingchallengebackend20.api.controller.member.request;
 
-public record MemberLoginRequest(String email, String password) {
+import io.taylor.wantedpreonboardingchallengebackend20.api.service.member.request.MemberLoingServiceRequest;
+import jakarta.validation.constraints.NotBlank;
+import lombok.Builder;
 
-    public MemberLoginRequest {
-        if (email == null || email.trim().isEmpty()) {
-            throw new IllegalArgumentException("이메일은 필수 입력값입니다.");
-        }
+@Builder
+public record MemberLoginRequest(
+        @NotBlank(message = "이메일은 필수 항목입니다.") String email,
+        @NotBlank(message = "비밀번호는 필수 항목입니다.") String password) {
 
-        if (password == null || password.trim().isEmpty()) {
-            throw new IllegalArgumentException("비밀번호는 필수 입력값입니다.");
-        }
+    public MemberLoingServiceRequest toServiceRequest() {
+        return MemberLoingServiceRequest.builder()
+                .email(email)
+                .password(password)
+                .build();
     }
 }

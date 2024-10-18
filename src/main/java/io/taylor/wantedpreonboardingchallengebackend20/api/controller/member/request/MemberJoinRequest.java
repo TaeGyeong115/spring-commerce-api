@@ -12,6 +12,11 @@ public record MemberJoinRequest(
         @NotBlank(message = "비밀번호는 필수 항목입니다.") String password) {
 
     public MemberJoinServiceRequest toServiceRequest() {
-        return new MemberJoinServiceRequest(name, nickName, email, password);
+        return MemberJoinServiceRequest.builder()
+                .name(name)
+                .email(email)
+                .nickName(nickName)
+                .password(password)
+                .build();
     }
 }
