@@ -193,7 +193,11 @@ class ProductServiceTest {
     }
 
     private AuthenticatedMember createAuthenticatedMember(Long id, String email, String nickName) {
-        return AuthenticatedMember.of(id, email, nickName);
+        return AuthenticatedMember.builder()
+                .memberId(id)
+                .email(email)
+                .nickName(nickName)
+                .build();
     }
 
     private Product createProduct(Long id, long providerId, String name, int price, int quantity) {
