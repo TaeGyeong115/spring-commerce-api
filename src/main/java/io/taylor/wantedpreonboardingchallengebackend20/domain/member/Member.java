@@ -9,8 +9,10 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Getter
 @EqualsAndHashCode(callSuper = true)
 @Table(name = "members", indexes = {
-        @Index(name = "members_idx_id", columnList = "id", unique = true)
-})
+        @Index(name = "members_idx_id", columnList = "id", unique = true)},
+        uniqueConstraints = {@UniqueConstraint(columnNames = "email")}
+)
+
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
 public class Member extends BaseEntity {

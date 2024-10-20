@@ -40,18 +40,29 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.badRequest().body(body);
     }
-
-    @ExceptionHandler(ResponseStatusException.class)
-    public ResponseEntity<Map<String, Object>> handleCaughtExceptions(ResponseStatusException e) {
-        Map<String, Object> body = new HashMap<>();
-        body.put("resultCode", e.getStatusCode().value());
-        body.put("resultMsg", e.getReason());
-        body.put("timestamp", System.currentTimeMillis());
-        body.put("error", e.getReason());
-        body.put("path", ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest().getRequestURI());
-
-        return ResponseEntity.badRequest().body(body);
-    }
+//
+//    @ExceptionHandler(ResponseStatusException.class)
+//    public ResponseEntity<Map<String, Object>> handleCaughtExceptions(ResponseStatusException e) {
+//        Map<String, Object> body = new HashMap<>();
+//        body.put("resultCode", e.getStatusCode().value());
+//        body.put("resultMsg", e.getReason());
+//        body.put("timestamp", System.currentTimeMillis());
+//        body.put("error", e.getReason());
+//        body.put("path", ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest().getRequestURI());
+//
+//        return ResponseEntity.badRequest().body(body);
+//    }
+//    @ExceptionHandler(ResponseStatusException.class)
+//    public ResponseEntity<Map<String, Object>> handleCaughtExceptions(ResponseStatusException e) {
+//        Map<String, Object> body = new HashMap<>();
+//        body.put("resultCode", e.getStatusCode().value());
+//        body.put("resultMsg", e.getReason());
+//        body.put("timestamp", System.currentTimeMillis());
+//        body.put("error", e.getReason());
+//        body.put("path", ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest().getRequestURI());
+//
+//        return ResponseEntity.badRequest().body(body);
+//    }
 
     @ExceptionHandler(IllegalArgumentException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
