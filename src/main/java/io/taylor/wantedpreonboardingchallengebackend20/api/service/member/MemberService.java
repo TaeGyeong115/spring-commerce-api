@@ -7,28 +7,22 @@ import io.taylor.wantedpreonboardingchallengebackend20.domain.member.Member;
 import io.taylor.wantedpreonboardingchallengebackend20.domain.member.MemberRepository;
 import io.taylor.wantedpreonboardingchallengebackend20.util.JwtTokenUtil;
 import io.taylor.wantedpreonboardingchallengebackend20.util.PasswordUtil;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class MemberService {
 
-    private MemberRepository memberRepository;
-    private PasswordUtil passwordUtil;
-    private JwtTokenUtil jwtTokenUtil;
+    private final MemberRepository memberRepository;
+    private final PasswordUtil passwordUtil;
+    private final JwtTokenUtil jwtTokenUtil;
 
     public void join(MemberJoinServiceRequest request) {
         String password = passwordUtil.encodePassword(request.password());
-        memberRepository.save(
-                Member.builder()
-                        .name(request.name())
-                        .email(request.email())
-                        .nickName(request.nickName())
-                        .password(password).build()
-        );
+        memberRepository.save(Member.builder().name(request.name()).email(request.email()).nickName(request.nickName()).password(password).build());
     }
 
     public MemberLoginResponse login(MemberLoingServiceRequest request) {

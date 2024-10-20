@@ -8,6 +8,7 @@ import io.taylor.wantedpreonboardingchallengebackend20.domain.order.Order;
 import io.taylor.wantedpreonboardingchallengebackend20.domain.order.OrderRepository;
 import io.taylor.wantedpreonboardingchallengebackend20.domain.product.Product;
 import io.taylor.wantedpreonboardingchallengebackend20.domain.product.ProductRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -16,14 +17,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class ProductService {
+
     private final ProductRepository productRepository;
     private final OrderRepository orderRepository;
-
-    public ProductService(ProductRepository productRepository, OrderRepository orderRepository) {
-        this.productRepository = productRepository;
-        this.orderRepository = orderRepository;
-    }
 
     public List<ProductResponse> findAllProducts() {
         List<Product> productList = productRepository.findAll();

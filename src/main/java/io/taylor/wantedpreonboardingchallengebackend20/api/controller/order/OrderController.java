@@ -4,6 +4,7 @@ import io.taylor.wantedpreonboardingchallengebackend20.api.controller.member.req
 import io.taylor.wantedpreonboardingchallengebackend20.api.controller.order.response.OrderResponse;
 import io.taylor.wantedpreonboardingchallengebackend20.api.controller.product.request.ProductOrderRequest;
 import io.taylor.wantedpreonboardingchallengebackend20.api.service.order.OrderService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,13 +14,10 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/api/orders")
+@RequiredArgsConstructor
 public class OrderController {
 
     private final OrderService orderService;
-
-    public OrderController(OrderService orderService) {
-        this.orderService = orderService;
-    }
 
     @GetMapping
     public ResponseEntity<List<OrderResponse>> getAllOrders(AuthenticatedMember authenticatedMember) {
