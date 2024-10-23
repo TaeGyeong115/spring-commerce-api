@@ -3,7 +3,6 @@ package io.taylor.wantedpreonboardingchallengebackend20.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
-import org.springframework.core.env.Profiles;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -21,11 +20,8 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, Environment environment) throws Exception {
-        if (environment.acceptsProfiles(Profiles.of("test"))) {
-            http.csrf(AbstractHttpConfigurer::disable);
-        }
-
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, Environment environment) throws Exception {
+        http.csrf(AbstractHttpConfigurer::disable);
         return http.build();
     }
 }

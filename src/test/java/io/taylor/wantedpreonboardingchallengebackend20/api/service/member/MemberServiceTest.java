@@ -109,7 +109,7 @@ class MemberServiceTest extends IntegrationTestSupport {
     void loginFailsOnWrongEmail() {
         // given
         MemberLoingServiceRequest request = MemberLoingServiceRequest.builder()
-                .email("test@test.com")
+                .email("member1@test.com")
                 .password("password")
                 .build();
 
@@ -127,11 +127,11 @@ class MemberServiceTest extends IntegrationTestSupport {
     void loginFailsOnWrongPassword() {
         // given
         MemberLoingServiceRequest request = MemberLoingServiceRequest.builder()
-                .email("test@test.com")
+                .email("member1@test.com")
                 .password("wrongPassword")
                 .build();
         String encryptedPassword = passwordUtil.encodePassword("password");
-        Member member = createMember("test@test.com", encryptedPassword, "member1", "member1");
+        Member member = createMember("member1@test.com", encryptedPassword, "member1", "member1");
         memberRepository.save(member);
 
         // when & then
