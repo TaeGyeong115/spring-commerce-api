@@ -5,7 +5,7 @@
   
 Docker - MySQL 실행 
 ``` 
-docker run -p 3306:3306 --name wanted_project -e MYSQL_ROOT_PASSWORD=1 -e MYSQL_DATABASE=wanted-preonboarding-challenge-backend-20 -e MYSQL_Member=taylor -e MYSQL_PASSWORD=pass -d mysql
+docker run -p 3306:3306 --name wanted_project -e MYSQL_ROOT_PASSWORD=pass -e MYSQL_DATABASE=wanted-preonboarding-challenge-backend-20 -e MYSQL_USER=taylor -e MYSQL_PASSWORD=pass -d mysql
 
 docker exec -i -t wanted_project bash
 mysql -u taylor -p

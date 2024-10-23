@@ -1,5 +1,6 @@
 package io.taylor.wantedpreonboardingchallengebackend20.api.service.member;
 
+import io.taylor.wantedpreonboardingchallengebackend20.IntegrationTestSupport;
 import io.taylor.wantedpreonboardingchallengebackend20.api.controller.member.response.MemberLoginResponse;
 import io.taylor.wantedpreonboardingchallengebackend20.api.service.member.request.MemberJoinServiceRequest;
 import io.taylor.wantedpreonboardingchallengebackend20.api.service.member.request.MemberLoingServiceRequest;
@@ -10,7 +11,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
@@ -18,9 +18,8 @@ import org.springframework.web.server.ResponseStatusException;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@SpringBootTest
 @Transactional
-class MemberServiceTest {
+class MemberServiceTest extends IntegrationTestSupport {
 
     @Autowired
     private MemberService memberService;
@@ -59,15 +58,39 @@ class MemberServiceTest {
     }
 
     @Test
+    @DisplayName("이미 등록된 이메일로 회원 가입이 불가하다.")
+    void joinFailsWhenMemberExists() {
+        // given
+        String encryptedPassword = passwordUtil.encodePassword("password");
+        Member member = createMember("member1@test.com", encryptedPassword, "member1", "member1");
+        memberRepository.save(member);
+
+        MemberJoinServiceRequest request = MemberJoinServiceRequest.builder()
+                .name("member1")
+                .email("member1@test.com")
+                .nickName("member1")
+                .password("password")
+                .build();
+
+        // when & then
+        assertThatThrownBy(() -> memberService.join(request))
+                .isInstanceOf(ResponseStatusException.class)
+                .extracting(
+                        exception -> ((ResponseStatusException) exception).getStatusCode(),
+                        exception -> ((ResponseStatusException) exception).getReason())
+                .containsExactly(HttpStatus.CONFLICT, "이미 등록된 이메일입니다.");
+    }
+
+    @Test
     @DisplayName("로그인을 하면 토큰이 발급된다.")
     void login() {
         // given
         MemberLoingServiceRequest request = MemberLoingServiceRequest.builder()
-                .email("test@test.com")
+                .email("member1@test.com")
                 .password("password")
                 .build();
         String encryptedPassword = passwordUtil.encodePassword("password");
-        Member member = createMember("test@test.com", encryptedPassword, "member1", "member1");
+        Member member = createMember("member1@test.com", encryptedPassword, "member1", "member1");
         memberRepository.save(member);
 
         // when

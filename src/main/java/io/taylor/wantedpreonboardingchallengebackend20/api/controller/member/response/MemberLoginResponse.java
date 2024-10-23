@@ -3,6 +3,7 @@ package io.taylor.wantedpreonboardingchallengebackend20.api.controller.member.re
 import lombok.Builder;
 
 @Builder
-public record MemberLoginResponse(String name, String nickName,
+public record MemberLoginResponse(String name,
+                                  String nickName,
                                   String accessToken) {
 }
