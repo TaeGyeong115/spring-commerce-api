@@ -1,24 +1,13 @@
 package io.taylor.wantedpreonboardingchallengebackend20.api.controller.member;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import io.taylor.wantedpreonboardingchallengebackend20.ControllerTestSupport;
 import io.taylor.wantedpreonboardingchallengebackend20.api.controller.member.request.MemberJoinRequest;
 import io.taylor.wantedpreonboardingchallengebackend20.api.controller.member.request.MemberLoginRequest;
 import io.taylor.wantedpreonboardingchallengebackend20.api.controller.member.response.MemberLoginResponse;
-import io.taylor.wantedpreonboardingchallengebackend20.api.service.member.MemberService;
 import io.taylor.wantedpreonboardingchallengebackend20.api.service.member.request.MemberLoingServiceRequest;
-import io.taylor.wantedpreonboardingchallengebackend20.config.SecurityConfig;
-import io.taylor.wantedpreonboardingchallengebackend20.util.JwtTokenUtil;
-import io.taylor.wantedpreonboardingchallengebackend20.util.PasswordUtil;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -27,26 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WithMockUser
-@ActiveProfiles("test")
-@Import({SecurityConfig.class})
-@WebMvcTest(controllers = MemberController.class)
-class MemberControllerTest {
-
-    @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @MockBean
-    private JwtTokenUtil jwtTokenUtil;
-
-    @MockBean
-    private PasswordUtil passwordUtil;
-
-    @MockBean
-    private MemberService memberService;
+class MemberControllerTest extends ControllerTestSupport {
 
     @Test
     @DisplayName("회원 가입을 한다.")
@@ -66,7 +36,6 @@ class MemberControllerTest {
                                 .contentType(MediaType.APPLICATION_JSON)
                 ).andDo(print())
                 .andExpect(status().isCreated());
-
     }
 
     @Test

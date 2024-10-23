@@ -4,14 +4,13 @@ import io.taylor.wantedpreonboardingchallengebackend20.api.controller.member.req
 import io.taylor.wantedpreonboardingchallengebackend20.api.controller.order.response.OrderResponse;
 import io.taylor.wantedpreonboardingchallengebackend20.api.controller.product.request.ProductOrderRequest;
 import io.taylor.wantedpreonboardingchallengebackend20.api.service.order.OrderService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Slf4j
 @RestController
 @RequestMapping("/api/orders")
 @RequiredArgsConstructor
@@ -32,9 +31,11 @@ public class OrderController {
     }
 
     @PatchMapping("/{orderId}")
-    public ResponseEntity<Object> updateOrder(AuthenticatedMember authenticatedMember, @PathVariable("orderId") Long orderId, @RequestBody ProductOrderRequest request) {
+    public ResponseEntity<Void> updateOrder(AuthenticatedMember authenticatedMember,
+                                            @PathVariable("orderId") Long orderId,
+                                            @Valid @RequestBody ProductOrderRequest request) {
         orderService.updateOrder(authenticatedMember, orderId, request);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
     }
 
 }

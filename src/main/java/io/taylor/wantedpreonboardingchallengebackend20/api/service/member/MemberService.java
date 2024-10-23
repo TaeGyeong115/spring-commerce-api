@@ -21,8 +21,18 @@ public class MemberService {
     private final JwtTokenUtil jwtTokenUtil;
 
     public void join(MemberJoinServiceRequest request) {
+        if (memberRepository.existsByEmail(request.email())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "이미 등록된 이메일입니다.");
+        }
+
         String password = passwordUtil.encodePassword(request.password());
-        memberRepository.save(Member.builder().name(request.name()).email(request.email()).nickName(request.nickName()).password(password).build());
+        memberRepository.save(Member.builder()
+                .name(request.name())
+                .email(request.email())
+                .nickName(request.nickName())
+                .password(password)
+                .build()
+        );
     }
 
     public MemberLoginResponse login(MemberLoingServiceRequest request) {

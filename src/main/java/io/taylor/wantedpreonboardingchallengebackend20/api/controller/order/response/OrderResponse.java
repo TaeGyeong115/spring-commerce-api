@@ -7,9 +7,12 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Builder
-public record OrderResponse(Long id, String name, int quantity,
+public record OrderResponse(Long id,
+                            String name,
+                            int quantity,
                             BigDecimal price,
-                            BigDecimal totalPrice, OrderStatus status,
-                            LocalDateTime modifiedDate,
-                            LocalDateTime createdDate) {
+                            BigDecimal totalPrice,
+                            OrderStatus status,
+                            LocalDateTime modifiedDateTime,
+                            LocalDateTime createdDateTime) {
 }

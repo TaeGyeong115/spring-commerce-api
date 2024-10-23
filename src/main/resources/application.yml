@@ -29,7 +29,7 @@ spring:
 
     jpa:
         hibernate:
-            ddl-auto: create-drop
+            ddl-auto: update
         show-sql: true
         properties:
             hibernate:
@@ -38,3 +38,27 @@ spring:
     jwt:
         key: 08d9f6bd6f2f76186106617f85c808c8646707145c91c5054007c5e24925945f
         expiration: 3600000
+
+---
+spring:
+  config:
+    activate:
+      on-profile: test
+
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  sql:
+    init:
+      mode: never
+
+    jwt:
+      key: testtesttest
+      expiration: 3600000

@@ -3,5 +3,7 @@ package io.taylor.wantedpreonboardingchallengebackend20.api.controller.member.re
 import lombok.Builder;
 
 @Builder
-public record AuthenticatedMember(Long memberId, String email, String nickName) {
+public record AuthenticatedMember(Long memberId,
+                                  String email,
+                                  String nickName) {
 }
