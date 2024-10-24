@@ -1,18 +1,15 @@
 package io.taylor.wantedpreonboardingchallengebackend20.api.controller.product.request;
 
-public record ProductRequest(String name, int price, int quantity) {
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import lombok.Builder;
 
-    public ProductRequest {
-        if (name == null || name.trim().isEmpty()) {
-            throw new IllegalArgumentException("상품명은 필수 입력값입니다.");
-        }
+import java.math.BigDecimal;
 
-        if (price < 0) {
-            throw new IllegalArgumentException("가격은 0 이상이어야 합니다.");
-        }
-
-        if (quantity < 0) {
-            throw new IllegalArgumentException("수량은 0 이상이어야 합니다.");
-        }
-    }
+@Builder
+public record ProductRequest(
+        @NotBlank(message = "상품명은 필수 항목입니다.") String name,
+        @DecimalMin(value = "100", message = "가격은 100원 이상이어야 합니다.") BigDecimal price,
+        @Min(value = 1, message = "수량은 최소 1개 이상이어야 합니다.") int quantity) {
 }
