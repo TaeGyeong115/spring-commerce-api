@@ -197,16 +197,23 @@ class ProductServiceTest extends IntegrationTestSupport {
         return Product.builder()
                 .providerId(providerId)
                 .name(name)
-                .price(price)
+                .price(new BigDecimal(price))
                 .totalQuantity(quantity)
                 .build();
     }
 
     private ProductRequest createProductRequest(String name, int price, int quantity) {
-        return new ProductRequest(name, price, quantity);
+        return ProductRequest.builder()
+                .name(name)
+                .price(new BigDecimal(price))
+                .quantity(quantity)
+                .build();
     }
 
     private ProductOrderRequest createProductOrderRequest(int price, int quantity) {
-        return new ProductOrderRequest(BigDecimal.valueOf(price), quantity);
+        return ProductOrderRequest.builder()
+                .price(new BigDecimal(price))
+                .quantity(quantity)
+                .build();
     }
 }

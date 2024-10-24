@@ -37,14 +37,14 @@ public class Product extends BaseEntity {
     private ProductStatus status;
 
     @Builder
-    private Product(Long id, long providerId, String name, int price, int totalQuantity) {
+    private Product(Long id, long providerId, String name, BigDecimal price, int totalQuantity) {
         validatePrice(price);
         validateQuantity(totalQuantity);
 
         this.id = id;
         this.providerId = providerId;
         this.name = name;
-        this.price = BigDecimal.valueOf(price);
+        this.price = price;
         this.totalQuantity = totalQuantity;
         this.soldQuantity = INITIAL_SOLD_QUANTITY;
         this.status = ProductStatus.FOR_SALE;
@@ -66,14 +66,14 @@ public class Product extends BaseEntity {
         }
     }
 
-    private void validatePrice(int price) {
-        if (price <= 0) {
-            throw new IllegalArgumentException("Price must be greater than zero.");
+    private void validatePrice(BigDecimal price) {
+        if (price.compareTo(new BigDecimal("100")) < 0) {
+            throw new IllegalArgumentException("Price must be greater than 100.");
         }
     }
 
     private void validateQuantity(int quantity) {
-        if (quantity < 0) {
+        if (quantity < 1) {
             throw new IllegalArgumentException("Quantity cannot be negative");
         }
     }

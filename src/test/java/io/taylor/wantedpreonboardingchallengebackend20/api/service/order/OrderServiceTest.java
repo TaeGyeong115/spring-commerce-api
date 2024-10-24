@@ -105,7 +105,7 @@ class OrderServiceTest extends IntegrationTestSupport {
         return Product.builder()
                 .providerId(providerId)
                 .name(name)
-                .price(price)
+                .price(new BigDecimal(price))
                 .totalQuantity(quantity)
                 .build();
     }
