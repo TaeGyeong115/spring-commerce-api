@@ -15,8 +15,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.when;
 
 @Transactional
 class MemberServiceTest extends IntegrationTestSupport {
@@ -49,6 +53,8 @@ class MemberServiceTest extends IntegrationTestSupport {
         // when
         memberService.join(request);
         Member foundMember = memberRepository.findMemberByEmail(request.email());
+
+        when(memberRepository.findById(anyLong())).thenReturn(Optional.of(foundMember));
 
         // then
         assertThat(foundMember).isNotNull();
