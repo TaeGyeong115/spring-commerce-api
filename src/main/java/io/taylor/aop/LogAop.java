@@ -17,12 +17,13 @@ public class LogAop {
     private static final String EX_PREFIX = "<X-";
 
     private final ThreadLocal<TraceId> traceIdHolder = new ThreadLocal<>();
+    private final ThreadLocal<Long> startTimeHolder = new ThreadLocal<>();
 
     @Around("io.taylor.aop.Pointcuts.allAPI()")
     public Object doLog(ProceedingJoinPoint joinPoint) throws Throwable {
-        syncTraceId();
+        syncTrace();
         TraceId traceId = traceIdHolder.get();
-        Long startTimeMs = System.currentTimeMillis();
+        Long startTimeMs = startTimeHolder.get();
 
         try {
             log.info("[{}] {}{}", traceId.getId(), addSpace(START_PREFIX, traceId.getLevel()), joinPoint.getSignature());
@@ -36,15 +37,22 @@ public class LogAop {
             long resultTimeMs = stopTimeMs - startTimeMs;
             log.info("[{}] {}{} time={}ms ex={}", traceId.getId(), addSpace(EX_PREFIX, traceId.getLevel()), joinPoint.getSignature(), resultTimeMs, e.toString());
             throw e;
+        } finally {
+            clearTraceId();
         }
     }
 
-    private void syncTraceId() {
+    private void syncTrace() {
         TraceId traceId = traceIdHolder.get();
         if (traceId == null) {
             traceIdHolder.set(new TraceId());
         } else {
             traceIdHolder.set(traceId.createNextId());
+        }
+
+        Long startTimeMs = startTimeHolder.get();
+        if (startTimeMs == null) {
+            startTimeHolder.set(System.currentTimeMillis());
         }
     }
 
@@ -54,5 +62,10 @@ public class LogAop {
             sb.append((i == level - 1) ? "|" + prefix : "|   ");
         }
         return sb.toString();
+    }
+
+    private void clearTraceId() {
+        traceIdHolder.remove();
+        startTimeHolder.remove();
     }
 }
