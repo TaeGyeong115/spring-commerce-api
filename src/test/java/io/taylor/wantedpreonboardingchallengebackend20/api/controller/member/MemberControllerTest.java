@@ -1,12 +1,16 @@
 package io.taylor.wantedpreonboardingchallengebackend20.api.controller.member;
 
 import io.taylor.wantedpreonboardingchallengebackend20.ControllerTestSupport;
+import io.taylor.wantedpreonboardingchallengebackend20.aop.LogAop;
 import io.taylor.wantedpreonboardingchallengebackend20.api.controller.member.request.MemberJoinRequest;
 import io.taylor.wantedpreonboardingchallengebackend20.api.controller.member.request.MemberLoginRequest;
 import io.taylor.wantedpreonboardingchallengebackend20.api.controller.member.response.MemberLoginResponse;
 import io.taylor.wantedpreonboardingchallengebackend20.api.service.member.request.MemberLoingServiceRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -16,7 +20,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@Import(LogAop.class)
+@EnableAspectJAutoProxy
 class MemberControllerTest extends ControllerTestSupport {
+
+    @SpyBean
+    private LogAop logAop;
 
     @Test
     @DisplayName("회원 가입을 한다.")
