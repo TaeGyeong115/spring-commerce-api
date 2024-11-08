@@ -1,5 +1,6 @@
 package io.taylor.wantedpreonboardingchallengebackend20.aop;
 
+import io.taylor.wantedpreonboardingchallengebackend20.trace.TraceId;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -11,18 +12,47 @@ import org.springframework.stereotype.Component;
 @Component
 public class LogAop {
 
+    private static final String START_PREFIX = "-->";
+    private static final String COMPLETE_PREFIX = "<--";
+    private static final String EX_PREFIX = "<X-";
+
+    private final ThreadLocal<TraceId> traceIdHolder = new ThreadLocal<>();
+
     @Around("io.taylor.wantedpreonboardingchallengebackend20.aop.Pointcuts.allAPI()")
     public Object doLog(ProceedingJoinPoint joinPoint) throws Throwable {
+        syncTraceId();
+        TraceId traceId = traceIdHolder.get();
+        Long startTimeMs = System.currentTimeMillis();
+
         try {
-            log.info("[start] {}", joinPoint.getSignature());
+            log.info("[{}] {}{}", traceId.getId(), addSpace(START_PREFIX, traceId.getLevel()), joinPoint.getSignature());
             Object result = joinPoint.proceed();
-            log.info("[end] {}", joinPoint.getSignature());
+            Long stopTimeMs = System.currentTimeMillis();
+            long resultTimeMs = stopTimeMs - startTimeMs;
+            log.info("[{}] {}{} time={}ms", traceId.getId(), addSpace(COMPLETE_PREFIX, traceId.getLevel()), joinPoint.getSignature(), resultTimeMs);
             return result;
         } catch (Exception e) {
-            log.info("[exception] {}", joinPoint.getSignature());
+            Long stopTimeMs = System.currentTimeMillis();
+            long resultTimeMs = stopTimeMs - startTimeMs;
+            log.info("[{}] {}{} time={}ms ex={}", traceId.getId(), addSpace(EX_PREFIX, traceId.getLevel()), joinPoint.getSignature(), resultTimeMs, e.toString());
             throw e;
-        } finally {
-            log.info("[finally] {}", joinPoint.getSignature());
         }
+    }
+
+    private void syncTraceId() {
+        TraceId traceId = traceIdHolder.get();
+        if (traceId == null) {
+            traceIdHolder.set(new TraceId());
+        } else {
+            traceIdHolder.set(traceId.createNextId());
+        }
+    }
+
+    private static String addSpace(String prefix, int level) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < level; i++) {
+            sb.append((i == level - 1) ? "|" + prefix : "|   ");
+        }
+        return sb.toString();
     }
 }
