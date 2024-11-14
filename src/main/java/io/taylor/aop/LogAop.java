@@ -38,7 +38,7 @@ public class LogAop {
             log.info("[{}] {}{} time={}ms ex={}", traceId.getId(), addSpace(EX_PREFIX, traceId.getLevel()), joinPoint.getSignature(), resultTimeMs, e.toString());
             throw e;
         } finally {
-            clearTraceId();
+            clearTrace();
         }
     }
 
@@ -64,7 +64,7 @@ public class LogAop {
         return sb.toString();
     }
 
-    private void clearTraceId() {
+    private void clearTrace() {
         traceIdHolder.remove();
         startTimeHolder.remove();
     }

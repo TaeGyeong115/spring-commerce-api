@@ -3,7 +3,7 @@ spring:
     default: local
 
   datasource:
-    jdbc-url: jdbc:mysql://localhost:3306/wanted-preonboarding-challenge-backend-20
+    jdbc-url: jdbc:mysql://localhost:3306/spring-commerce
     username: taylor
     password: pass
     driver-class-name: com.mysql.cj.jdbc.Driver
