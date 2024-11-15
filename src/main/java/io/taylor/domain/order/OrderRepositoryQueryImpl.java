@@ -22,14 +22,12 @@ public class OrderRepositoryQueryImpl implements OrderRepositoryQuery {
     }
 
     @Override
-    public List<OrderResponse> findByProductId(long productId) {
-        return baseOrderQuery()
-                .where(QOrder.order.productId.eq(productId))
-                .fetch();
+    public List<OrderResponse> findByProductIdAndProviderId(long productId, long providerId) {
+        return List.of();
     }
 
     @Override
-    public OrderResponse findById(Long orderId, long memberId) {
+    public OrderResponse findByIdAndCustomerId(Long orderId, long memberId) {
         return baseOrderQuery()
                 .where(QOrder.order.id.eq(orderId).and(QOrder.order.customerId.eq(memberId)))
                 .fetchOne();

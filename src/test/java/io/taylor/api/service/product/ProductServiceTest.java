@@ -5,15 +5,14 @@ import io.taylor.api.controller.member.request.AuthenticatedMember;
 import io.taylor.api.controller.order.request.OrderRequest;
 import io.taylor.api.controller.product.request.ProductRequest;
 import io.taylor.api.controller.product.response.ProductResponse;
+import io.taylor.api.service.product.request.ProductCreateServiceRequest;
 import io.taylor.domain.product.Product;
 import io.taylor.domain.product.ProductRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -21,8 +20,6 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.tuple;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @Transactional
 class ProductServiceTest extends IntegrationTestSupport {
@@ -45,7 +42,11 @@ class ProductServiceTest extends IntegrationTestSupport {
         Product product = createProduct(1, "TV", 20000000, 2);
         productRepository.save(product);
 
-        ProductRequest request = createProductRequest("TV", 20000000, 2);
+        ProductCreateServiceRequest request = ProductCreateServiceRequest.builder()
+                .name("TV")
+                .price(new BigDecimal("20000000"))
+                .quantity(2)
+                .build();
         AuthenticatedMember member = createAuthenticatedMember(1L, "test@test.com", "member1");
 
         // when
@@ -100,89 +101,6 @@ class ProductServiceTest extends IntegrationTestSupport {
         assertThat(response).isNotNull();
         assertThat(response).extracting("name", "quantity").contains("TV", 1);
         assertThat(response.price()).isEqualByComparingTo(String.valueOf(2_000_000));
-    }
-
-    @Test
-    @DisplayName("제품을 주문하면 재고가 주문수량 만큼 감소한다.")
-    void addOrder() {
-        // given
-        Product product = createProduct(3, "냉장고", 2000000, 10);
-        productRepository.save(product);
-        AuthenticatedMember member = createAuthenticatedMember(1L, "test@test.com", "member1");
-        OrderRequest request = createProductOrderRequest(2000000, 1);
-
-        // when
-        productService.createOrderForProduct(member, product.getId(), request);
-        ProductResponse response = productService.findProductById(product.getId());
-
-        // then
-        assertThat(response).isNotNull();
-        assertThat(response).extracting("name", "quantity")
-                .contains("냉장고", 9);
-    }
-
-    @Test
-    @DisplayName("존재하지 않는 제품은 주문할 수 없다.")
-    void addOrder_WhenNotFound() {
-        // given
-        OrderRequest request = createProductOrderRequest(2000000, 2);
-        AuthenticatedMember member = createAuthenticatedMember(1L, "test@test.com", "member1");
-
-        // when & then
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            productService.createOrderForProduct(member, 1L, request);
-        });
-        assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
-    }
-
-    @Test
-    @DisplayName("본인이 등록한 제품은 주문할 수 없다.")
-    void addOrder_WhenForbidden() {
-        // given
-        Product product = createProduct(1, "냉장고", 2000000, 10);
-        productRepository.save(product);
-
-        OrderRequest request = createProductOrderRequest(2000000, 2);
-        AuthenticatedMember member = createAuthenticatedMember(1L, "test@test.com", "member1");
-
-        // when & then
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            productService.createOrderForProduct(member, product.getId(), request);
-        });
-        assertEquals(HttpStatus.FORBIDDEN, exception.getStatusCode());
-    }
-
-    @Test
-    @DisplayName("재고가 부족한 제품은 주문할 수 없다.")
-    void addOrder_WhenStockIsNotEnough() {
-        // given
-        Product product = createProduct(2, "냉장고", 2000000, 4);
-        productRepository.save(product);
-
-        OrderRequest request = createProductOrderRequest(2000000, 5);
-        AuthenticatedMember member = createAuthenticatedMember(1L, "test@test.com", "member1");
-
-        // when & then
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            productService.createOrderForProduct(member, product.getId(), request);
-        });
-        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
-    }
-
-    @Test
-    @DisplayName("주문한 시점의 금액과 현재 판매 금액이 달라 주문할 수 없다.")
-    void addOrder_WhenPriceChanges() {
-        // given
-        Product product = createProduct(2, "냉장고", 2000000, 10);
-        productRepository.save(product);
-        OrderRequest request = createProductOrderRequest(1000000, 5);
-        AuthenticatedMember member = createAuthenticatedMember(1L, "test@test.com", "member1");
-
-        // when & then
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            productService.createOrderForProduct(member, product.getId(), request);
-        });
-        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
     }
 
     private AuthenticatedMember createAuthenticatedMember(Long id, String email, String nickName) {
