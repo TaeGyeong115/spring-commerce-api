@@ -1,7 +1,9 @@
 package io.taylor.api.controller.product;
 
 import io.taylor.api.controller.member.request.AuthenticatedMember;
+import io.taylor.api.controller.order.response.OrderResponse;
 import io.taylor.api.controller.product.request.ProductRequest;
+import io.taylor.api.controller.product.response.OwnedProductResponse;
 import io.taylor.api.controller.product.response.ProductResponse;
 import io.taylor.api.service.product.ProductService;
 import jakarta.validation.Valid;
@@ -28,14 +30,32 @@ public class ProductController {
 
     @GetMapping
     public ResponseEntity<List<ProductResponse>> findAllProducts() {
-        List<ProductResponse> products = productService.findAllProducts();
-        return ResponseEntity.ok(products);
+        List<ProductResponse> responses = productService.findAllProducts();
+        return ResponseEntity.ok(responses);
     }
 
     @GetMapping("/{productId}")
     public ResponseEntity<ProductResponse> findProductById(@PathVariable("productId") Long productId) {
         ProductResponse response = productService.findProductById(productId);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/owned")
+    public ResponseEntity<List<OwnedProductResponse>> findOwnedProducts(AuthenticatedMember authenticatedMember) {
+        List<OwnedProductResponse> response = productService.findOwnedProducts(authenticatedMember);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/owned/{productId}")
+    public ResponseEntity<List<OrderResponse>> findProductOrderById(@PathVariable("productId") Long productId) {
+        List<OrderResponse> response = productService.findProductOrderById(productId);
+        return ResponseEntity.ok(response);
+    }
+
+    @PatchMapping("/owned/{productId}")
+    public ResponseEntity<Void> updateProductStatus(@PathVariable("productId") Long productId) {
+        productService.updateProductStatus(productId);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
 }
