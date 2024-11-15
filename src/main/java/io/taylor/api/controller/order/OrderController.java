@@ -2,6 +2,7 @@ package io.taylor.api.controller.order;
 
 import io.taylor.api.controller.member.request.AuthenticatedMember;
 import io.taylor.api.controller.order.request.OrderRequest;
+import io.taylor.api.controller.order.request.OrderStatusRequest;
 import io.taylor.api.controller.order.response.OrderResponse;
 import io.taylor.api.service.order.OrderService;
 import jakarta.validation.Valid;
@@ -39,10 +40,10 @@ public class OrderController {
     }
 
     @PatchMapping("/{orderId}")
-    public ResponseEntity<Void> updateOrder(AuthenticatedMember authenticatedMember,
+    public ResponseEntity<Void> updateOrderStatus(AuthenticatedMember authenticatedMember,
                                             @PathVariable("orderId") Long orderId,
-                                            @Valid @RequestBody OrderRequest request) {
-        orderService.updateOrder(authenticatedMember, orderId, request);
+                                            @Valid @RequestBody OrderStatusRequest request) {
+        orderService.updateOrderStatus(authenticatedMember, orderId, request);
         return ResponseEntity.ok().build();
     }
 

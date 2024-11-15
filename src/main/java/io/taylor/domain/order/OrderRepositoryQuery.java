@@ -8,7 +8,7 @@ public interface OrderRepositoryQuery {
 
     List<OrderResponse> findAllByCustomerId(long customerId);
 
-    List<OrderResponse> findByProductId(long productId);
+    List<OrderResponse> findByProductIdAndProviderId(long productId, long providerId);
 
-    OrderResponse findById(Long orderId, long member);
+    OrderResponse findByIdAndCustomerId(Long orderId, long member);
 }

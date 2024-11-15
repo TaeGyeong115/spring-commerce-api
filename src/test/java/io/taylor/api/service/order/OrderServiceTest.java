@@ -1,11 +1,11 @@
 package io.taylor.api.service.order;
 
-import io.taylor.api.controller.order.response.OrderResponse;
-import io.taylor.domain.order.OrderRepository;
-import io.taylor.domain.product.ProductRepository;
 import io.taylor.IntegrationTestSupport;
+import io.taylor.api.controller.order.response.OrderResponse;
 import io.taylor.domain.order.Order;
+import io.taylor.domain.order.OrderRepository;
 import io.taylor.domain.product.Product;
+import io.taylor.domain.product.ProductRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
 
-import static io.taylor.domain.order.OrderStatus.ORDER_IN_PROGRESS;
+import static io.taylor.domain.order.OrderStatus.IN_PROGRESS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.tuple;
 
@@ -60,8 +60,8 @@ class OrderServiceTest extends IntegrationTestSupport {
         assertThat(responses).hasSize(2)
                 .extracting("name", "quantity", "status")
                 .containsExactlyInAnyOrder(
-                        tuple("TV", 1, ORDER_IN_PROGRESS),
-                        tuple("Radio", 1, ORDER_IN_PROGRESS)
+                        tuple("TV", 1, IN_PROGRESS),
+                        tuple("Radio", 1, IN_PROGRESS)
                 );
         assertThat(responses.get(0).price()).isEqualByComparingTo(new BigDecimal("10000"));
         assertThat(responses.get(0).totalPrice()).isEqualByComparingTo(new BigDecimal("10000"));
@@ -83,14 +83,14 @@ class OrderServiceTest extends IntegrationTestSupport {
 
         //then
         assertThat(response).isNotNull();
-        assertThat(response).extracting("name", "quantity", "status").contains("TV", 1, ORDER_IN_PROGRESS);
+        assertThat(response).extracting("name", "quantity", "status").contains("TV", 1, IN_PROGRESS);
         assertThat(response.price()).isEqualByComparingTo(new BigDecimal("10000"));
         assertThat(response.totalPrice()).isEqualByComparingTo(new BigDecimal("10000"));
     }
 
     @Test
     @DisplayName("주문 상태를 변경한다.")
-    void updateOrderStatus() {
+    void updateOrderStatusStatus() {
         // given
 
 

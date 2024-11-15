@@ -57,7 +57,7 @@ class OrderControllerTest extends ControllerTestSupport {
     @DisplayName("특정 주문 상품을 조회한다.")
     void getOrder() throws Exception {
         // given
-        OrderResponse orderResponse = createOrder("TV", 100_000, OrderStatus.ORDER_COMPLETED, 1, 100_000);
+        OrderResponse orderResponse = createOrder("TV", 100_000, OrderStatus.COMPLETED, 1, 100_000);
         given(orderService.getOrderById(any(Long.class), any(Long.class))).willReturn(orderResponse);
 
         // when & then

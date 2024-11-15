@@ -1,11 +1,14 @@
 package io.taylor.api.controller.product;
 
 import io.taylor.api.controller.member.request.AuthenticatedMember;
+import io.taylor.api.controller.order.request.OrderRequest;
+import io.taylor.api.controller.order.request.OrderStatusRequest;
 import io.taylor.api.controller.order.response.OrderResponse;
 import io.taylor.api.controller.product.request.ProductRequest;
 import io.taylor.api.controller.product.response.OwnedProductResponse;
 import io.taylor.api.controller.product.response.ProductResponse;
 import io.taylor.api.service.product.ProductService;
+import io.taylor.domain.order.OrderStatus;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -47,14 +50,20 @@ public class ProductController {
     }
 
     @GetMapping("/owned/{productId}")
-    public ResponseEntity<List<OrderResponse>> findProductOrderById(@PathVariable("productId") Long productId) {
-        List<OrderResponse> response = productService.findProductOrderById(productId);
+    public ResponseEntity<List<OrderResponse>> findByProductIdAndProviderId(AuthenticatedMember authenticatedMember, @PathVariable("productId") Long productId) {
+        List<OrderResponse> response = productService.findByProductIdAndProviderId(authenticatedMember, productId);
         return ResponseEntity.ok(response);
     }
 
     @PatchMapping("/owned/{productId}")
-    public ResponseEntity<Void> updateProductStatus(@PathVariable("productId") Long productId) {
-        productService.updateProductStatus(productId);
+    public ResponseEntity<Void> updateProductStatus(AuthenticatedMember authenticatedMember, @PathVariable("productId") Long productId) {
+        productService.updateProductStatus(authenticatedMember, productId);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @PatchMapping("/owned/order/{orderId}")
+    public ResponseEntity<Void> updateOrderStatus(AuthenticatedMember authenticatedMember, @PathVariable("orderId") Long orderId, @Valid @RequestBody OrderStatusRequest request) {
+        productService.updateOrderStatus(authenticatedMember, orderId, request);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
