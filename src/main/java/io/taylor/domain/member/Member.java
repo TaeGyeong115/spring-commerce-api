@@ -15,6 +15,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
+
 public class Member extends BaseEntity {
 
     @Id
@@ -27,7 +28,7 @@ public class Member extends BaseEntity {
     private String password;
 
     @Builder
-    private Member(String name, String nickName, String email, String password) {
+    Member(String name, String nickName, String email, String password) {
         this.name = name;
         this.nickName = nickName;
         this.email = email;

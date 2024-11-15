@@ -35,7 +35,7 @@ public class Order extends BaseEntity {
     private OrderStatus status;
 
     @Builder
-    private Order(long productId, long customerId, BigDecimal price, int quantity) {
+    Order(long productId, long customerId, BigDecimal price, int quantity) {
         this.productId = productId;
         this.customerId = customerId;
         this.price = price;

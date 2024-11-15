@@ -1,13 +1,10 @@
 package io.taylor.api.service.product;
 
 import io.taylor.api.controller.member.request.AuthenticatedMember;
-import io.taylor.api.controller.product.request.ProductRequest;
 import io.taylor.api.controller.product.response.ProductResponse;
-import io.taylor.domain.order.OrderRepository;
-import io.taylor.domain.product.ProductRepository;
-import io.taylor.api.controller.product.request.ProductOrderRequest;
-import io.taylor.domain.order.Order;
+import io.taylor.api.service.product.request.ProductCreateServiceRequest;
 import io.taylor.domain.product.Product;
+import io.taylor.domain.product.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -21,7 +18,6 @@ import java.util.stream.Collectors;
 public class ProductService {
 
     private final ProductRepository productRepository;
-    private final OrderRepository orderRepository;
 
     public List<ProductResponse> findAllProducts() {
         List<Product> productList = productRepository.findAll();
@@ -35,7 +31,7 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
-    public void createProduct(AuthenticatedMember member, ProductRequest request) {
+    public void createProduct(AuthenticatedMember member, ProductCreateServiceRequest request) {
         Product product = Product.builder()
                 .name(request.name())
                 .providerId(member.memberId())
@@ -53,44 +49,14 @@ public class ProductService {
         return convertToResponse(product);
     }
 
-    public void createOrderForProduct(AuthenticatedMember member, long productId, ProductOrderRequest productOrder) {
-        Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 상품이 존재하지 않습니다."));
-
-        validateOrder(product, member, productOrder);
-
-        product.processSale(productOrder.quantity());
-        Order order = Order.builder()
-                .productId(productId)
-                .customerId(member.memberId())
-                .price(productOrder.price())
-                .quantity(productOrder.quantity())
-                .build();
-
-        orderRepository.save(order);
-    }
-
     private ProductResponse convertToResponse(Product product) {
-        return new ProductResponse(
-                product.getId(),
-                product.getName(),
-                product.remainingQuantity(),
-                product.getPrice(),
-                product.getStatus(),
-                product.getModifiedDateTime(),
-                product.getCreatedDateTime()
-        );
-    }
-
-    private void validateOrder(Product product, AuthenticatedMember member, ProductOrderRequest productOrder) {
-        if (product.getProviderId() == member.memberId()) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "판매자는 본인의 상품을 구매할 수 없습니다.");
-        }
-        if (product.remainingQuantity() < productOrder.quantity()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "재고가 부족합니다.");
-        }
-        if (!product.getPrice().equals(productOrder.price())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "판매 금액 변동이 발생했습니다.");
-        }
+        return ProductResponse.builder()
+                .id(product.getId())
+                .quantity(product.remainingQuantity())
+                .price(product.getPrice())
+                .status(product.getStatus())
+                .modifiedDate(product.getModifiedDateTime())
+                .createdDate(product.getCreatedDateTime())
+                .build();
     }
 }

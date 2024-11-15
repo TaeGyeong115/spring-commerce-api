@@ -37,7 +37,7 @@ public class Product extends BaseEntity {
     private ProductStatus status;
 
     @Builder
-    private Product(Long id, long providerId, String name, BigDecimal price, int totalQuantity) {
+    Product(Long id, long providerId, String name, BigDecimal price, int totalQuantity) {
         validatePrice(price);
         validateQuantity(totalQuantity);
 
@@ -68,13 +68,13 @@ public class Product extends BaseEntity {
 
     private void validatePrice(BigDecimal price) {
         if (price.compareTo(new BigDecimal("100")) < 0) {
-            throw new IllegalArgumentException("Price must be greater than 100.");
+            throw new IllegalArgumentException("가격은 100원 이상입니다.");
         }
     }
 
     private void validateQuantity(int quantity) {
         if (quantity < 1) {
-            throw new IllegalArgumentException("Quantity cannot be negative");
+            throw new IllegalArgumentException("재고가 부족합니다.");
         }
     }
 }

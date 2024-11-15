@@ -2,7 +2,7 @@ package io.taylor.api.service.product;
 
 import io.taylor.IntegrationTestSupport;
 import io.taylor.api.controller.member.request.AuthenticatedMember;
-import io.taylor.api.controller.product.request.ProductOrderRequest;
+import io.taylor.api.controller.order.request.OrderRequest;
 import io.taylor.api.controller.product.request.ProductRequest;
 import io.taylor.api.controller.product.response.ProductResponse;
 import io.taylor.domain.product.Product;
@@ -109,7 +109,7 @@ class ProductServiceTest extends IntegrationTestSupport {
         Product product = createProduct(3, "냉장고", 2000000, 10);
         productRepository.save(product);
         AuthenticatedMember member = createAuthenticatedMember(1L, "test@test.com", "member1");
-        ProductOrderRequest request = createProductOrderRequest(2000000, 1);
+        OrderRequest request = createProductOrderRequest(2000000, 1);
 
         // when
         productService.createOrderForProduct(member, product.getId(), request);
@@ -125,7 +125,7 @@ class ProductServiceTest extends IntegrationTestSupport {
     @DisplayName("존재하지 않는 제품은 주문할 수 없다.")
     void addOrder_WhenNotFound() {
         // given
-        ProductOrderRequest request = createProductOrderRequest(2000000, 2);
+        OrderRequest request = createProductOrderRequest(2000000, 2);
         AuthenticatedMember member = createAuthenticatedMember(1L, "test@test.com", "member1");
 
         // when & then
@@ -142,7 +142,7 @@ class ProductServiceTest extends IntegrationTestSupport {
         Product product = createProduct(1, "냉장고", 2000000, 10);
         productRepository.save(product);
 
-        ProductOrderRequest request = createProductOrderRequest(2000000, 2);
+        OrderRequest request = createProductOrderRequest(2000000, 2);
         AuthenticatedMember member = createAuthenticatedMember(1L, "test@test.com", "member1");
 
         // when & then
@@ -159,7 +159,7 @@ class ProductServiceTest extends IntegrationTestSupport {
         Product product = createProduct(2, "냉장고", 2000000, 4);
         productRepository.save(product);
 
-        ProductOrderRequest request = createProductOrderRequest(2000000, 5);
+        OrderRequest request = createProductOrderRequest(2000000, 5);
         AuthenticatedMember member = createAuthenticatedMember(1L, "test@test.com", "member1");
 
         // when & then
@@ -175,7 +175,7 @@ class ProductServiceTest extends IntegrationTestSupport {
         // given
         Product product = createProduct(2, "냉장고", 2000000, 10);
         productRepository.save(product);
-        ProductOrderRequest request = createProductOrderRequest(1000000, 5);
+        OrderRequest request = createProductOrderRequest(1000000, 5);
         AuthenticatedMember member = createAuthenticatedMember(1L, "test@test.com", "member1");
 
         // when & then
@@ -210,8 +210,8 @@ class ProductServiceTest extends IntegrationTestSupport {
                 .build();
     }
 
-    private ProductOrderRequest createProductOrderRequest(int price, int quantity) {
-        return ProductOrderRequest.builder()
+    private OrderRequest createProductOrderRequest(int price, int quantity) {
+        return OrderRequest.builder()
                 .price(new BigDecimal(price))
                 .quantity(quantity)
                 .build();
