@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum ProductStatus {
     FOR_SALE("판매 중"),
-    RESERVED("예약 중"),
     SOLD_OUT("판매 완료");
 
     private final String text;

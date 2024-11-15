@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -48,6 +49,10 @@ public class OrderService {
 
     public OrderResponse getOrderById(long memberId, long orderId) {
         return orderRepository.findById(orderId, memberId);
+    }
+
+    public List<OrderResponse> findByProductId(Long productId) {
+        return orderRepository.findByProductId(productId);
     }
 
     public void updateOrder(AuthenticatedMember member, long orderId, OrderRequest request) {
