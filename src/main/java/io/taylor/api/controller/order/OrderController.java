@@ -1,11 +1,12 @@
 package io.taylor.api.controller.order;
 
 import io.taylor.api.controller.member.request.AuthenticatedMember;
+import io.taylor.api.controller.order.request.OrderRequest;
 import io.taylor.api.controller.order.response.OrderResponse;
-import io.taylor.api.controller.product.request.ProductOrderRequest;
 import io.taylor.api.service.order.OrderService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +18,13 @@ import java.util.List;
 public class OrderController {
 
     private final OrderService orderService;
+
+    @PostMapping("/{productId}/orders")
+    public ResponseEntity<Object> createOrderForProduct(AuthenticatedMember authenticatedMember,
+                                                        @Valid @RequestBody OrderRequest request) {
+        orderService.createOrder(authenticatedMember, request.toServiceRequest());
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
 
     @GetMapping
     public ResponseEntity<List<OrderResponse>> getAllOrders(AuthenticatedMember authenticatedMember) {
@@ -33,7 +41,7 @@ public class OrderController {
     @PatchMapping("/{orderId}")
     public ResponseEntity<Void> updateOrder(AuthenticatedMember authenticatedMember,
                                             @PathVariable("orderId") Long orderId,
-                                            @Valid @RequestBody ProductOrderRequest request) {
+                                            @Valid @RequestBody OrderRequest request) {
         orderService.updateOrder(authenticatedMember, orderId, request);
         return ResponseEntity.ok().build();
     }

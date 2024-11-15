@@ -1,12 +1,12 @@
 package io.taylor.api.service.member;
 
 import io.taylor.api.controller.member.response.MemberLoginResponse;
-import io.taylor.util.JwtTokenUtil;
-import io.taylor.util.PasswordUtil;
 import io.taylor.api.service.member.request.MemberJoinServiceRequest;
 import io.taylor.api.service.member.request.MemberLoingServiceRequest;
 import io.taylor.domain.member.Member;
 import io.taylor.domain.member.MemberRepository;
+import io.taylor.util.JwtTokenUtil;
+import io.taylor.util.PasswordUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
