@@ -29,6 +29,7 @@ public class Product extends BaseEntity {
 
     private int totalQuantity;
 
+    @Version
     private int soldQuantity;
 
     private BigDecimal price;
@@ -54,16 +55,20 @@ public class Product extends BaseEntity {
         return this.totalQuantity - this.soldQuantity;
     }
 
-    private void increaseSoldQuantity(int quantity) {
-        this.soldQuantity += quantity;
-    }
-
     public void processSale(int quantity) {
         increaseSoldQuantity(quantity);
 
         if (this.totalQuantity == this.soldQuantity) {
             this.status = ProductStatus.SOLD_OUT;
         }
+    }
+
+    private void increaseSoldQuantity(int quantity) {
+        if (remainingQuantity() < quantity) {
+            throw new IllegalArgumentException("재고가 부족합니다.");
+        }
+
+        this.soldQuantity += quantity;
     }
 
     private void validatePrice(BigDecimal price) {

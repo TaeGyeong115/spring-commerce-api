@@ -19,10 +19,10 @@ public class OrderController {
 
     private final OrderService orderService;
 
-    @PostMapping("/{productId}/orders")
+    @PostMapping()
     public ResponseEntity<Object> createOrderForProduct(AuthenticatedMember authenticatedMember,
                                                         @Valid @RequestBody OrderRequest request) {
-        orderService.createOrder(authenticatedMember, request.toServiceRequest());
+        orderService.createOrderForProduct(authenticatedMember, request.toServiceRequest());
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 

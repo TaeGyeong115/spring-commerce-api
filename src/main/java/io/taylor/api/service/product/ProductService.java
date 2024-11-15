@@ -52,6 +52,7 @@ public class ProductService {
     private ProductResponse convertToResponse(Product product) {
         return ProductResponse.builder()
                 .id(product.getId())
+                .name(product.getName())
                 .quantity(product.remainingQuantity())
                 .price(product.getPrice())
                 .status(product.getStatus())

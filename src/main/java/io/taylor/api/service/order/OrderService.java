@@ -8,6 +8,7 @@ import io.taylor.domain.order.Order;
 import io.taylor.domain.order.OrderRepository;
 import io.taylor.domain.product.Product;
 import io.taylor.domain.product.ProductRepository;
+import io.taylor.domain.product.ProductStatus;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -22,13 +23,15 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
 
-    public void createOrder(AuthenticatedMember member, OrderServiceRequest request) {
+    public void createOrderForProduct(AuthenticatedMember member, OrderServiceRequest request) {
         Product product = productRepository.findById(request.productId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 상품이 존재하지 않습니다."));
 
         validateOrder(product, member, request);
 
         product.processSale(request.quantity());
+        productRepository.save(product);
+
         Order order = Order.builder()
                 .productId(request.productId())
                 .customerId(member.memberId())
@@ -54,10 +57,12 @@ public class OrderService {
         if (product.getProviderId() == member.memberId()) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "판매자는 본인의 상품을 구매할 수 없습니다.");
         }
-        if (product.remainingQuantity() < request.quantity()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "재고가 부족합니다.");
+
+        if (product.getStatus() != ProductStatus.FOR_SALE) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "판매하지 않는 상품입니다.");
         }
-        if (!product.getPrice().equals(request.price())) {
+
+        if (product.getPrice().compareTo(request.price()) != 0) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "판매 금액 변동이 발생했습니다.");
         }
     }

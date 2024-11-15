@@ -47,8 +47,8 @@ class OrderServiceTest extends IntegrationTestSupport {
         );
         productRepository.saveAll(products);
         List<Order> orders = List.of(
-                createOrder(products.get(0).getId(), 1, 10_000, 1),
-                createOrder(products.get(1).getId(), 1, 20_000, 1)
+                createOrderForProduct(products.get(0).getId(), 1, 10_000, 1),
+                createOrderForProduct(products.get(1).getId(), 1, 20_000, 1)
         );
         orderRepository.saveAll(orders);
 
@@ -75,7 +75,7 @@ class OrderServiceTest extends IntegrationTestSupport {
         // given
         Product product = createProduct(2L, "TV", 10_000, 1);
         productRepository.save(product);
-        Order order = createOrder(product.getId(), 1, 10_000, 1);
+        Order order = createOrderForProduct(product.getId(), 1, 10_000, 1);
         orderRepository.save(order);
 
         // when
@@ -110,7 +110,7 @@ class OrderServiceTest extends IntegrationTestSupport {
                 .build();
     }
 
-    private Order createOrder(Long productId, int customerId, int price, int quantity) {
+    private Order createOrderForProduct(Long productId, int customerId, int price, int quantity) {
         return Order.builder()
                 .productId(productId)
                 .customerId(customerId)
