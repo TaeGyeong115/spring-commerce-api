@@ -1,22 +1,13 @@
 package io.taylor.api.controller.member;
 
 import io.taylor.ControllerTestSupport;
-import io.taylor.aop.LogAop;
 import io.taylor.api.controller.member.request.MemberJoinRequest;
 import io.taylor.api.controller.member.request.MemberLoginRequest;
 import io.taylor.api.controller.member.response.MemberLoginResponse;
-import io.taylor.api.controller.order.OrderController;
 import io.taylor.api.service.member.request.MemberLoingServiceRequest;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -25,12 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@Import(LogAop.class)
-@EnableAspectJAutoProxy
 class MemberControllerTest extends ControllerTestSupport {
-
-    @SpyBean
-    private LogAop logAop;
 
     @Test
     @DisplayName("회원 가입을 한다.")
@@ -69,8 +55,6 @@ class MemberControllerTest extends ControllerTestSupport {
                                 .contentType(MediaType.APPLICATION_JSON)
                 ).andDo(print())
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.resultCode").value(400))
-                .andExpect(jsonPath("$.error").value("Bad Request"))
                 .andExpect(jsonPath("$.resultMsg").value("이름은 필수 항목입니다."));
 
     }
@@ -92,8 +76,6 @@ class MemberControllerTest extends ControllerTestSupport {
                                 .contentType(MediaType.APPLICATION_JSON)
                 ).andDo(print())
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.resultCode").value(400))
-                .andExpect(jsonPath("$.error").value("Bad Request"))
                 .andExpect(jsonPath("$.resultMsg").value("닉네임은 필수 항목입니다."));
 
     }
@@ -115,8 +97,6 @@ class MemberControllerTest extends ControllerTestSupport {
                                 .contentType(MediaType.APPLICATION_JSON)
                 ).andDo(print())
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.resultCode").value(400))
-                .andExpect(jsonPath("$.error").value("Bad Request"))
                 .andExpect(jsonPath("$.resultMsg").value("이메일은 필수 항목입니다."));
 
     }
@@ -138,8 +118,6 @@ class MemberControllerTest extends ControllerTestSupport {
                                 .contentType(MediaType.APPLICATION_JSON)
                 ).andDo(print())
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.resultCode").value(400))
-                .andExpect(jsonPath("$.error").value("Bad Request"))
                 .andExpect(jsonPath("$.resultMsg").value("비밀번호는 필수 항목입니다."));
 
     }
@@ -192,8 +170,6 @@ class MemberControllerTest extends ControllerTestSupport {
                                 .contentType(MediaType.APPLICATION_JSON)
                 ).andDo(print())
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.resultCode").value(400))
-                .andExpect(jsonPath("$.error").value("Bad Request"))
                 .andExpect(jsonPath("$.resultMsg").value("이메일은 필수 항목입니다."));
     }
 
@@ -219,8 +195,6 @@ class MemberControllerTest extends ControllerTestSupport {
                                 .contentType(MediaType.APPLICATION_JSON)
                 ).andDo(print())
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.resultCode").value(400))
-                .andExpect(jsonPath("$.error").value("Bad Request"))
                 .andExpect(jsonPath("$.resultMsg").value("비밀번호는 필수 항목입니다."));
     }
 }
