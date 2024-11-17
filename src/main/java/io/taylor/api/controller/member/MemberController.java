@@ -1,18 +1,15 @@
 package io.taylor.api.controller.member;
 
-import io.taylor.api.controller.member.response.MemberLoginResponse;
-import io.taylor.api.service.member.MemberService;
 import io.taylor.api.controller.member.request.AuthenticatedMember;
 import io.taylor.api.controller.member.request.MemberJoinRequest;
 import io.taylor.api.controller.member.request.MemberLoginRequest;
+import io.taylor.api.controller.member.response.MemberLoginResponse;
+import io.taylor.api.service.member.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,8 +30,8 @@ public class MemberController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/logout")
-    public ResponseEntity<Void> logout(AuthenticatedMember authenticatedMember, @RequestBody String requestBody) {
+    @DeleteMapping("/logout")
+    public ResponseEntity<Void> logout(AuthenticatedMember authenticatedMember) {
         memberService.logout();
         return ResponseEntity.ok().build();
     }

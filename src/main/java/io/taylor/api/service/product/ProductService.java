@@ -1,7 +1,6 @@
 package io.taylor.api.service.product;
 
 import io.taylor.api.controller.member.request.AuthenticatedMember;
-import io.taylor.api.controller.order.request.OrderRequest;
 import io.taylor.api.controller.order.request.OrderStatusRequest;
 import io.taylor.api.controller.order.response.OrderResponse;
 import io.taylor.api.controller.product.response.OwnedProductResponse;
@@ -18,7 +17,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service

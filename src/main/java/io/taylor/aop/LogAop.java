@@ -42,6 +42,32 @@ public class LogAop {
         }
     }
 
+//    @Around("io.taylor.aop.Pointcuts.OrderAndProductController()")
+//    public Object saveLog(ProceedingJoinPoint joinPoint) throws Throwable {
+//        Object result;
+//        Long memberId = null;
+//
+//        try {
+//            for (Object arg : joinPoint.getArgs()) {
+//                if (arg instanceof AuthenticatedMember member) {
+//                    memberId = member.memberId();
+//                    break;
+//                }
+//            }
+//
+//            result = joinPoint.proceed();
+//            Log log = Log.builder()
+//                    .memberId(memberId)
+//                    .targetType(TargetType.valueOf(joinPoint.getSignature().getName().toUpperCase()))
+//                    .actionType(ActionType.valueOf(joinPoint))
+//                    .build();
+//            logRepository.save(log);
+//            return result;
+//        } catch (Exception e) {
+//            throw e;
+//        }
+//    }
+
     private void syncTrace() {
         TraceId traceId = traceIdHolder.get();
         if (traceId == null) {

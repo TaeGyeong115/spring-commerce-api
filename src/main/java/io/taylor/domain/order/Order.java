@@ -22,13 +22,9 @@ public class Order extends BaseEntity {
     private Long id;
 
     private long productId;
-
     private long customerId;
-
     private BigDecimal price;
-
     private int quantity;
-
     private BigDecimal totalPrice;
 
     @Enumerated(EnumType.STRING)
