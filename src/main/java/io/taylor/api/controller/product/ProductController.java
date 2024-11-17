@@ -24,7 +24,7 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping
-    public ResponseEntity<Object> saveProduct(AuthenticatedMember authenticatedMember,
+    public ResponseEntity<Void> saveProduct(AuthenticatedMember authenticatedMember,
                                               @Valid @RequestBody ProductRequest request) {
         productService.saveProduct(authenticatedMember, request.toServiceRequest());
         return ResponseEntity.status(HttpStatus.CREATED).build();
