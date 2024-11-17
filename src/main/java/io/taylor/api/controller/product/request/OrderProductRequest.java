@@ -1,4 +1,4 @@
-package io.taylor.api.controller.order.request;
+package io.taylor.api.controller.product.request;
 
 import io.taylor.api.service.order.request.OrderServiceRequest;
 import jakarta.validation.constraints.DecimalMin;
@@ -9,7 +9,7 @@ import lombok.Builder;
 import java.math.BigDecimal;
 
 @Builder
-public record OrderRequest(
+public record OrderProductRequest(
         @NotNull(message = "상품 아이디는 필수 항목입니다.")
         Long productId,
         @NotNull(message = "가격은 필수 항목입니다.")

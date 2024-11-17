@@ -1,14 +1,13 @@
 package io.taylor.api.controller.product;
 
 import io.taylor.api.controller.member.request.AuthenticatedMember;
-import io.taylor.api.controller.order.request.OrderRequest;
 import io.taylor.api.controller.order.request.OrderStatusRequest;
 import io.taylor.api.controller.order.response.OrderResponse;
+import io.taylor.api.controller.product.request.OrderProductRequest;
 import io.taylor.api.controller.product.request.ProductRequest;
 import io.taylor.api.controller.product.response.OwnedProductResponse;
 import io.taylor.api.controller.product.response.ProductResponse;
 import io.taylor.api.service.product.ProductService;
-import io.taylor.domain.order.OrderStatus;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,9 +24,9 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping
-    public ResponseEntity<Object> createProduct(AuthenticatedMember authenticatedMember,
-                                                @Valid @RequestBody ProductRequest request) {
-        productService.createProduct(authenticatedMember, request.toServiceRequest());
+    public ResponseEntity<Object> saveProduct(AuthenticatedMember authenticatedMember,
+                                              @Valid @RequestBody ProductRequest request) {
+        productService.saveProduct(authenticatedMember, request.toServiceRequest());
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -41,6 +40,14 @@ public class ProductController {
     public ResponseEntity<ProductResponse> findProductById(@PathVariable("productId") Long productId) {
         ProductResponse response = productService.findProductById(productId);
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/{productId}")
+    public ResponseEntity<Void> orderProduct(AuthenticatedMember authenticatedMember,
+                                             @PathVariable("productId") Long productId,
+                                             @Valid @RequestBody OrderProductRequest request) {
+        productService.orderProduct(authenticatedMember, request.toServiceRequest());
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/owned")
@@ -61,9 +68,9 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @PatchMapping("/owned/order/{orderId}")
-    public ResponseEntity<Void> updateOrderStatus(AuthenticatedMember authenticatedMember, @PathVariable("orderId") Long orderId, @Valid @RequestBody OrderStatusRequest request) {
-        productService.updateOrderStatus(authenticatedMember, orderId, request);
+    @PatchMapping("/owned/{productId}/order")
+    public ResponseEntity<Void> updateOrderStatus(AuthenticatedMember authenticatedMember, @PathVariable("productId") Long productId, @Valid @RequestBody OrderStatusRequest request) {
+        productService.updateOrderStatus(authenticatedMember, productId, request);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
