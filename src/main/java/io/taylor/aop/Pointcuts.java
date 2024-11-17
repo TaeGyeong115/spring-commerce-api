@@ -8,11 +8,7 @@ public class Pointcuts {
     public void allAPI() {
     }
 
-    @Pointcut("execution(* *..*Service.*(..))")
-    public void allService() {
-    }
-
-    @Pointcut("execution(* *..*Controller.*(..))")
-    public void allController() {
+    @Pointcut("execution(* *..OrderController.*(..)) || execution(* *..ProductController.*(..))")
+    public void OrderAndProductController() {
     }
 }
