@@ -52,7 +52,6 @@ public class OrderService {
 
     public void deleteOrderStatus(AuthenticatedMember member, long orderId) {
         Order order = orderRepository.findById(orderId).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "존재하지 않는 주문입니다."));
-
         if (order.getCustomerId() != member.memberId() || order.getProductId() != member.memberId()) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "접근 권한이 없습니다.");
         }

@@ -2,7 +2,6 @@ package io.taylor.api.service.product;
 
 import io.taylor.IntegrationTestSupport;
 import io.taylor.api.controller.member.request.AuthenticatedMember;
-import io.taylor.api.controller.order.request.OrderRequest;
 import io.taylor.api.controller.product.request.ProductRequest;
 import io.taylor.api.controller.product.response.ProductResponse;
 import io.taylor.api.service.product.request.ProductCreateServiceRequest;
@@ -39,7 +38,7 @@ class ProductServiceTest extends IntegrationTestSupport {
     @DisplayName("새로운 제품을 추가한다.")
     void addProduct() {
         // given
-        Product product = createProduct(1, "TV", 20000000, 2);
+        Product product = saveProduct(1, "TV", 20000000, 2);
         productRepository.save(product);
 
         ProductCreateServiceRequest request = ProductCreateServiceRequest.builder()
@@ -50,7 +49,7 @@ class ProductServiceTest extends IntegrationTestSupport {
         AuthenticatedMember member = createAuthenticatedMember(1L, "test@test.com", "member1");
 
         // when
-        productService.createProduct(member, request);
+        productService.saveProduct(member, request);
         ProductResponse response = productService.findProductById(product.getId());
 
         // then
@@ -64,9 +63,9 @@ class ProductServiceTest extends IntegrationTestSupport {
     void getAllProducts() {
         // given
         List<Product> products = Arrays.asList(
-                createProduct(3, "TV", 2_000_000, 10),
-                createProduct(3, "Video", 1_500_000, 5),
-                createProduct(3, "Radio", 3_000_000, 7)
+                saveProduct(3, "TV", 2_000_000, 10),
+                saveProduct(3, "Video", 1_500_000, 5),
+                saveProduct(3, "Radio", 3_000_000, 7)
         );
         productRepository.saveAll(products);
 
@@ -91,7 +90,7 @@ class ProductServiceTest extends IntegrationTestSupport {
     @DisplayName("특정 제품 정보를 조회한다.")
     void getProduct() {
         // given
-        Product product = createProduct(1L, "TV", 2_000_000, 1);
+        Product product = saveProduct(1L, "TV", 2_000_000, 1);
         productRepository.save(product);
 
         // when
@@ -111,7 +110,7 @@ class ProductServiceTest extends IntegrationTestSupport {
                 .build();
     }
 
-    private Product createProduct(long providerId, String name, int price, int quantity) {
+    private Product saveProduct(long providerId, String name, int price, int quantity) {
         return Product.builder()
                 .providerId(providerId)
                 .name(name)
@@ -120,7 +119,7 @@ class ProductServiceTest extends IntegrationTestSupport {
                 .build();
     }
 
-    private ProductRequest createProductRequest(String name, int price, int quantity) {
+    private ProductRequest saveProductRequest(String name, int price, int quantity) {
         return ProductRequest.builder()
                 .name(name)
                 .price(new BigDecimal(price))
@@ -128,10 +127,10 @@ class ProductServiceTest extends IntegrationTestSupport {
                 .build();
     }
 
-    private OrderRequest createProductOrderRequest(int price, int quantity) {
-        return OrderRequest.builder()
-                .price(new BigDecimal(price))
-                .quantity(quantity)
-                .build();
-    }
+//    private OrderProductRequest saveProductOrderRequest(int price, int quantity) {
+//        return OrderProductRequest.builder()
+//                .price(new BigDecimal(price))
+//                .quantity(quantity)
+//                .build();
+//    }
 }
