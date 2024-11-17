@@ -11,10 +11,12 @@ import io.taylor.api.service.member.MemberService;
 import io.taylor.api.service.order.OrderService;
 import io.taylor.api.service.product.ProductService;
 import io.taylor.config.SecurityConfig;
+import io.taylor.exception.GlobalExceptionHandler;
 import io.taylor.util.JwtTokenUtil;
 import io.taylor.util.PasswordUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -23,9 +25,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
 
 @WebMvcTest(controllers = {
         MemberController.class,
@@ -66,11 +65,17 @@ public abstract class ControllerTestSupport {
 
     @BeforeEach
     void setup() throws Exception {
-        given(authenticatedMemberResolver.supportsParameter(any())).willReturn(true);
-        given(authenticatedMemberResolver.resolveArgument(any(), any(), any(), any())).willReturn(createAuthMember());
+        Mockito.when(authenticatedMemberResolver.supportsParameter(Mockito.any())).thenReturn(true);
+        Mockito.when(authenticatedMemberResolver.resolveArgument(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any()))
+                .thenReturn(createAuthMember());
 
-        mockMvc = MockMvcBuilders.standaloneSetup(new OrderController(orderService))
+        mockMvc = MockMvcBuilders.standaloneSetup(
+                        new MemberController(memberService),
+                        new ProductController(productService),
+                        new OrderController(orderService),
+                        new LogController(logService))
                 .setCustomArgumentResolvers(authenticatedMemberResolver)
+                .setControllerAdvice(GlobalExceptionHandler.class)
                 .build();
     }
 
