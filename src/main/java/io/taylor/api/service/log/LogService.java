@@ -2,8 +2,10 @@ package io.taylor.api.service.log;
 
 import io.taylor.api.controller.log.response.LogResponse;
 import io.taylor.api.controller.member.request.AuthenticatedMember;
+import io.taylor.domain.log.ActionType;
 import io.taylor.domain.log.Log;
 import io.taylor.domain.log.LogRepository;
+import io.taylor.domain.log.TargetType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,16 @@ public class LogService {
         return logList.stream()
                 .map(this::convertToResponse)
                 .collect(Collectors.toList());
+    }
+
+    public void saveLog(ActionType actionType, TargetType targetType, long memberId, long targetId) {
+        Log log = Log.builder()
+                .memberId(memberId)
+                .targetId(targetId)
+                .actionType(actionType)
+                .targetType(targetType)
+                .build();
+        logRepository.save(log);
     }
 
     private LogResponse convertToResponse(Log log) {

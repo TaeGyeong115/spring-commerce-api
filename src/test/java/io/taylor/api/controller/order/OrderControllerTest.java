@@ -58,7 +58,7 @@ class OrderControllerTest extends ControllerTestSupport {
     void getOrder() throws Exception {
         // given
         OrderResponse orderResponse = createOrder("TV", 100_000, OrderStatus.COMPLETED, 1, 100_000);
-        given(orderService.getOrderById(any(Long.class), any(Long.class))).willReturn(orderResponse);
+        given(orderService.getOrderByIdAndMemberId(any(Long.class), any(Long.class))).willReturn(orderResponse);
 
         // when & then
         mockMvc.perform(
