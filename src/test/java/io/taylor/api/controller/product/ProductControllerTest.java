@@ -28,7 +28,7 @@ class ProductControllerTest extends ControllerTestSupport {
     @DisplayName("상품 목록을 조회한다.")
     void getAllProducts() throws Exception {
         // given
-        List<ProductResponse> response = List.of(createProduct(1L, "TV", 1000000, ProductStatus.FOR_SALE, 1));
+        List<ProductResponse> response = List.of(createProductResponse(1L, "TV", 1000000, ProductStatus.FOR_SALE, 1));
         given(productService.findAllProducts()).willReturn(response);
 
         // when & then
@@ -49,7 +49,7 @@ class ProductControllerTest extends ControllerTestSupport {
     @DisplayName("특정 상품을 조회한다.")
     void getProduct() throws Exception {
         // given
-        ProductResponse response = createProduct(1L, "TV", 100_000, ProductStatus.FOR_SALE, 1);
+        ProductResponse response = createProductResponse(1L, "TV", 100_000, ProductStatus.FOR_SALE, 1);
         given(productService.findProductById(1L)).willReturn(response);
 
         // when & then
@@ -393,7 +393,7 @@ class ProductControllerTest extends ControllerTestSupport {
                 .andExpect(jsonPath("$.message").value("주문 상태는 필수 항목입니다."));
     }
 
-    private static ProductResponse createProduct(long id, String name, int price, ProductStatus status, int quantity) {
+    private static ProductResponse createProductResponse(long id, String name, int price, ProductStatus status, int quantity) {
         return ProductResponse.builder()
                 .id(id)
                 .name(name)
