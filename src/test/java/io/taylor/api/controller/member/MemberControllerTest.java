@@ -1,6 +1,6 @@
 package io.taylor.api.controller.member;
 
-import io.taylor.ControllerTestSupport;
+import io.taylor.api.controller.ControllerTestSupport;
 import io.taylor.api.controller.member.request.MemberJoinRequest;
 import io.taylor.api.controller.member.request.MemberLoginRequest;
 import io.taylor.api.controller.member.response.MemberLoginResponse;
@@ -55,7 +55,7 @@ class MemberControllerTest extends ControllerTestSupport {
                                 .contentType(MediaType.APPLICATION_JSON)
                 ).andDo(print())
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.resultMsg").value("이름은 필수 항목입니다."));
+                .andExpect(jsonPath("$.message").value("이름은 필수 항목입니다."));
 
     }
 
@@ -76,7 +76,7 @@ class MemberControllerTest extends ControllerTestSupport {
                                 .contentType(MediaType.APPLICATION_JSON)
                 ).andDo(print())
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.resultMsg").value("닉네임은 필수 항목입니다."));
+                .andExpect(jsonPath("$.message").value("닉네임은 필수 항목입니다."));
 
     }
 
@@ -97,7 +97,7 @@ class MemberControllerTest extends ControllerTestSupport {
                                 .contentType(MediaType.APPLICATION_JSON)
                 ).andDo(print())
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.resultMsg").value("이메일은 필수 항목입니다."));
+                .andExpect(jsonPath("$.message").value("이메일은 필수 항목입니다."));
 
     }
 
@@ -118,7 +118,7 @@ class MemberControllerTest extends ControllerTestSupport {
                                 .contentType(MediaType.APPLICATION_JSON)
                 ).andDo(print())
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.resultMsg").value("비밀번호는 필수 항목입니다."));
+                .andExpect(jsonPath("$.message").value("비밀번호는 필수 항목입니다."));
 
     }
 
@@ -170,7 +170,7 @@ class MemberControllerTest extends ControllerTestSupport {
                                 .contentType(MediaType.APPLICATION_JSON)
                 ).andDo(print())
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.resultMsg").value("이메일은 필수 항목입니다."));
+                .andExpect(jsonPath("$.message").value("이메일은 필수 항목입니다."));
     }
 
 
@@ -195,6 +195,6 @@ class MemberControllerTest extends ControllerTestSupport {
                                 .contentType(MediaType.APPLICATION_JSON)
                 ).andDo(print())
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.resultMsg").value("비밀번호는 필수 항목입니다."));
+                .andExpect(jsonPath("$.message").value("비밀번호는 필수 항목입니다."));
     }
 }

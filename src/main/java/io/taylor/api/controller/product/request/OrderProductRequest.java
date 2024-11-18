@@ -10,8 +10,6 @@ import java.math.BigDecimal;
 
 @Builder
 public record OrderProductRequest(
-        @NotNull(message = "상품 아이디는 필수 항목입니다.")
-        Long productId,
         @NotNull(message = "가격은 필수 항목입니다.")
         @DecimalMin(value = "100", message = "최소 가격은 100원 이상입니다.")
         BigDecimal price,
@@ -21,7 +19,6 @@ public record OrderProductRequest(
 
     public OrderServiceRequest toServiceRequest() {
         return OrderServiceRequest.builder()
-                .productId(productId)
                 .price(price)
                 .quantity(quantity)
                 .build();

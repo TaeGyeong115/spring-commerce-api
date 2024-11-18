@@ -9,7 +9,8 @@ import java.time.LocalDateTime;
 @Builder
 public record ProductResponse(long id, String name, int quantity,
                               BigDecimal price,
-                              ProductStatus status, LocalDateTime modifiedDate,
-                              LocalDateTime createdDate) {
+                              ProductStatus status,
+                              LocalDateTime modifiedDateTime,
+                              LocalDateTime createdDateTime) {
 }
 

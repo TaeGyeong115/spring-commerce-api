@@ -89,8 +89,8 @@ public class ProductService {
                         .totalQuantity(product.getTotalQuantity())
                         .price(product.getPrice())
                         .status(product.getStatus())
-                        .modifiedDate(product.getModifiedDateTime())
-                        .createdDate(product.getCreatedDateTime())
+                        .modifiedDateTime(product.getModifiedDateTime())
+                        .createdDateTime(product.getCreatedDateTime())
                         .build())
                 .collect(Collectors.toList());
     }
@@ -152,8 +152,8 @@ public class ProductService {
                 .quantity(product.remainingQuantity())
                 .price(product.getPrice())
                 .status(product.getStatus())
-                .modifiedDate(product.getModifiedDateTime())
-                .createdDate(product.getCreatedDateTime())
+                .modifiedDateTime(product.getModifiedDateTime())
+                .createdDateTime(product.getCreatedDateTime())
                 .build();
     }
 }
