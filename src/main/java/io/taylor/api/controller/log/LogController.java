@@ -19,8 +19,8 @@ public class LogController {
     private final LogService logService;
 
     @GetMapping()
-    public ResponseEntity<List<LogResponse>> getActivityLogs(AuthenticatedMember authenticatedMember) {
-        List<LogResponse> response = logService.getActivityLogs(authenticatedMember);
+    public ResponseEntity<List<LogResponse>> getActivityLogs(AuthenticatedMember member) {
+        List<LogResponse> response = logService.getActivityLogs(member);
         return ResponseEntity.ok(response);
     }
 }

@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class OrderControllerTest extends ControllerTestSupport {
 
     @Test
-    @DisplayName("주문 상품 목록을 조회한다.")
+    @DisplayName("주문 제품 목록을 조회한다.")
     void getAllOrders() throws Exception {
         // given
         List<OrderResponse> orders = List.of();
@@ -37,7 +37,7 @@ class OrderControllerTest extends ControllerTestSupport {
     }
 
     @Test
-    @DisplayName("특정 주문 상품을 조회한다.")
+    @DisplayName("특정 주문 제품을 조회한다.")
     void getOrder() throws Exception {
         // given
         OrderResponse orderResponse = createOrder("TV", 100_000, OrderStatus.COMPLETED, 1, 100_000);
