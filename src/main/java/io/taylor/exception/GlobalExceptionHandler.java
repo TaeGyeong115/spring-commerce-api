@@ -18,7 +18,7 @@ public class GlobalExceptionHandler {
 
     private Map<String, Object> createErrorResponse(String message) {
         Map<String, Object> body = new HashMap<>();
-        body.put("resultMsg", message); // 상태 코드 없이 예외 메시지만 포함
+        body.put("message", message);
         body.put("timestamp", System.currentTimeMillis());
         body.put("path", ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest().getRequestURI());
         return body;

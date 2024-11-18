@@ -1,4 +1,4 @@
-package io.taylor;
+package io.taylor.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.taylor.api.controller.log.LogController;

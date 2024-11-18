@@ -13,7 +13,7 @@ public record OwnedProductResponse(long id,
                                    int totalQuantity,
                                    BigDecimal price,
                                    ProductStatus status,
-                                   LocalDateTime modifiedDate,
-                                   LocalDateTime createdDate) {
+                                   LocalDateTime modifiedDateTime,
+                                   LocalDateTime createdDateTime) {
 }
 
