@@ -1,38 +1,22 @@
 package io.taylor.api.service.member;
 
-import io.taylor.IntegrationTestSupport;
 import io.taylor.api.controller.member.response.MemberLoginResponse;
+import io.taylor.api.service.IntegrationTestSupport;
 import io.taylor.api.service.member.request.MemberJoinServiceRequest;
 import io.taylor.api.service.member.request.MemberLoingServiceRequest;
 import io.taylor.domain.member.Member;
-import io.taylor.domain.member.MemberRepository;
-import io.taylor.util.PasswordUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Optional;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.when;
 
 @Transactional
 class MemberServiceTest extends IntegrationTestSupport {
-
-    @Autowired
-    private MemberService memberService;
-
-    @Autowired
-    private MemberRepository memberRepository;
-
-    @Autowired
-    private PasswordUtil passwordUtil;
 
     @AfterEach
     void tearDown() {
@@ -44,9 +28,9 @@ class MemberServiceTest extends IntegrationTestSupport {
     void join() {
         // given
         MemberJoinServiceRequest request = MemberJoinServiceRequest.builder()
-                .name("member1")
-                .email("member1@test.com")
-                .nickName("member1")
+                .name("joinTest")
+                .email("joinTest@test.com")
+                .nickName("joinTest")
                 .password("password")
                 .build();
 
@@ -54,13 +38,11 @@ class MemberServiceTest extends IntegrationTestSupport {
         memberService.join(request);
         Member foundMember = memberRepository.findMemberByEmail(request.email());
 
-        when(memberRepository.findById(anyLong())).thenReturn(Optional.of(foundMember));
-
         // then
         assertThat(foundMember).isNotNull();
         assertThat(foundMember)
                 .extracting("name", "email", "nickName")
-                .contains("member1", "member1@test.com", "member1");
+                .contains(request.name(), request.email(), request.nickName());
     }
 
     @Test
@@ -68,13 +50,13 @@ class MemberServiceTest extends IntegrationTestSupport {
     void joinFailsWhenMemberExists() {
         // given
         String encryptedPassword = passwordUtil.encodePassword("password");
-        Member member = createMember("member1@test.com", encryptedPassword, "member1", "member1");
+        Member member = createMember("joinTest@test.com", encryptedPassword, "joinTest", "joinTest");
         memberRepository.save(member);
 
         MemberJoinServiceRequest request = MemberJoinServiceRequest.builder()
-                .name("member1")
-                .email("member1@test.com")
-                .nickName("member1")
+                .name("joinTest")
+                .email("joinTest@test.com")
+                .nickName("joinTest")
                 .password("password")
                 .build();
 
@@ -92,11 +74,11 @@ class MemberServiceTest extends IntegrationTestSupport {
     void login() {
         // given
         MemberLoingServiceRequest request = MemberLoingServiceRequest.builder()
-                .email("member1@test.com")
+                .email("loginTest@test.com")
                 .password("password")
                 .build();
         String encryptedPassword = passwordUtil.encodePassword("password");
-        Member member = createMember("member1@test.com", encryptedPassword, "member1", "member1");
+        Member member = createMember("loginTest@test.com", encryptedPassword, "loginTest", "loginTest");
         memberRepository.save(member);
 
         // when
@@ -107,7 +89,7 @@ class MemberServiceTest extends IntegrationTestSupport {
         assertThat(foundMember).extracting("accessToken").isNotNull();
         assertThat(foundMember)
                 .extracting("name", "nickName")
-                .contains("member1", "member1");
+                .contains("loginTest", "loginTest");
     }
 
     @Test
@@ -133,11 +115,11 @@ class MemberServiceTest extends IntegrationTestSupport {
     void loginFailsOnWrongPassword() {
         // given
         MemberLoingServiceRequest request = MemberLoingServiceRequest.builder()
-                .email("member1@test.com")
+                .email("loginTest@test.com")
                 .password("wrongPassword")
                 .build();
         String encryptedPassword = passwordUtil.encodePassword("password");
-        Member member = createMember("member1@test.com", encryptedPassword, "member1", "member1");
+        Member member = createMember("loginTest@test.com", encryptedPassword, "loginTest", "loginTest");
         memberRepository.save(member);
 
         // when & then

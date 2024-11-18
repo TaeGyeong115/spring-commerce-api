@@ -8,6 +8,7 @@ import io.taylor.domain.product.QProduct;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 public class OrderRepositoryQueryImpl implements OrderRepositoryQuery {
@@ -23,14 +24,16 @@ public class OrderRepositoryQueryImpl implements OrderRepositoryQuery {
 
     @Override
     public List<OrderResponse> findByProductIdAndProviderId(long productId, long providerId) {
-        return List.of();
+        return baseOrderQuery()
+                .where(QOrder.order.productId.eq(productId).and(QProduct.product.providerId.eq(providerId)))
+                .fetch();
     }
 
     @Override
-    public OrderResponse findByIdAndCustomerId(Long orderId, long memberId) {
-        return baseOrderQuery()
+    public Optional<OrderResponse> findByIdAndCustomerId(Long orderId, long memberId) {
+        return Optional.ofNullable(baseOrderQuery()
                 .where(QOrder.order.id.eq(orderId).and(QOrder.order.customerId.eq(memberId)))
-                .fetchOne();
+                .fetchOne());
     }
 
     private JPAQuery<OrderResponse> baseOrderQuery() {

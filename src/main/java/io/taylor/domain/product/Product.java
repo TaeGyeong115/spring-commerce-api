@@ -35,7 +35,7 @@ public class Product extends BaseEntity {
     private BigDecimal price;
 
     @Setter
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL)
     private ProductStatus status;
 
     @Builder

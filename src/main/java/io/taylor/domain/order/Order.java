@@ -27,7 +27,7 @@ public class Order extends BaseEntity {
     private int quantity;
     private BigDecimal totalPrice;
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL)
     private OrderStatus status;
 
     @Builder
