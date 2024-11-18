@@ -3,6 +3,7 @@ package io.taylor.domain.order;
 import io.taylor.api.controller.order.response.OrderResponse;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface OrderRepositoryQuery {
 
@@ -10,5 +11,5 @@ public interface OrderRepositoryQuery {
 
     List<OrderResponse> findByProductIdAndProviderId(long productId, long providerId);
 
-    OrderResponse findByIdAndCustomerId(Long orderId, long member);
+    Optional<OrderResponse> findByIdAndCustomerId(Long orderId, long member);
 }

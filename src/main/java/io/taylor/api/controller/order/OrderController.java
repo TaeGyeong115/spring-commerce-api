@@ -31,7 +31,7 @@ public class OrderController {
     @DeleteMapping("/{orderId}")
     public ResponseEntity<Void> updateOrderStatus(AuthenticatedMember authenticatedMember,
                                                   @PathVariable("orderId") Long orderId) {
-        orderService.deleteOrderStatus(authenticatedMember, orderId);
+        orderService.deleteOrderStatus(authenticatedMember.memberId(), orderId);
         return ResponseEntity.ok().build();
     }
 

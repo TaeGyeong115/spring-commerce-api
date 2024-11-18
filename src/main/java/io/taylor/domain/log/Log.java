@@ -19,10 +19,10 @@ public class Log extends BaseEntity {
     private Long memberId;
     private Long targetId;
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL)
     private TargetType targetType;
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL)
     private ActionType actionType;
 
     @Builder

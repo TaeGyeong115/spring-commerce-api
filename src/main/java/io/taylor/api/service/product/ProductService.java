@@ -67,8 +67,7 @@ public class ProductService {
         validateOrder(product, request);
         product.processSale(request.quantity());
         productRepository.save(product);
-        long orderId = orderService.saveOrderForProduct(member.memberId(), convertToResponse(product));
-        logService.saveLog(ActionType.CREATE, TargetType.ORDER, member.memberId(), orderId);
+        orderService.saveOrderForProduct(member.memberId(), request);
     }
 
     public ProductResponse findProductById(Long productId) {
