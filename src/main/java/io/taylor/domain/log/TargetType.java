@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum TargetType {
-    PRODUCT(1, "상품"),
+    PRODUCT(1, "제품"),
     ORDER(2, "주문");
 
     private final int id;

@@ -18,8 +18,8 @@ public class LogService {
 
     private final LogRepository logRepository;
 
-    public List<LogResponse> getActivityLogs(AuthenticatedMember authenticatedMember) {
-        List<Log> logList = logRepository.findByMemberId(authenticatedMember.memberId());
+    public List<LogResponse> getActivityLogs(AuthenticatedMember member) {
+        List<Log> logList = logRepository.findByMemberId(member.memberId());
         return logList.stream()
                 .map(this::convertToResponse)
                 .collect(Collectors.toList());

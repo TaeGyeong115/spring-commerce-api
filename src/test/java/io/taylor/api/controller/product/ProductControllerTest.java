@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class ProductControllerTest extends ControllerTestSupport {
 
     @Test
-    @DisplayName("상품 목록을 조회한다.")
+    @DisplayName("제품 목록을 조회한다.")
     void getAllProducts() throws Exception {
         // given
         List<ProductResponse> response = List.of(createProductResponse(1L, "TV", 1000000, ProductStatus.FOR_SALE, 1));
@@ -46,7 +46,7 @@ class ProductControllerTest extends ControllerTestSupport {
     }
 
     @Test
-    @DisplayName("특정 상품을 조회한다.")
+    @DisplayName("특정 제품을 조회한다.")
     void getProduct() throws Exception {
         // given
         ProductResponse response = createProductResponse(1L, "TV", 100_000, ProductStatus.FOR_SALE, 1);
@@ -66,7 +66,7 @@ class ProductControllerTest extends ControllerTestSupport {
     }
 
     @Test
-    @DisplayName("상품을 등록한다.")
+    @DisplayName("제품을 등록한다.")
     void saveProduct() throws Exception {
         // given
         ProductRequest request = ProductRequest.builder()
@@ -85,7 +85,7 @@ class ProductControllerTest extends ControllerTestSupport {
     }
 
     @Test
-    @DisplayName("상품 등록시 상품명은 필수 값이다.")
+    @DisplayName("제품 등록시 제품명은 필수 값이다.")
     void saveProductWithoutName() throws Exception {
         // given
         ProductRequest request = ProductRequest.builder()
@@ -100,11 +100,11 @@ class ProductControllerTest extends ControllerTestSupport {
                                 .contentType(MediaType.APPLICATION_JSON)
                 ).andDo(print())
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value("상품명은 필수 항목입니다."));
+                .andExpect(jsonPath("$.message").value("제품명은 필수 항목입니다."));
     }
 
     @Test
-    @DisplayName("상품 등록시 가격은 필수 값이다.")
+    @DisplayName("제품 등록시 가격은 필수 값이다.")
     void saveProductWithoutPrice() throws Exception {
         // given
         ProductRequest request = ProductRequest.builder()
@@ -123,7 +123,7 @@ class ProductControllerTest extends ControllerTestSupport {
     }
 
     @Test
-    @DisplayName("상품을 등록시 수량은 필수 값이다.")
+    @DisplayName("제품을 등록시 수량은 필수 값이다.")
     void saveProductWithoutQuantity() throws Exception {
         // given
         ProductRequest request = ProductRequest.builder()
@@ -142,7 +142,7 @@ class ProductControllerTest extends ControllerTestSupport {
     }
 
     @Test
-    @DisplayName("상품을 등록시 최소 가격은 100원 이상이다.")
+    @DisplayName("제품을 등록시 최소 가격은 100원 이상이다.")
     void saveProductMinimumPrice() throws Exception {
         // given
         ProductRequest request = ProductRequest.builder()
@@ -162,7 +162,7 @@ class ProductControllerTest extends ControllerTestSupport {
     }
 
     @Test
-    @DisplayName("상품을 등록시 최소 수량은 1 이상이다.")
+    @DisplayName("제품을 등록시 최소 수량은 1 이상이다.")
     void saveProductMinimumQuantity() throws Exception {
         // given
         ProductRequest request = ProductRequest.builder()
@@ -182,7 +182,7 @@ class ProductControllerTest extends ControllerTestSupport {
     }
 
     @Test
-    @DisplayName("상품을 주문한다.")
+    @DisplayName("제품을 주문한다.")
     void orderProduct() throws Exception {
         // given
         OrderProductRequest request = OrderProductRequest.builder()
@@ -200,7 +200,7 @@ class ProductControllerTest extends ControllerTestSupport {
     }
 
     @Test
-    @DisplayName("상품 주문시 가격은 필수 값이다.")
+    @DisplayName("제품 주문시 가격은 필수 값이다.")
     void orderProductWithoutPrice() throws Exception {
         // given
         OrderProductRequest request = OrderProductRequest.builder()
@@ -218,7 +218,7 @@ class ProductControllerTest extends ControllerTestSupport {
     }
 
     @Test
-    @DisplayName("상품 주문시 수량은 필수 값이다.")
+    @DisplayName("제품 주문시 수량은 필수 값이다.")
     void orderProductWithoutQuantity() throws Exception {
         // given
         OrderProductRequest request = OrderProductRequest.builder()
@@ -236,7 +236,7 @@ class ProductControllerTest extends ControllerTestSupport {
     }
 
     @Test
-    @DisplayName("상품 주문시 최소 가격은 100원 이상이다.")
+    @DisplayName("제품 주문시 최소 가격은 100원 이상이다.")
     void orderProductMinimumPrice() throws Exception {
         // given
         OrderProductRequest request = OrderProductRequest.builder()
@@ -255,7 +255,7 @@ class ProductControllerTest extends ControllerTestSupport {
     }
 
     @Test
-    @DisplayName("상품 주문시 최소 수량은 1 이상이다.")
+    @DisplayName("제품 주문시 최소 수량은 1 이상이다.")
     void orderProductMinimumQuantity() throws Exception {
         // given
         OrderProductRequest request = OrderProductRequest.builder()
@@ -274,7 +274,7 @@ class ProductControllerTest extends ControllerTestSupport {
     }
 
     @Test
-    @DisplayName("등록한 상품 목록을 조회한다.")
+    @DisplayName("등록한 제품 목록을 조회한다.")
     void getAllOwnProducts() throws Exception {
         // given
         List<OwnedProductResponse> response = List.of(OwnedProductResponse.builder()
@@ -285,7 +285,7 @@ class ProductControllerTest extends ControllerTestSupport {
                 .status(ProductStatus.FOR_SALE)
                 .price(new BigDecimal(100000))
                 .build());
-        given(productService.findOwnedProducts(createAuthMember())).willReturn(response);
+        given(productService.findOwnedProducts(createAuthMember().memberId())).willReturn(response);
 
         // when & then
         mockMvc.perform(
@@ -304,7 +304,7 @@ class ProductControllerTest extends ControllerTestSupport {
     }
 
     @Test
-    @DisplayName("등록한 특정 상품 주문 목록을 조회한다.")
+    @DisplayName("등록한 특정 제품 주문 목록을 조회한다.")
     void getOwnProductOrder() throws Exception {
         // given
         List<OrderResponse> response = List.of(OrderResponse.builder()
@@ -314,7 +314,7 @@ class ProductControllerTest extends ControllerTestSupport {
                 .totalPrice(new BigDecimal(100000))
                 .status(OrderStatus.IN_PROGRESS)
                 .build());
-        given(productService.findByProductIdAndProviderId(createAuthMember(), 1L)).willReturn(response);
+        given(productService.findByProductIdAndProviderId(createAuthMember().memberId(), 1L)).willReturn(response);
 
         // when & then
         mockMvc.perform(
@@ -333,7 +333,7 @@ class ProductControllerTest extends ControllerTestSupport {
     }
 
     @Test
-    @DisplayName("특정 상품의 상태를 판매중 <-> 품절로 스위칭한다.")
+    @DisplayName("특정 제품의 상태를 판매중 <-> 품절로 스위칭한다.")
     void updateProductStatus() throws Exception {
         // when & then
         mockMvc.perform(
@@ -343,7 +343,7 @@ class ProductControllerTest extends ControllerTestSupport {
     }
 
     @Test
-    @DisplayName("상품의 특정 주문 상태를 변경한다.")
+    @DisplayName("제품의 특정 주문 상태를 변경한다.")
     void updateProductOrderStatus() throws Exception {
         OrderStatusRequest request = OrderStatusRequest.builder()
                 .orderId(1L)
@@ -360,7 +360,7 @@ class ProductControllerTest extends ControllerTestSupport {
     }
 
     @Test
-    @DisplayName("상품의 특정 주문 상태 변경시 주문 아이디는 필수 항목이다..")
+    @DisplayName("제품의 특정 주문 상태 변경시 주문 아이디는 필수 항목이다..")
     void updateProductOrderStatusWithoutOrderId() throws Exception {
         OrderStatusRequest request = OrderStatusRequest.builder()
                 .status(OrderStatus.COMPLETED)
@@ -377,7 +377,7 @@ class ProductControllerTest extends ControllerTestSupport {
     }
 
     @Test
-    @DisplayName("상품의 특정 주문 상태 변경시 주문 상태는 필수 항목이다.")
+    @DisplayName("제품의 특정 주문 상태 변경시 주문 상태는 필수 항목이다.")
     void updateProductOrderStatusWithoutStatus() throws Exception {
         OrderStatusRequest request = OrderStatusRequest.builder()
                 .orderId(1L)

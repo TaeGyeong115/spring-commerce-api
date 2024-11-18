@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 
 @Builder
 public record ProductRequest(
-        @NotBlank(message = "상품명은 필수 항목입니다.") String name,
+        @NotBlank(message = "제품명은 필수 항목입니다.") String name,
         @NotNull(message = "가격은 필수 항목입니다.")
         @DecimalMin(value = "100", message = "최소 가격은 100원 이상입니다.") BigDecimal price,
         @NotNull(message = "수량은 필수 항목입니다.")

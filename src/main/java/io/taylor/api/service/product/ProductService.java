@@ -1,6 +1,5 @@
 package io.taylor.api.service.product;
 
-import io.taylor.api.controller.member.request.AuthenticatedMember;
 import io.taylor.api.controller.order.request.OrderStatusRequest;
 import io.taylor.api.controller.order.response.OrderResponse;
 import io.taylor.api.controller.product.response.OwnedProductResponse;
@@ -37,7 +36,7 @@ public class ProductService {
         List<Product> productList = productRepository.findAll();
 
         if (productList.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "등록된 상품이 없습니다.");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "등록된 제품이 없습니다.");
         }
 
         return productList.stream()
@@ -45,40 +44,41 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
-    public void saveProduct(AuthenticatedMember member, ProductCreateServiceRequest request) {
+    public ProductResponse saveProduct(long memberId, ProductCreateServiceRequest request) {
         Product product = Product.builder()
                 .name(request.name())
-                .providerId(member.memberId())
+                .providerId(memberId)
                 .price(request.price())
                 .totalQuantity(request.quantity())
                 .build();
 
-        productRepository.save(product);
-        logService.saveLog(ActionType.CREATE, TargetType.PRODUCT, member.memberId(), product.getId());
+        Product response = productRepository.save(product);
+        logService.saveLog(ActionType.CREATE, TargetType.PRODUCT, memberId, product.getId());
+        return convertToResponse(response);
     }
 
-    public void orderProduct(AuthenticatedMember member, OrderServiceRequest request) {
+    public void orderProduct(long memberId, OrderServiceRequest request) {
         Optional<Product> optionalProduct = productRepository.findById(request.productId());
         if (optionalProduct.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 상품이 존재하지 않습니다.");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 제품이 존재하지 않습니다.");
         }
 
         Product product = optionalProduct.get();
         validateOrder(product, request);
         product.processSale(request.quantity());
         productRepository.save(product);
-        orderService.saveOrderForProduct(member.memberId(), request);
+        orderService.saveOrderForProduct(memberId, request);
     }
 
     public ProductResponse findProductById(Long productId) {
         Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 상품이 존재하지 않습니다."));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 제품이 존재하지 않습니다."));
 
         return convertToResponse(product);
     }
 
-    public List<OwnedProductResponse> findOwnedProducts(AuthenticatedMember authenticatedMember) {
-        List<Product> productList = productRepository.findByProviderId(authenticatedMember.memberId());
+    public List<OwnedProductResponse> findOwnedProducts(long memberId) {
+        List<Product> productList = productRepository.findByProviderId(memberId);
 
         return productList.stream()
                 .map(product -> OwnedProductResponse.builder()
@@ -94,38 +94,38 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
-    public List<OrderResponse> findByProductIdAndProviderId(AuthenticatedMember member, Long productId) {
-        return orderService.findByProductIdAndProviderId(productId, member.memberId());
+    public List<OrderResponse> findByProductIdAndProviderId(long memberId, Long productId) {
+        return orderService.findByProductIdAndProviderId(productId, memberId);
     }
 
-    public void updateProductStatus(AuthenticatedMember member, Long productId) {
+    public void updateProductStatus(long memberId, Long productId) {
         Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 상품이 존재하지 않습니다."));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 제품이 존재하지 않습니다."));
 
-        isAuthorized(member.memberId(), product.getProviderId());
+        isAuthorized(memberId, product.getProviderId());
         if (product.getStatus() == ProductStatus.FOR_SALE) {
             product.setStatus(ProductStatus.SOLD_OUT);
-            logService.saveLog(ActionType.DEACTIVATE, TargetType.PRODUCT, member.memberId(), product.getId());
+            logService.saveLog(ActionType.DEACTIVATE, TargetType.PRODUCT, memberId, product.getId());
         } else if (product.getStatus() == ProductStatus.SOLD_OUT) {
             product.setStatus(ProductStatus.FOR_SALE);
-            logService.saveLog(ActionType.ACTIVATE, TargetType.PRODUCT, member.memberId(), product.getId());
+            logService.saveLog(ActionType.ACTIVATE, TargetType.PRODUCT, memberId, product.getId());
         }
 
         productRepository.save(product);
     }
 
-    public void updateOrderStatus(AuthenticatedMember member, long productId, OrderStatusRequest request) {
+    public void updateOrderStatus(long memberId, long productId, OrderStatusRequest request) {
         Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 상품이 존재하지 않습니다."));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 제품이 존재하지 않습니다."));
 
-        isAuthorized(member.memberId(), product.getProviderId());
+        isAuthorized(memberId, product.getProviderId());
         orderService.updateOrderStatus(request.status(), request.orderId());
 
         ActionType actionType = ActionType.COMPLETE;
         if (request.status().equals(OrderStatus.CANCELED)) {
             actionType = ActionType.DELETE;
         }
-        logService.saveLog(actionType, TargetType.ORDER, member.memberId(), request.orderId());
+        logService.saveLog(actionType, TargetType.ORDER, memberId, request.orderId());
     }
 
     private static void isAuthorized(Long userId, Long targetId) {
@@ -136,7 +136,7 @@ public class ProductService {
 
     private void validateOrder(Product product, OrderServiceRequest request) {
         if (product.getStatus() != ProductStatus.FOR_SALE) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "판매하지 않는 상품입니다.");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "판매하지 않는 제품입니다.");
         }
 
         if (product.getPrice().compareTo(request.price()) != 0) {

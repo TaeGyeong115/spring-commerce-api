@@ -24,10 +24,10 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping
-    public ResponseEntity<Void> saveProduct(AuthenticatedMember authenticatedMember,
-                                              @Valid @RequestBody ProductRequest request) {
-        productService.saveProduct(authenticatedMember, request.toServiceRequest());
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    public ResponseEntity<ProductResponse> saveProduct(AuthenticatedMember member,
+                                            @Valid @RequestBody ProductRequest request) {
+        ProductResponse response = productService.saveProduct(member.memberId(), request.toServiceRequest());
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping
@@ -43,34 +43,34 @@ public class ProductController {
     }
 
     @PostMapping("/{productId}")
-    public ResponseEntity<Void> orderProduct(AuthenticatedMember authenticatedMember,
+    public ResponseEntity<Void> orderProduct(AuthenticatedMember member,
                                              @PathVariable("productId") Long productId,
                                              @Valid @RequestBody OrderProductRequest request) {
-        productService.orderProduct(authenticatedMember, request.toServiceRequest());
+        productService.orderProduct(member.memberId(), request.toServiceRequest());
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/owned")
-    public ResponseEntity<List<OwnedProductResponse>> findOwnedProducts(AuthenticatedMember authenticatedMember) {
-        List<OwnedProductResponse> response = productService.findOwnedProducts(authenticatedMember);
+    public ResponseEntity<List<OwnedProductResponse>> findOwnedProducts(AuthenticatedMember member) {
+        List<OwnedProductResponse> response = productService.findOwnedProducts(member.memberId());
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/owned/{productId}")
-    public ResponseEntity<List<OrderResponse>> findByProductIdAndProviderId(AuthenticatedMember authenticatedMember, @PathVariable("productId") Long productId) {
-        List<OrderResponse> response = productService.findByProductIdAndProviderId(authenticatedMember, productId);
+    public ResponseEntity<List<OrderResponse>> findByProductIdAndProviderId(AuthenticatedMember member, @PathVariable("productId") Long productId) {
+        List<OrderResponse> response = productService.findByProductIdAndProviderId(member.memberId(), productId);
         return ResponseEntity.ok(response);
     }
 
     @PatchMapping("/owned/{productId}")
-    public ResponseEntity<Void> updateProductStatus(AuthenticatedMember authenticatedMember, @PathVariable("productId") Long productId) {
-        productService.updateProductStatus(authenticatedMember, productId);
+    public ResponseEntity<Void> updateProductStatus(AuthenticatedMember member, @PathVariable("productId") Long productId) {
+        productService.updateProductStatus(member.memberId(), productId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @PatchMapping("/owned/{productId}/order")
-    public ResponseEntity<Void> updateOrderStatus(AuthenticatedMember authenticatedMember, @PathVariable("productId") Long productId, @Valid @RequestBody OrderStatusRequest request) {
-        productService.updateOrderStatus(authenticatedMember, productId, request);
+    public ResponseEntity<Void> updateOrderStatus(AuthenticatedMember member, @PathVariable("productId") Long productId, @Valid @RequestBody OrderStatusRequest request) {
+        productService.updateOrderStatus(member.memberId(), productId, request);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 

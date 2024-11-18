@@ -31,7 +31,7 @@ public class MemberController {
     }
 
     @DeleteMapping("/logout")
-    public ResponseEntity<Void> logout(AuthenticatedMember authenticatedMember) {
+    public ResponseEntity<Void> logout(AuthenticatedMember member) {
         memberService.logout();
         return ResponseEntity.ok().build();
     }

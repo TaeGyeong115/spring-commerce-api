@@ -17,21 +17,21 @@ public class OrderController {
     private final OrderService orderService;
 
     @GetMapping
-    public ResponseEntity<List<OrderResponse>> getAllOrders(AuthenticatedMember authenticatedMember) {
-        List<OrderResponse> orders = orderService.getOrderByMemberId(authenticatedMember.memberId());
+    public ResponseEntity<List<OrderResponse>> getAllOrders(AuthenticatedMember member) {
+        List<OrderResponse> orders = orderService.getOrderByMemberId(member.memberId());
         return ResponseEntity.ok(orders);
     }
 
     @GetMapping("/{orderId}")
-    public ResponseEntity<OrderResponse> getOrder(AuthenticatedMember authenticatedMember, @PathVariable("orderId") Long orderId) {
-        OrderResponse response = orderService.getOrderByIdAndMemberId(authenticatedMember.memberId(), orderId);
+    public ResponseEntity<OrderResponse> getOrder(AuthenticatedMember member, @PathVariable("orderId") Long orderId) {
+        OrderResponse response = orderService.getOrderByIdAndMemberId(member.memberId(), orderId);
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{orderId}")
-    public ResponseEntity<Void> updateOrderStatus(AuthenticatedMember authenticatedMember,
+    public ResponseEntity<Void> updateOrderStatus(AuthenticatedMember member,
                                                   @PathVariable("orderId") Long orderId) {
-        orderService.deleteOrderStatus(authenticatedMember.memberId(), orderId);
+        orderService.deleteOrderStatus(member.memberId(), orderId);
         return ResponseEntity.ok().build();
     }
 
