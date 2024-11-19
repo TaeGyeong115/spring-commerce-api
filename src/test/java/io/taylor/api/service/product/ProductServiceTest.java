@@ -1,5 +1,6 @@
 package io.taylor.api.service.product;
 
+import io.taylor.api.controller.order.request.OrderStatusRequest;
 import io.taylor.api.controller.order.response.OrderResponse;
 import io.taylor.api.controller.product.response.OwnedProductResponse;
 import io.taylor.api.controller.product.response.ProductResponse;
@@ -7,6 +8,7 @@ import io.taylor.api.service.IntegrationTestSupport;
 import io.taylor.api.service.order.request.OrderServiceRequest;
 import io.taylor.api.service.product.request.ProductCreateServiceRequest;
 import io.taylor.domain.order.Order;
+import io.taylor.domain.order.OrderStatus;
 import io.taylor.domain.product.Product;
 import io.taylor.domain.product.ProductStatus;
 import org.junit.jupiter.api.AfterEach;
@@ -211,30 +213,47 @@ class ProductServiceTest extends IntegrationTestSupport {
     @Test
     @DisplayName("판매자는 소유 제품의 판매 상태를 변경한다.")
     void updateProductStatus() {
+        // when
+        productService.updateProductStatus(order1.getCustomerId(), order1.getProductId());
+
+        // then
+        Product product = productRepository.findById(product1.getId()).orElseThrow(() -> new AssertionError("Product Not Found"));
+        assertThat(product.getStatus()).isEqualTo(ProductStatus.SOLD_OUT);
+    }
+
+    @Test
+    @DisplayName("판매자는 소유 제품의 주문을 완료 상태로 변경할 수 있다.")
+    void updateProductOrderStatus_COMPLETED() {
         // given
-        OrderServiceRequest request = OrderServiceRequest.builder()
-                .quantity(product1.remainingQuantity())
-                .price(product1.getPrice())
+        OrderStatusRequest request = OrderStatusRequest.builder()
+                .orderId(order1.getId())
+                .status(OrderStatus.COMPLETED)
                 .build();
 
         // when
-        OrderResponse response = productService.orderProduct(order1.getCustomerId(), product1.getId(), request);
+        productService.updateOrderStatus(order1.getCustomerId(), order1.getProductId(), request);
 
         // then
-        assertThat(response).isNotNull();
-        assertThat(response).extracting("name", "quantity", "status")
-                .containsExactlyInAnyOrder(product1.getName(), request.quantity(), order1.getStatus());
-        assertThat(response.id()).isNotNull();
-        assertThat(response.price()).isEqualByComparingTo(response.price());
-        assertThat(response.totalPrice()).isEqualByComparingTo(request.price().multiply(new BigDecimal(request.quantity())));
-        assertThat(response.modifiedDateTime()).isNotNull();
-        assertThat(response.createdDateTime()).isNotNull();
+        Order order = orderRepository.findById(order1.getId()).orElseThrow(() -> new AssertionError("Order Not Found"));
+        assertThat(order.getStatus()).isEqualTo(OrderStatus.COMPLETED);
     }
 
-//    @Test
-//    @DisplayName("판매자는 소유 제품의 주문 상태를 변경할 수 있다.")
-//    void updateProductStatus() {
-//    }
+    @Test
+    @DisplayName("판매자는 소유 제품의 주문을 취소 상태로 변경할 수 있다.")
+    void updateProductOrderStatus_CANCELED() {
+        // given
+        OrderStatusRequest request = OrderStatusRequest.builder()
+                .orderId(order1.getId())
+                .status(OrderStatus.CANCELED)
+                .build();
+
+        // when
+        productService.updateOrderStatus(order1.getCustomerId(), order1.getProductId(), request);
+
+        // then
+        Order order = orderRepository.findById(order1.getId()).orElseThrow(() -> new AssertionError("Order Not Found"));
+        assertThat(order.getStatus()).isEqualTo(OrderStatus.CANCELED);
+    }
 
     private void ProductResponseCheckNotNull(ProductResponse response) {
         assertThat(response.id()).isNotNull();
