@@ -36,7 +36,7 @@ public class Order extends BaseEntity {
         this.customerId = customerId;
         this.price = price;
         this.quantity = quantity;
-        this.totalPrice = price.multiply(BigDecimal.valueOf(quantity));
+        this.totalPrice = price.multiply(new BigDecimal(quantity));
         this.status = OrderStatus.IN_PROGRESS;
     }
 

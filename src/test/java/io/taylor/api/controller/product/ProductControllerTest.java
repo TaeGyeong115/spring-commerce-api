@@ -82,6 +82,12 @@ class ProductControllerTest extends ControllerTestSupport {
                                 .contentType(MediaType.APPLICATION_JSON)
                 ).andDo(print())
                 .andExpect(status().isCreated());
+//                .andExpect(jsonPath("$.name").value(request.name()))
+//                .andExpect(jsonPath("$.status").value(ProductStatus.FOR_SALE))
+//                .andExpect(jsonPath("$.price").value(request.price()))
+//                .andExpect(jsonPath("$.quantity").value(request.quantity()))
+//                .andExpect(jsonPath("$.modifiedDateTime").hasJsonPath())
+//                .andExpect(jsonPath("$.createdDateTime").hasJsonPath());
     }
 
     @Test
@@ -308,13 +314,12 @@ class ProductControllerTest extends ControllerTestSupport {
     void getOwnProductOrder() throws Exception {
         // given
         List<OrderResponse> response = List.of(OrderResponse.builder()
-                .name("TV")
                 .quantity(1)
                 .price(new BigDecimal(100000))
                 .totalPrice(new BigDecimal(100000))
                 .status(OrderStatus.IN_PROGRESS)
                 .build());
-        given(productService.findByProductIdAndProviderId(createAuthMember().memberId(), 1L)).willReturn(response);
+        given(productService.findOrderByProductIdAndProviderId(createAuthMember().memberId(), 1L)).willReturn(response);
 
         // when & then
         mockMvc.perform(
@@ -323,7 +328,6 @@ class ProductControllerTest extends ControllerTestSupport {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$[0].id").value(response.get(0).id()))
-                .andExpect(jsonPath("$[0].name").value(response.get(0).name()))
                 .andExpect(jsonPath("$[0].quantity").value(response.get(0).quantity()))
                 .andExpect(jsonPath("$[0].price").value(response.get(0).price()))
                 .andExpect(jsonPath("$[0].totalPrice").value(response.get(0).totalPrice()))
