@@ -4,6 +4,8 @@ import io.taylor.domain.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
 
@@ -66,7 +68,7 @@ public class Product extends BaseEntity {
 
     private void increaseSoldQuantity(int quantity) {
         if (remainingQuantity() < quantity) {
-            throw new IllegalArgumentException("재고가 부족합니다.");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "재고가 부족합니다.");
         }
 
         this.soldQuantity += quantity;
@@ -74,13 +76,13 @@ public class Product extends BaseEntity {
 
     private void validatePrice(BigDecimal price) {
         if (price.compareTo(new BigDecimal("100")) < 0) {
-            throw new IllegalArgumentException("가격은 100원 이상입니다.");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "최소 가격은 100원 이상입니다.");
         }
     }
 
     private void validateQuantity(int quantity) {
         if (quantity < 1) {
-            throw new IllegalArgumentException("재고가 부족합니다.");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "최소 수량은 1 이상입니다.");
         }
     }
 }

@@ -57,8 +57,8 @@ public class ProductService {
         return convertToResponse(response);
     }
 
-    public void orderProduct(long memberId, OrderServiceRequest request) {
-        Optional<Product> optionalProduct = productRepository.findById(request.productId());
+    public OrderResponse orderProduct(long memberId, long productId, OrderServiceRequest request) {
+        Optional<Product> optionalProduct = productRepository.findById(productId);
         if (optionalProduct.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 제품이 존재하지 않습니다.");
         }
@@ -67,7 +67,7 @@ public class ProductService {
         validateOrder(product, request);
         product.processSale(request.quantity());
         productRepository.save(product);
-        orderService.saveOrderForProduct(memberId, request);
+        return orderService.saveOrderForProduct(memberId, productId, request, product.getName());
     }
 
     public ProductResponse findProductById(Long productId) {
@@ -94,8 +94,8 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
-    public List<OrderResponse> findByProductIdAndProviderId(long memberId, Long productId) {
-        return orderService.findByProductIdAndProviderId(productId, memberId);
+    public List<OrderResponse> findOrderByProductIdAndProviderId(Long productId, long memberId) {
+        return orderService.findOrderByProductIdAndProviderId(productId, memberId);
     }
 
     public void updateProductStatus(long memberId, Long productId) {

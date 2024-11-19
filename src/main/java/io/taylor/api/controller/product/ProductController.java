@@ -43,11 +43,11 @@ public class ProductController {
     }
 
     @PostMapping("/{productId}")
-    public ResponseEntity<Void> orderProduct(AuthenticatedMember member,
+    public ResponseEntity<OrderResponse> orderProduct(AuthenticatedMember member,
                                              @PathVariable("productId") Long productId,
                                              @Valid @RequestBody OrderProductRequest request) {
-        productService.orderProduct(member.memberId(), request.toServiceRequest());
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        OrderResponse response = productService.orderProduct(member.memberId(), productId, request.toServiceRequest());
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping("/owned")
@@ -58,7 +58,7 @@ public class ProductController {
 
     @GetMapping("/owned/{productId}")
     public ResponseEntity<List<OrderResponse>> findByProductIdAndProviderId(AuthenticatedMember member, @PathVariable("productId") Long productId) {
-        List<OrderResponse> response = productService.findByProductIdAndProviderId(member.memberId(), productId);
+        List<OrderResponse> response = productService.findOrderByProductIdAndProviderId(member.memberId(), productId);
         return ResponseEntity.ok(response);
     }
 

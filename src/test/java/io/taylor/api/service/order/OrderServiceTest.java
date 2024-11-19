@@ -13,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -74,7 +73,7 @@ class OrderServiceTest extends IntegrationTestSupport {
     @DisplayName("판매자가 주문 목록을 조회한다.")
     void getAllOrderByProviderId() {
         // when
-        List<OrderResponse> response = orderService.findByProductIdAndProviderId(product1.getId(), product1.getProviderId());
+        List<OrderResponse> response = orderService.findOrderByProductIdAndProviderId(product1.getId(), product1.getProviderId());
 
         //then
         assertThat(response).isNotNull();
@@ -151,14 +150,6 @@ class OrderServiceTest extends IntegrationTestSupport {
                 .orElseThrow(() -> new AssertionError("Order not found"));
         assertThat(order).isNotNull();
         assertThat(order.getStatus()).isEqualTo(OrderStatus.CANCELED);
-    }
-
-    private Product createProduct(int providerId, String name, int price, int quantity) {
-        return Product.builder().providerId(providerId).name(name).price(new BigDecimal(price)).totalQuantity(quantity).build();
-    }
-
-    private Order createOrder(long productId, int customerId, int price, int quantity) {
-        return Order.builder().productId(productId).customerId(customerId).price(BigDecimal.valueOf(price)).quantity(quantity).build();
     }
 
     private static void assertOrderResponse(OrderResponse response, Order order) {

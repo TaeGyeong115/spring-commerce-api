@@ -33,7 +33,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
         LogController.class
 })
 @Import({SecurityConfig.class})
-
+@ActiveProfiles("test")
 public abstract class ControllerTestSupport {
 
     @MockBean

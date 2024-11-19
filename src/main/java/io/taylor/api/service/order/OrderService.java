@@ -22,22 +22,32 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final LogService logService;
 
-    public void saveOrderForProduct(long customerId, OrderServiceRequest request) {
+    public OrderResponse saveOrderForProduct(long customerId, long productId, OrderServiceRequest request, String name) {
         Order order = Order.builder()
-                .productId(request.productId())
+                .productId(productId)
                 .price(request.price())
                 .customerId(customerId)
                 .quantity(request.quantity())
                 .build();
-        long orderId = orderRepository.save(order).getId();
-        logService.saveLog(ActionType.CREATE, TargetType.ORDER, customerId, orderId);
+        orderRepository.save(order);
+        logService.saveLog(ActionType.CREATE, TargetType.ORDER, customerId, order.getId());
+        return OrderResponse.builder()
+                .id(order.getId())
+                .name(name)
+                .quantity(order.getQuantity())
+                .price(order.getPrice())
+                .totalPrice(order.getTotalPrice())
+                .status(order.getStatus())
+                .modifiedDateTime(order.getModifiedDateTime())
+                .createdDateTime(order.getCreatedDateTime())
+                .build();
     }
 
     public List<OrderResponse> getOrderByMemberId(long memberId) {
         return orderRepository.findAllByCustomerId(memberId);
     }
 
-    public List<OrderResponse> findByProductIdAndProviderId(long productId, long providerId) {
+    public List<OrderResponse> findOrderByProductIdAndProviderId(long productId, long providerId) {
         return orderRepository.findByProductIdAndProviderId(productId, providerId);
     }
 
