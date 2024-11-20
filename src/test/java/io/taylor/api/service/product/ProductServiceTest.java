@@ -278,7 +278,7 @@ class ProductServiceTest extends IntegrationTestSupport {
     }
 
     @Test
-    @DisplayName("소유 제품의 주문을 취소 상태로 변경할 수 있다.")
+    @DisplayName("제품의 주문을 취소 상태로 변경할 수 있다.")
     void updateProductOrderStatus_CANCELED() {
         // given
         OrderStatusRequest request = OrderStatusRequest.builder()
@@ -292,6 +292,46 @@ class ProductServiceTest extends IntegrationTestSupport {
         // then
         Order order = orderRepository.findById(order1.getId()).orElseThrow(() -> new AssertionError("Order Not Found"));
         assertThat(order.getStatus()).isEqualTo(OrderStatus.CANCELED);
+    }
+
+    @Test
+    @DisplayName("제품의 주문 상태가 완료 상태일 경우 변경할 수 없다.")
+    void updateProductOrderStatusComplete_CANCELED() {
+        // given
+        OrderStatusRequest request = OrderStatusRequest.builder()
+                .orderId(order1.getId())
+                .status(OrderStatus.CANCELED)
+                .build();
+        order1.updateStatue(OrderStatus.COMPLETED);
+
+        // when & then
+        assertThatThrownBy(() ->
+                productService.updateOrderStatus(order1.getCustomerId(), order1.getProductId(), request))
+                .isInstanceOf(ResponseStatusException.class)
+                .extracting(
+                        exception -> ((ResponseStatusException) exception).getStatusCode(),
+                        exception -> ((ResponseStatusException) exception).getReason())
+                .containsExactly(HttpStatus.BAD_REQUEST, "이미 완료된 주문입니다.");
+    }
+
+    @Test
+    @DisplayName("제품의 주문 상태가 취소일 경우 변경할 수 없다.")
+    void updateProductOrderStatusCancel_CANCELED() {
+        // given
+        OrderStatusRequest request = OrderStatusRequest.builder()
+                .orderId(order1.getId())
+                .status(OrderStatus.CANCELED)
+                .build();
+        order1.updateStatue(OrderStatus.CANCELED);
+
+        // when & then
+        assertThatThrownBy(() ->
+                productService.updateOrderStatus(order1.getCustomerId(), order1.getProductId(), request))
+                .isInstanceOf(ResponseStatusException.class)
+                .extracting(
+                        exception -> ((ResponseStatusException) exception).getStatusCode(),
+                        exception -> ((ResponseStatusException) exception).getReason())
+                .containsExactly(HttpStatus.BAD_REQUEST, "이미 취소된 주문입니다.");
     }
 
     private void ProductResponseCheckNotNull(ProductResponse response) {

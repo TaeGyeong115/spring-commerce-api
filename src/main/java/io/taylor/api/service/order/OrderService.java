@@ -23,24 +23,10 @@ public class OrderService {
     private final LogService logService;
 
     public OrderResponse saveOrderForProduct(long customerId, long productId, OrderServiceRequest request, String name) {
-        Order order = Order.builder()
-                .productId(productId)
-                .price(request.price())
-                .customerId(customerId)
-                .quantity(request.quantity())
-                .build();
+        Order order = Order.builder().productId(productId).price(request.price()).customerId(customerId).quantity(request.quantity()).build();
         orderRepository.save(order);
         logService.saveLog(ActionType.CREATE, TargetType.ORDER, customerId, order.getId());
-        return OrderResponse.builder()
-                .id(order.getId())
-                .name(name)
-                .quantity(order.getQuantity())
-                .price(order.getPrice())
-                .totalPrice(order.getTotalPrice())
-                .status(order.getStatus())
-                .modifiedDateTime(order.getModifiedDateTime())
-                .createdDateTime(order.getCreatedDateTime())
-                .build();
+        return OrderResponse.builder().id(order.getId()).name(name).quantity(order.getQuantity()).price(order.getPrice()).totalPrice(order.getTotalPrice()).status(order.getStatus()).modifiedDateTime(order.getModifiedDateTime()).createdDateTime(order.getCreatedDateTime()).build();
     }
 
     public List<OrderResponse> getOrderByMemberId(long memberId) {
@@ -52,8 +38,7 @@ public class OrderService {
     }
 
     public OrderResponse getOrderByIdAndMemberId(long memberId, long orderId) {
-        return orderRepository.findByIdAndCustomerId(orderId, memberId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "주문이 존재하지 않습니다."));
+        return orderRepository.findByIdAndCustomerId(orderId, memberId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "주문이 존재하지 않습니다."));
     }
 
     public void deleteOrderStatus(long memberId, long orderId) {
@@ -62,12 +47,7 @@ public class OrderService {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "접근 권한이 없습니다.");
         }
 
-        if (order.getStatus() == OrderStatus.COMPLETED) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "이미 완료된 주문입니다.");
-        } else if (order.getStatus() == OrderStatus.CANCELED) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "이미 취소된 주문입니다.");
-        }
-
+        checkOrderStatus(order);
         order.updateStatue(OrderStatus.CANCELED);
         orderRepository.save(order);
         logService.saveLog(ActionType.DELETE, TargetType.ORDER, memberId, orderId);
@@ -75,7 +55,16 @@ public class OrderService {
 
     public void updateOrderStatus(OrderStatus status, long orderId) {
         Order order = orderRepository.findById(orderId).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "주문이 존재하지 않습니다."));
+        checkOrderStatus(order);
         order.updateStatue(status);
         orderRepository.save(order);
+    }
+
+    private void checkOrderStatus(Order order) {
+        if (order.getStatus() == OrderStatus.COMPLETED) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "이미 완료된 주문입니다.");
+        } else if (order.getStatus() == OrderStatus.CANCELED) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "이미 취소된 주문입니다.");
+        }
     }
 }
