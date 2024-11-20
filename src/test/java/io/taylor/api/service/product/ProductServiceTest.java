@@ -136,7 +136,7 @@ class ProductServiceTest extends IntegrationTestSupport {
     }
 
     @Test
-    @DisplayName("판매자는 소유 제품 리스트를 조회할 수 있다.")
+    @DisplayName("소유 제품 리스트를 조회할 수 있다.")
     void getAllOwnProducts() {
         // when
         List<OwnedProductResponse> response = productService.findOwnedProducts(user1);
@@ -154,7 +154,7 @@ class ProductServiceTest extends IntegrationTestSupport {
     }
 
     @Test
-    @DisplayName("판매자는 소유 제품의 주문 리스트를 조회할 수 있다.")
+    @DisplayName("소유 제품의 주문 리스트를 조회할 수 있다.")
     void getOwnProductOrders() {
         // when
         List<OrderResponse> response = productService.findOrderByProductIdAndProviderId(product1.getId(), product1.getProviderId());
@@ -172,7 +172,7 @@ class ProductServiceTest extends IntegrationTestSupport {
     }
 
     @Test
-    @DisplayName("회원은 제품을 주문할 수 있다.")
+    @DisplayName("제품을 주문할 수 있다.")
     void orderForProduct() {
         // given
         OrderServiceRequest request = OrderServiceRequest.builder()
@@ -195,7 +195,7 @@ class ProductServiceTest extends IntegrationTestSupport {
     }
 
     @Test
-    @DisplayName("회원이 제품을 주문시, 제품 수량이 부족하면 주문에 실패한다.")
+    @DisplayName("제품 주문시, 제품 수량이 부족하면 주문에 실패한다.")
     void orderForProduct_QuantityLack() {
         // given
         OrderServiceRequest request = OrderServiceRequest.builder()
@@ -213,7 +213,7 @@ class ProductServiceTest extends IntegrationTestSupport {
     }
 
     @Test
-    @DisplayName("제품을 주문시, 요청 가격과 판매 가격이 다르면 주문에 실패한다.")
+    @DisplayName("제품 주문시, 요청 가격과 판매 가격이 다르면 주문에 실패한다.")
     void orderForProduct_DiffPrice() {
         // given
         OrderServiceRequest request = OrderServiceRequest.builder()
@@ -231,7 +231,7 @@ class ProductServiceTest extends IntegrationTestSupport {
     }
 
     @Test
-    @DisplayName("제품을 주문시, 제품 상태가 SOLD_OUT 이면 주문에 실패한다.")
+    @DisplayName("제품 주문시, 제품 상태가 SOLD_OUT 이면 주문에 실패한다.")
     void orderForProduct_SoldOut() {
         // given
         OrderServiceRequest request = OrderServiceRequest.builder()
@@ -250,7 +250,7 @@ class ProductServiceTest extends IntegrationTestSupport {
     }
 
     @Test
-    @DisplayName("판매자는 소유 제품의 판매 상태를 변경한다.")
+    @DisplayName("소유 제품의 판매 상태를 변경한다.")
     void updateProductStatus() {
         // when
         productService.updateProductStatus(order1.getCustomerId(), order1.getProductId());
@@ -261,7 +261,7 @@ class ProductServiceTest extends IntegrationTestSupport {
     }
 
     @Test
-    @DisplayName("판매자는 소유 제품의 주문을 완료 상태로 변경할 수 있다.")
+    @DisplayName("소유 제품의 주문을 완료 상태로 변경할 수 있다.")
     void updateProductOrderStatus_COMPLETED() {
         // given
         OrderStatusRequest request = OrderStatusRequest.builder()
@@ -278,7 +278,7 @@ class ProductServiceTest extends IntegrationTestSupport {
     }
 
     @Test
-    @DisplayName("판매자는 소유 제품의 주문을 취소 상태로 변경할 수 있다.")
+    @DisplayName("소유 제품의 주문을 취소 상태로 변경할 수 있다.")
     void updateProductOrderStatus_CANCELED() {
         // given
         OrderStatusRequest request = OrderStatusRequest.builder()

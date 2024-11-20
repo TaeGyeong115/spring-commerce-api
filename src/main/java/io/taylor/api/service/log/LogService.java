@@ -1,7 +1,6 @@
 package io.taylor.api.service.log;
 
 import io.taylor.api.controller.log.response.LogResponse;
-import io.taylor.api.controller.member.request.AuthenticatedMember;
 import io.taylor.domain.log.ActionType;
 import io.taylor.domain.log.Log;
 import io.taylor.domain.log.LogRepository;
@@ -18,8 +17,8 @@ public class LogService {
 
     private final LogRepository logRepository;
 
-    public List<LogResponse> getActivityLogs(AuthenticatedMember member) {
-        List<Log> logList = logRepository.findByMemberId(member.memberId());
+    public List<LogResponse> getActivityLogs(long memberId) {
+        List<Log> logList = logRepository.findByMemberId(memberId);
         return logList.stream()
                 .map(this::convertToResponse)
                 .collect(Collectors.toList());

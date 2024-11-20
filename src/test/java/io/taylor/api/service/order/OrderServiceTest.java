@@ -1,7 +1,7 @@
 package io.taylor.api.service.order;
 
-import io.taylor.api.controller.order.response.OrderResponse;
 import io.taylor.IntegrationTestSupport;
+import io.taylor.api.controller.order.response.OrderResponse;
 import io.taylor.domain.order.Order;
 import io.taylor.domain.order.OrderStatus;
 import io.taylor.domain.product.Product;
@@ -114,7 +114,7 @@ class OrderServiceTest extends IntegrationTestSupport {
     }
 
     @Test
-    @DisplayName("회원이 주문을 취소한다.")
+    @DisplayName("주문을 취소한다.")
     void deleteOrder() {
         // when
         orderService.deleteOrderStatus(order1.getCustomerId(), order1.getId());
@@ -124,6 +124,36 @@ class OrderServiceTest extends IntegrationTestSupport {
                 .orElseThrow(() -> new AssertionError("Order not found"));
         assertThat(order).isNotNull();
         assertThat(order.getStatus()).isEqualTo(OrderStatus.CANCELED);
+    }
+
+    @Test
+    @DisplayName("완료된 주문을 취소할 수 없다.")
+    void updateOrderStatueComplete_BadRequest() {
+        // given
+        order1.updateStatue(OrderStatus.COMPLETED);
+
+        // when & then
+        assertThatThrownBy(() -> orderService.deleteOrderStatus(order1.getCustomerId(), order1.getId()))
+                .isInstanceOf(ResponseStatusException.class)
+                .extracting(
+                        exception -> ((ResponseStatusException) exception).getStatusCode(),
+                        exception -> ((ResponseStatusException) exception).getReason())
+                .containsExactly(HttpStatus.BAD_REQUEST, "이미 완료된 주문입니다.");
+    }
+
+    @Test
+    @DisplayName("취소된 주문을 취소할 수 없다.")
+    void updateOrderStatusCancel_BadRequest() {
+        // given
+        order1.updateStatue(OrderStatus.CANCELED);
+
+        // when & then
+        assertThatThrownBy(() -> orderService.deleteOrderStatus(order1.getCustomerId(), order1.getId()))
+                .isInstanceOf(ResponseStatusException.class)
+                .extracting(
+                        exception -> ((ResponseStatusException) exception).getStatusCode(),
+                        exception -> ((ResponseStatusException) exception).getReason())
+                .containsExactly(HttpStatus.BAD_REQUEST, "이미 취소된 주문입니다.");
     }
 
     @Test
