@@ -1,4 +1,4 @@
-package io.taylor.api.controller.product;
+package io.taylor.api.controller.order.product;
 
 import io.taylor.api.controller.ControllerTestSupport;
 import io.taylor.api.controller.order.request.OrderStatusRequest;
@@ -188,7 +188,26 @@ class ProductControllerTest extends ControllerTestSupport {
     }
 
     @Test
-    @DisplayName("제품을 주문한다.")
+    @DisplayName("제품 정보를 수정한다.")
+    void updateProduct() throws Exception {
+        // given
+        ProductRequest request = ProductRequest.builder()
+                .name("test")
+                .price(new BigDecimal("100000"))
+                .quantity(1)
+                .build();
+
+        // when & then
+        mockMvc.perform(
+                        patch("/api/products/1")
+                                .content(objectMapper.writeValueAsString(request))
+                                .contentType(MediaType.APPLICATION_JSON)
+                ).andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("회원은 제품을 주문할 수 있다.")
     void orderProduct() throws Exception {
         // given
         OrderProductRequest request = OrderProductRequest.builder()

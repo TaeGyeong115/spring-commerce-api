@@ -25,7 +25,7 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<ProductResponse> saveProduct(AuthenticatedMember member,
-                                            @Valid @RequestBody ProductRequest request) {
+                                                       @Valid @RequestBody ProductRequest request) {
         ProductResponse response = productService.saveProduct(member.memberId(), request.toServiceRequest());
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -42,10 +42,18 @@ public class ProductController {
         return ResponseEntity.ok(response);
     }
 
+    @PatchMapping("/{productId}")
+    public ResponseEntity<ProductResponse> updateProduct(AuthenticatedMember member,
+                                                         @PathVariable("productId") Long productId,
+                                                         @RequestBody ProductRequest request) {
+        ProductResponse response = productService.updateProduct(member.memberId(), productId, request.toServiceRequest());
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping("/{productId}")
     public ResponseEntity<OrderResponse> orderProduct(AuthenticatedMember member,
-                                             @PathVariable("productId") Long productId,
-                                             @Valid @RequestBody OrderProductRequest request) {
+                                                      @PathVariable("productId") Long productId,
+                                                      @Valid @RequestBody OrderProductRequest request) {
         OrderResponse response = productService.orderProduct(member.memberId(), productId, request.toServiceRequest());
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }

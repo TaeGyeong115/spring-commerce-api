@@ -5,5 +5,5 @@ import lombok.Builder;
 import java.math.BigDecimal;
 
 @Builder
-public record ProductCreateServiceRequest(String name, BigDecimal price, int quantity) {
+public record ProductServiceRequest(String name, BigDecimal price, int quantity) {
 }

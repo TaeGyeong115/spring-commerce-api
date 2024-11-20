@@ -1,12 +1,12 @@
 package io.taylor.api.service.product;
 
+import io.taylor.IntegrationTestSupport;
 import io.taylor.api.controller.order.request.OrderStatusRequest;
 import io.taylor.api.controller.order.response.OrderResponse;
 import io.taylor.api.controller.product.response.OwnedProductResponse;
 import io.taylor.api.controller.product.response.ProductResponse;
-import io.taylor.api.service.IntegrationTestSupport;
 import io.taylor.api.service.order.request.OrderServiceRequest;
-import io.taylor.api.service.product.request.ProductCreateServiceRequest;
+import io.taylor.api.service.product.request.ProductServiceRequest;
 import io.taylor.domain.order.Order;
 import io.taylor.domain.order.OrderStatus;
 import io.taylor.domain.product.Product;
@@ -62,7 +62,7 @@ class ProductServiceTest extends IntegrationTestSupport {
     @DisplayName("새로운 제품을 추가한다.")
     void createProduct() {
         //given
-        ProductCreateServiceRequest request = ProductCreateServiceRequest.builder()
+        ProductServiceRequest request = ProductServiceRequest.builder()
                 .name("Computer")
                 .price(new BigDecimal(20000000))
                 .quantity(4)
@@ -70,6 +70,26 @@ class ProductServiceTest extends IntegrationTestSupport {
 
         // when
         ProductResponse response = productService.saveProduct(1, request);
+
+        // then
+        assertThat(response).isNotNull();
+        assertThat(response).extracting("name", "price", "quantity", "status")
+                .containsExactlyInAnyOrder(request.name(), request.price(), request.quantity(), ProductStatus.FOR_SALE);
+        ProductResponseCheckNotNull(response);
+    }
+
+    @Test
+    @DisplayName("제품 정보를 수정한다.")
+    void updateProduct() {
+        //given
+        ProductServiceRequest request = ProductServiceRequest.builder()
+                .name("Test")
+                .price(new BigDecimal(20000000))
+                .quantity(4)
+                .build();
+
+        // when
+        ProductResponse response = productService.updateProduct(product1.getProviderId(), product1.getId(), request);
 
         // then
         assertThat(response).isNotNull();

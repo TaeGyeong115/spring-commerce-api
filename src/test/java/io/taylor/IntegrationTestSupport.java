@@ -1,4 +1,4 @@
-package io.taylor.api.service;
+package io.taylor;
 
 import io.taylor.api.service.log.LogService;
 import io.taylor.api.service.member.MemberService;
