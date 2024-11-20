@@ -147,8 +147,8 @@ public class ProductService {
     }
 
     private void validateOrder(Product product, OrderServiceRequest request) {
-        if (product.getStatus() != ProductStatus.FOR_SALE) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "판매하지 않는 제품입니다.");
+        if (product.getStatus() == ProductStatus.SOLD_OUT) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "판매 중인 제품이 아닙니다.");
         }
 
         if (product.getPrice().compareTo(request.price()) != 0) {

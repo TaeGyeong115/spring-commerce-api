@@ -173,7 +173,7 @@ class ProductServiceTest extends IntegrationTestSupport {
 
     @Test
     @DisplayName("회원은 제품을 주문할 수 있다.")
-    void saveOrderForProduct() {
+    void orderForProduct() {
         // given
         OrderServiceRequest request = OrderServiceRequest.builder()
                 .quantity(product1.remainingQuantity())
@@ -196,7 +196,7 @@ class ProductServiceTest extends IntegrationTestSupport {
 
     @Test
     @DisplayName("회원이 제품을 주문시, 제품 수량이 부족하면 주문에 실패한다.")
-    void saveOrderForProduct_SoldOut() {
+    void orderForProduct_QuantityLack() {
         // given
         OrderServiceRequest request = OrderServiceRequest.builder()
                 .quantity(product1.remainingQuantity() + 1)
@@ -213,8 +213,8 @@ class ProductServiceTest extends IntegrationTestSupport {
     }
 
     @Test
-    @DisplayName("회원이 제품을 주문시, 요청 가격과 판매 가격이 다르면 주문에 실패한다.")
-    void saveOrderForProduct_DiffPrice() {
+    @DisplayName("제품을 주문시, 요청 가격과 판매 가격이 다르면 주문에 실패한다.")
+    void orderForProduct_DiffPrice() {
         // given
         OrderServiceRequest request = OrderServiceRequest.builder()
                 .quantity(product1.remainingQuantity())
@@ -228,6 +228,25 @@ class ProductServiceTest extends IntegrationTestSupport {
                         exception -> ((ResponseStatusException) exception).getStatusCode(),
                         exception -> ((ResponseStatusException) exception).getReason())
                 .containsExactly(HttpStatus.BAD_REQUEST, "판매 금액 변동이 발생했습니다.");
+    }
+
+    @Test
+    @DisplayName("제품을 주문시, 제품 상태가 SOLD_OUT 이면 주문에 실패한다.")
+    void orderForProduct_SoldOut() {
+        // given
+        OrderServiceRequest request = OrderServiceRequest.builder()
+                .quantity(product1.remainingQuantity())
+                .price(product1.getPrice())
+                .build();
+        product1.setStatus(ProductStatus.SOLD_OUT);
+
+        // when & then
+        assertThatThrownBy(() -> productService.orderProduct(order1.getCustomerId(), product1.getId(), request))
+                .isInstanceOf(ResponseStatusException.class)
+                .extracting(
+                        exception -> ((ResponseStatusException) exception).getStatusCode(),
+                        exception -> ((ResponseStatusException) exception).getReason())
+                .containsExactly(HttpStatus.FORBIDDEN, "판매 중인 제품이 아닙니다.");
     }
 
     @Test
