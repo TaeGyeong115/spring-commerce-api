@@ -20,7 +20,7 @@ public class LogController {
 
     @GetMapping()
     public ResponseEntity<List<LogResponse>> getActivityLogs(AuthenticatedMember member) {
-        List<LogResponse> response = logService.getActivityLogs(member);
+        List<LogResponse> response = logService.getActivityLogs(member.memberId());
         return ResponseEntity.ok(response);
     }
 }

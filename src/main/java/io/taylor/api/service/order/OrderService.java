@@ -62,6 +62,12 @@ public class OrderService {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "접근 권한이 없습니다.");
         }
 
+        if (order.getStatus() == OrderStatus.COMPLETED) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "이미 완료된 주문입니다.");
+        } else if (order.getStatus() == OrderStatus.CANCELED) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "이미 취소된 주문입니다.");
+        }
+
         order.updateStatue(OrderStatus.CANCELED);
         orderRepository.save(order);
         logService.saveLog(ActionType.DELETE, TargetType.ORDER, memberId, orderId);
