@@ -66,6 +66,18 @@ public class Product extends BaseEntity {
         }
     }
 
+    public void updateProduct(String name, BigDecimal price, int quantity) {
+        if (name != null) {
+            this.name = name;
+        }
+        if (price != null) {
+            this.price = price;
+        }
+        if (quantity > 0) {
+            this.totalQuantity = quantity;
+        }
+    }
+
     private void increaseSoldQuantity(int quantity) {
         if (remainingQuantity() < quantity) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "재고가 부족합니다.");

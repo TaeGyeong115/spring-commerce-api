@@ -1,7 +1,7 @@
 package io.taylor.api.service.member;
 
 import io.taylor.api.controller.member.response.MemberLoginResponse;
-import io.taylor.api.service.IntegrationTestSupport;
+import io.taylor.IntegrationTestSupport;
 import io.taylor.api.service.member.request.MemberJoinServiceRequest;
 import io.taylor.api.service.member.request.MemberLoingServiceRequest;
 import io.taylor.domain.member.Member;

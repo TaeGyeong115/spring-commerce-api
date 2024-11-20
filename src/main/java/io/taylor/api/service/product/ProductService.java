@@ -7,7 +7,7 @@ import io.taylor.api.controller.product.response.ProductResponse;
 import io.taylor.api.service.log.LogService;
 import io.taylor.api.service.order.OrderService;
 import io.taylor.api.service.order.request.OrderServiceRequest;
-import io.taylor.api.service.product.request.ProductCreateServiceRequest;
+import io.taylor.api.service.product.request.ProductServiceRequest;
 import io.taylor.domain.log.ActionType;
 import io.taylor.domain.log.TargetType;
 import io.taylor.domain.order.OrderStatus;
@@ -44,7 +44,7 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
-    public ProductResponse saveProduct(long memberId, ProductCreateServiceRequest request) {
+    public ProductResponse saveProduct(long memberId, ProductServiceRequest request) {
         Product product = Product.builder()
                 .name(request.name())
                 .providerId(memberId)
@@ -55,6 +55,18 @@ public class ProductService {
         Product response = productRepository.save(product);
         logService.saveLog(ActionType.CREATE, TargetType.PRODUCT, memberId, product.getId());
         return convertToResponse(response);
+    }
+
+    public ProductResponse updateProduct(Long memberId, Long productId, ProductServiceRequest request) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 제품이 존재하지 않습니다."));
+
+        isAuthorized(memberId, product.getProviderId());
+        product.updateProduct(request.name(), request.price(), request.quantity());
+        productRepository.save(product);
+        ProductResponse response = convertToResponse(product);
+        logService.saveLog(ActionType.UPDATE, TargetType.PRODUCT, memberId, productId);
+        return response;
     }
 
     public OrderResponse orderProduct(long memberId, long productId, OrderServiceRequest request) {

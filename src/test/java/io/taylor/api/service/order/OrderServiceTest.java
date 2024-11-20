@@ -1,7 +1,7 @@
 package io.taylor.api.service.order;
 
 import io.taylor.api.controller.order.response.OrderResponse;
-import io.taylor.api.service.IntegrationTestSupport;
+import io.taylor.IntegrationTestSupport;
 import io.taylor.domain.order.Order;
 import io.taylor.domain.order.OrderStatus;
 import io.taylor.domain.product.Product;
