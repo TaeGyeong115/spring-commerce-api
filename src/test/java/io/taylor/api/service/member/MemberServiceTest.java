@@ -49,7 +49,7 @@ class MemberServiceTest extends IntegrationTestSupport {
     @DisplayName("이미 등록된 이메일로 회원 가입이 불가하다.")
     void joinFailsWhenMemberExists() {
         // given
-        String encryptedPassword = passwordUtil.encodePassword("password");
+        String encryptedPassword = passwordEncoder.encode("password");
         Member member = createMember("joinTest@test.com", encryptedPassword, "joinTest", "joinTest");
         memberRepository.save(member);
 
@@ -77,7 +77,7 @@ class MemberServiceTest extends IntegrationTestSupport {
                 .email("loginTest@test.com")
                 .password("password")
                 .build();
-        String encryptedPassword = passwordUtil.encodePassword("password");
+        String encryptedPassword = passwordEncoder.encode("password");
         Member member = createMember("loginTest@test.com", encryptedPassword, "loginTest", "loginTest");
         memberRepository.save(member);
 
@@ -118,7 +118,7 @@ class MemberServiceTest extends IntegrationTestSupport {
                 .email("loginTest@test.com")
                 .password("wrongPassword")
                 .build();
-        String encryptedPassword = passwordUtil.encodePassword("password");
+        String encryptedPassword = passwordEncoder.encode("password");
         Member member = createMember("loginTest@test.com", encryptedPassword, "loginTest", "loginTest");
         memberRepository.save(member);
 
