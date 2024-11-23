@@ -160,7 +160,7 @@ public class ProductService {
         return ProductResponse.builder()
                 .id(product.getId())
                 .name(product.getName())
-                .quantity(product.remainingQuantity())
+                .quantity(product.getRemainingQuantity())
                 .price(product.getPrice())
                 .status(product.getStatus())
                 .modifiedDateTime(product.getModifiedDateTime())

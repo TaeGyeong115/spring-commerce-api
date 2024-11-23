@@ -109,9 +109,9 @@ class ProductServiceTest extends IntegrationTestSupport {
         assertThat(response).hasSize(3)
                 .extracting("name", "quantity", "status", "price")
                 .containsExactlyInAnyOrder(
-                        tuple(product1.getName(), product1.remainingQuantity(), product1.getStatus(), product1.getPrice()),
-                        tuple(product2.getName(), product2.remainingQuantity(), product2.getStatus(), product2.getPrice()),
-                        tuple(product3.getName(), product3.remainingQuantity(), product3.getStatus(), product3.getPrice())
+                        tuple(product1.getName(), product1.getRemainingQuantity(), product1.getStatus(), product1.getPrice()),
+                        tuple(product2.getName(), product2.getRemainingQuantity(), product2.getStatus(), product2.getPrice()),
+                        tuple(product3.getName(), product3.getRemainingQuantity(), product3.getStatus(), product3.getPrice())
                 );
         ProductResponseCheckNotNull(response.get(0));
         ProductResponseCheckNotNull(response.get(1));
@@ -131,7 +131,7 @@ class ProductServiceTest extends IntegrationTestSupport {
         // then
         assertThat(response).isNotNull();
         assertThat(response).extracting("name", "price", "quantity", "status")
-                .containsExactlyInAnyOrder(product.getName(), product.getPrice(), product.remainingQuantity(), product.getStatus());
+                .containsExactlyInAnyOrder(product.getName(), product.getPrice(), product.getRemainingQuantity(), product.getStatus());
         ProductResponseCheckNotNull(response);
     }
 
@@ -176,7 +176,7 @@ class ProductServiceTest extends IntegrationTestSupport {
     void orderForProduct() {
         // given
         OrderServiceRequest request = OrderServiceRequest.builder()
-                .quantity(product1.remainingQuantity())
+                .quantity(product1.getRemainingQuantity())
                 .price(product1.getPrice())
                 .build();
 
@@ -199,7 +199,7 @@ class ProductServiceTest extends IntegrationTestSupport {
     void orderForProduct_QuantityLack() {
         // given
         OrderServiceRequest request = OrderServiceRequest.builder()
-                .quantity(product1.remainingQuantity() + 1)
+                .quantity(product1.getRemainingQuantity() + 1)
                 .price(product1.getPrice())
                 .build();
 
@@ -217,7 +217,7 @@ class ProductServiceTest extends IntegrationTestSupport {
     void orderForProduct_DiffPrice() {
         // given
         OrderServiceRequest request = OrderServiceRequest.builder()
-                .quantity(product1.remainingQuantity())
+                .quantity(product1.getRemainingQuantity())
                 .price(product1.getPrice().multiply(new BigDecimal(10)))
                 .build();
 
@@ -235,7 +235,7 @@ class ProductServiceTest extends IntegrationTestSupport {
     void orderForProduct_SoldOut() {
         // given
         OrderServiceRequest request = OrderServiceRequest.builder()
-                .quantity(product1.remainingQuantity())
+                .quantity(product1.getRemainingQuantity())
                 .price(product1.getPrice())
                 .build();
         product1.setStatus(ProductStatus.SOLD_OUT);

@@ -54,7 +54,7 @@ public class Product extends BaseEntity {
         this.status = ProductStatus.FOR_SALE;
     }
 
-    public int remainingQuantity() {
+    public int getRemainingQuantity() {
         return this.totalQuantity - this.soldQuantity;
     }
 
@@ -79,7 +79,7 @@ public class Product extends BaseEntity {
     }
 
     private void increaseSoldQuantity(int quantity) {
-        if (remainingQuantity() < quantity) {
+        if (getRemainingQuantity() < quantity) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "재고가 부족합니다.");
         }
 

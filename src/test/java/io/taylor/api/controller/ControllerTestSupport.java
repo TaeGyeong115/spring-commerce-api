@@ -13,7 +13,6 @@ import io.taylor.api.service.product.ProductService;
 import io.taylor.config.SecurityConfig;
 import io.taylor.exception.GlobalExceptionHandler;
 import io.taylor.util.JwtTokenUtil;
-import io.taylor.util.PasswordUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -21,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -43,7 +43,7 @@ public abstract class ControllerTestSupport {
     protected HandlerMethodArgumentResolver authenticatedMemberResolver;
 
     @MockBean
-    protected PasswordUtil passwordUtil;
+    protected PasswordEncoder passwordEncoder;
 
     @Autowired
     protected MockMvc mockMvc;

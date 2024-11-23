@@ -1,4 +1,4 @@
-package io.taylor.api.controller.order.product;
+package io.taylor.api.controller.product;
 
 import io.taylor.api.controller.ControllerTestSupport;
 import io.taylor.api.controller.order.request.OrderStatusRequest;
