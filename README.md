@@ -1,4 +1,4 @@
-## [실행 과제 노트](https://ivy-october-fe6.notion.site/Wanted-pre-onboarding-challenge-back-end-20-8c4abf19c63e41cfb0cd43d49306fb41?pvs=4)
+## [프로젝트 문서](https://ivy-october-fe6.notion.site/Wanted-pre-onboarding-challenge-back-end-20-8c4abf19c63e41cfb0cd43d49306fb41?pvs=4)
 
 
 ### [ 환경 세팅 ]
